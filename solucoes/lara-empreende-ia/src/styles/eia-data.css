@@ -1,0 +1,269 @@
+/* ==============================================================
+   EMPREENDE.IA · CAMADA DE DADOS (tabela, número, métrica)
+   --------------------------------------------------------------
+   A estrutura padrão pra QUALQUER tabela ou tela de dados — não um
+   caso isolado. Escreva <table> cru + estas classes e a tabela já
+   nasce no padrão da marca.
+
+   Existe porque: 22 telas têm tabela feita à mão e só 4 usam o
+   componente React. E ferramenta de IA (Lovable/Cursor/v0) gera
+   HTML cru — sem esta camada, cada tabela é reinventada.
+
+   REGRAS DA CASA aplicadas aqui:
+   · fundo CLARO · tabela densa NUNCA leva vidro (mata a leitura);
+     o vidro fica nos cards de métrica ao redor
+   · hairline entre linhas — nada de zebra pesada
+   · hierarquia por INDENTAÇÃO + PESO, nunca por cor de fundo
+   · número sempre tabular, alinhado à direita
+   · cor só como SEMÂNTICA: red = desfavorável · verde sóbrio =
+     meta batida · slate = neutro. Nunca semáforo de framework.
+   · nenhuma barra/linha lateral colorida
+
+   USO MÍNIMO:
+     <div class="eia-table-wrap">
+       <table class="eia-table">
+         <thead><tr><th>Conta</th><th class="eia-num">Realizado</th></tr></thead>
+         <tbody><tr><td>Receita</td><td class="eia-num">3.184.000</td></tr></tbody>
+       </table>
+     </div>
+   ============================================================== */
+
+/* ---------------------------------------------------------------
+   1. Moldura · dá o corte arredondado e o scroll horizontal seguro
+   --------------------------------------------------------------- */
+.eia-table-wrap {
+  position: relative;
+  overflow-x: auto;
+  border-radius: var(--eia-radius-lg);
+  border: var(--eia-glass-ring);
+  background: var(--eia-surface);
+  box-shadow: var(--eia-glass-shadow);
+  -webkit-overflow-scrolling: touch;
+}
+.eia-table-wrap:focus-visible {
+  outline: none;
+  box-shadow: var(--eia-glass-shadow), var(--eia-shadow-focus);
+}
+
+/* ---------------------------------------------------------------
+   2. Tabela base
+   --------------------------------------------------------------- */
+.eia-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--eia-font);
+  font-size: var(--eia-fs-caption);
+  color: var(--eia-text-body);
+  background: transparent;
+}
+
+.eia-table thead th {
+  position: relative;
+  padding: 14px 18px;
+  text-align: left;
+  font-size: var(--eia-fs-micro);
+  font-weight: var(--eia-fw-semibold);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--eia-text-muted);
+  white-space: nowrap;
+  background: var(--eia-surface);
+  border-bottom: 1px solid var(--eia-border-soft);
+}
+
+/* Cabeçalho que gruda ao rolar — some quando a tabela é curta */
+.eia-table--sticky thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.eia-table tbody td {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--eia-border-soft);
+  vertical-align: middle;
+}
+.eia-table tbody tr:last-child td { border-bottom: 0; }
+
+/* Hover só onde é linha de dado (some em total/grupo via .eia-row-*) */
+.eia-table tbody tr {
+  transition: background var(--eia-dur) var(--eia-ease-snap);
+}
+.eia-table tbody tr:hover { background: var(--eia-ink-03); }
+
+/* Densidades */
+.eia-table--compact thead th,
+.eia-table--compact tbody td { padding: 9px 14px; }
+.eia-table--roomy thead th,
+.eia-table--roomy tbody td { padding: 18px 22px; }
+
+/* ---------------------------------------------------------------
+   3. Células semânticas · o que faz a tabela “ler” certo
+   --------------------------------------------------------------- */
+
+/* Número: tabular + direita. A regra mais importante da camada —
+   sem isso os dígitos dançam de linha pra linha. */
+.eia-num,
+.eia-table .eia-num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+  white-space: nowrap;
+}
+/* Monoespaçado pra código/id/timestamp (não pra dinheiro) */
+.eia-mono {
+  font-family: var(--eia-font-mono, var(--eia-mono));
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+}
+
+/* Linha de TOTAL/resultado · peso + régua superior (convenção
+   contábil). Nunca barra lateral, nunca cor de fundo forte. */
+.eia-row-total td {
+  font-weight: var(--eia-fw-semibold);
+  color: var(--eia-text-primary);
+  background: var(--eia-ink-03);
+  border-top: 1px solid var(--eia-border);
+}
+.eia-table tbody tr.eia-row-total:hover { background: var(--eia-ink-04); }
+
+/* Cabeçalho de grupo dentro do corpo (ex.: "Realizado · jan–jun") */
+.eia-row-group td {
+  font-size: var(--eia-fs-micro);
+  font-weight: var(--eia-fw-semibold);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--eia-text-muted);
+  background: var(--eia-ink-02);
+}
+.eia-table tbody tr.eia-row-group:hover { background: var(--eia-ink-02); }
+
+/* Hierarquia por indentação — sub-conta entra, não muda de cor */
+.eia-cell-sub    { padding-left: 42px !important; color: var(--eia-text-body); }
+.eia-cell-sub-2  { padding-left: 66px !important; color: var(--eia-text-muted); }
+
+/* ---------------------------------------------------------------
+   4. Variação (delta) · cor SÓ como semântica
+   --------------------------------------------------------------- */
+.eia-delta {
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--eia-fw-medium);
+  white-space: nowrap;
+}
+.eia-delta--up   { color: var(--eia-success); }   /* favorável / meta batida */
+.eia-delta--down { color: var(--eia-red-dark); }/* desfavorável */
+.eia-delta--flat { color: var(--eia-text-muted); }
+
+/* Micro-barra de proporção · comunica peso sem virar gráfico */
+.eia-bar {
+  display: block;
+  width: 100%;
+  max-width: 160px;
+  height: 4px;
+  border-radius: var(--eia-radius-pill);
+  background: var(--eia-ink-08);
+  overflow: hidden;
+}
+.eia-bar__fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--eia-ink), var(--eia-ink-deep));
+}
+.eia-bar__fill--down { background: linear-gradient(90deg, var(--eia-red), var(--eia-red-deep)); }
+
+/* ---------------------------------------------------------------
+   5. Bloco de métrica (KPI) · AQUI o vidro é bem-vindo
+   --------------------------------------------------------------- */
+.eia-metric {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--eia-space-2);
+  padding: 22px 24px;
+  border-radius: var(--eia-radius-lg);
+  background: var(--eia-glass-card);
+  backdrop-filter: var(--eia-glass-blur);
+  -webkit-backdrop-filter: var(--eia-glass-blur);
+  border: var(--eia-glass-ring);
+  box-shadow: var(--eia-glass-shadow);
+  isolation: isolate;
+}
+.eia-metric--atmos::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(420px 200px at 0% 0%, var(--eia-ink-05), transparent 62%);
+  pointer-events: none;
+  z-index: -1;
+}
+.eia-metric__label {
+  font-size: var(--eia-fs-micro);
+  font-weight: var(--eia-fw-semibold);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--eia-text-muted);
+}
+.eia-metric__value {
+  font-family: var(--eia-font-display);
+  font-size: clamp(28px, 3vw, 38px);
+  font-weight: var(--eia-fw-medium);
+  line-height: 1;
+  letter-spacing: var(--eia-ls-tighter);
+  color: var(--eia-text-primary);
+  font-variant-numeric: tabular-nums;
+}
+/* Prefixo de moeda menor que o número — o dado é o protagonista */
+.eia-metric__value small {
+  font-size: 0.52em;
+  font-weight: var(--eia-fw-regular);
+  color: var(--eia-text-muted);
+  margin-right: 4px;
+  letter-spacing: 0;
+}
+.eia-metric__foot {
+  display: flex;
+  align-items: center;
+  gap: var(--eia-space-2_5);
+  flex-wrap: wrap;
+  font-size: var(--eia-fs-label);
+  color: var(--eia-text-muted);
+}
+
+/* Grade de métricas — 4 → 2 → 1 sem quebrar */
+.eia-metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: var(--eia-space-3_5, 14px);
+}
+
+/* ---------------------------------------------------------------
+   6. Sparkline / mini-gráfico inline
+   --------------------------------------------------------------- */
+.eia-spark {
+  display: block;
+  width: 100%;
+  height: 34px;
+  overflow: visible;
+}
+.eia-spark path { fill: none; stroke: var(--eia-ink); stroke-width: 1.5; }
+.eia-spark .eia-spark__area { fill: var(--eia-ink-08); stroke: none; }
+.eia-spark--down path { stroke: var(--eia-red); }
+.eia-spark--down .eia-spark__area { fill: rgba(220, 38, 38, 0.10); }
+
+/* Projeção/estimativa SEMPRE visualmente distinta do realizado */
+.eia-projected,
+.eia-spark--projected path { stroke-dasharray: 4 4; opacity: 0.72; }
+
+@media (prefers-reduced-motion: reduce) {
+  .eia-table tbody tr { transition: none; }
+}
+
+/* Mobile · a tabela rola dentro da própria moldura, a página não */
+@media (max-width: 720px) {
+  .eia-table thead th,
+  .eia-table tbody td { padding: 11px 14px; }
+  .eia-cell-sub   { padding-left: 30px !important; }
+  .eia-cell-sub-2 { padding-left: 46px !important; }
+}

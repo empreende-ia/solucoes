@@ -1,0 +1,827 @@
+/* =============================================================
+   EMPREENDE.IA — Design System
+   Dark-first · grafite + verde #0fa968 · glass e glow só no escuro
+   ============================================================= */
+
+/* Fonts: self-hosted (Sora display + Inter body + JetBrains Mono) —
+   src/styles/fonts.css é importado antes deste arquivo no index.css. */
+
+:root {
+  /* ========== COLORS ========================================== */
+
+  /* Ink — a tinta estrutural (grafite). A cor de MARCA é a verde (--eia-brand). */
+  --eia-ink:        #141414;   /* tinta primária · grafite-900 */
+  --eia-ink-deep:   #050505;   /* grafite-950 · full-bleed dark */
+  --eia-ink-darker: #000000;   /* o mais escuro · footers / borders */
+  --eia-blue:        #404040;   /* grafite-700 · tinta média */
+  --eia-blue-soft:   #525252;   /* grafite-600 · hover/borders sobre escuro */
+
+  /* Data-viz · rampa monocromática de 5 passos com separação REAL de valor
+     (grafite escuro → cinza médio → cinza claro). Resolve "cor próxima e escura": cada
+     série/segmento vira um tom nitidamente distinto, sem sair da paleta. */
+  --eia-chart-1:     #141414;   /* grafite-900 — anchor, série dominante */
+  --eia-chart-2:     #404040;   /* grafite-700 */
+  --eia-chart-3:     #737373;   /* grafite-500 */
+  --eia-chart-4:     #a3a3a3;   /* grafite-400 */
+  --eia-chart-5:     #d4d4d4;   /* grafite-300 */
+  --eia-chart-ink:   #0b6b43;   /* dado primário verde (linha/barra/funil) · adapta no dark */
+  --eia-chart-ink-2: #0fa968;   /* fim do gradiente de dado */
+
+  /* Grafite transparency stops (for hairlines, hovers, soft surfaces) */
+  --eia-ink-80: rgba(5, 5, 5, 0.80);
+  --eia-ink-60: rgba(5, 5, 5, 0.60);
+  --eia-ink-40: rgba(5, 5, 5, 0.40);
+  --eia-ink-30: rgba(5, 5, 5, 0.30);
+  --eia-ink-25: rgba(5, 5, 5, 0.25);
+  --eia-ink-22: rgba(5, 5, 5, 0.22);
+  --eia-ink-20: rgba(5, 5, 5, 0.20);
+  --eia-ink-18: rgba(5, 5, 5, 0.18);
+  --eia-ink-16: rgba(5, 5, 5, 0.16);
+  --eia-ink-14: rgba(5, 5, 5, 0.14);
+  --eia-ink-12: rgba(5, 5, 5, 0.12);
+  --eia-ink-10: rgba(5, 5, 5, 0.10);
+  --eia-ink-08: rgba(5, 5, 5, 0.08);
+  --eia-ink-06: rgba(5, 5, 5, 0.06);
+  --eia-ink-05: rgba(5, 5, 5, 0.05);
+  --eia-ink-04: rgba(5, 5, 5, 0.04);
+  --eia-ink-03: rgba(5, 5, 5, 0.03);
+  --eia-ink-02: rgba(5, 5, 5, 0.02);
+
+  /* Grayscale — the secondary palette */
+  --eia-gray-50:  #fafafa;   /* page bg (alt) */
+  --eia-gray-100: #f5f5f5;   /* subtle surface */
+  --eia-gray-200: #e5e5e5;   /* hairline border */
+  --eia-gray-300: #d4d4d4;   /* stronger border */
+  --eia-gray-400: #a3a3a3;   /* muted text on light */
+  --eia-gray-500: #737373;   /* secondary text */
+  --eia-gray-600: #525252;   /* tertiary text */
+  --eia-gray-700: #404040;   /* body emphasis */
+  --eia-gray-800: #262626;   /* close to grafite */
+  --eia-gray-900: #141414;   /* near black */
+
+  /* STAGE · fundo de "palco" (chat, overlay, empty state, streak).
+     Existe nos dois temas: sem ele, o var() fica vazio e INVALIDA a
+     declaração `background` inteira, derrubando junto as camadas de
+     atmosfera. Nunca declare um stage só no dark. */
+  --eia-stage-soft: var(--eia-gray-200);
+  --eia-stage-1:    var(--eia-gray-300);
+  --eia-stage-2:    var(--eia-gray-400);
+
+  --eia-black: #000000;
+  --eia-white: #FFFFFF;
+
+  /* Page / surface tokens — tema claro no :root · dark overrida
+     (o DEFAULT da marca é dark, aplicado via data-theme no boot) */
+  --eia-bg:           var(--eia-gray-50);
+  --eia-bg-2:         var(--eia-white);
+  --eia-bg-3:         var(--eia-gray-100);
+  --eia-surface:      var(--eia-white);
+  --eia-surface-elev: var(--eia-white);
+
+  /* Semantic text */
+  --eia-text-primary:  var(--eia-ink);
+  --eia-text-body:     var(--eia-gray-700);
+  --eia-text-muted:    #525252;   /* secondary · passo nítido vs body e vs soft (ladder com range) */
+  --eia-text-faint:    var(--eia-gray-400);
+  --eia-text-inverse:  var(--eia-white);
+
+  /* Semantic borders */
+  --eia-border-hairline: var(--eia-gray-200);
+  --eia-border:          rgba(5, 5, 5, 0.16);   /* hairline grafite-tint p/ controles (era gray-300 frio) · visível mas glassy */
+  --eia-border-soft:     rgba(5, 5, 5, 0.05);  /* hairline frameless · a sombra+brilho definem o card */
+  --eia-border-strong:   var(--eia-ink-40);
+
+  /* Status — desaturated, grafite-adjacent */
+  --eia-success: #0b6b43;
+  --eia-warning: #d97706;
+  --eia-danger:  #b91c1c;
+
+  /* ========== EDITORIAL INK SCALE =============================
+     Aliases curtos · mapeados nos CSS dos componentes
+     Não remover sem migrar todas as referências.
+     ============================================================ */
+  --eia-text:        var(--eia-gray-700);   /* corpo padrão */
+  --eia-text-soft:   #737373;   /* terciário · um passo mais claro que muted · range, não colapso */
+  --eia-ink-2:       #5c5c5c;               /* texto secundário editorial */
+  --eia-ink-3:       #676767;               /* terciário · timestamps */
+
+  /* ========== BRAND · VERDE (a única cor de marca) =========
+     Grafite é estrutura; verde é assinatura. Acentos (violet IA,
+     cyan info, amber alerta, red destrutivo) são FUNCIONAIS, nunca
+     decoração. Sem gold/dourado em nenhum nível.
+     ============================================================ */
+  --eia-brand-400: #2ec886;   /* marca clara · links/ícones no dark */
+  --eia-brand-500: #0fa968;   /* marca · fills, CTA, ponto do wordmark */
+  --eia-brand-600: #0d9058;   /* marca escura · links no light, hover de fill */
+  --eia-brand-700: #0b6b43;   /* hover de link no light */
+  --eia-brand-950: #02160d;   /* texto sobre verde */
+  --eia-brand:     var(--eia-brand-500);
+  --eia-on-accent: var(--eia-brand-950);      /* texto sobre accent/fill verde · nos 2 temas */
+  --eia-link:       var(--eia-brand-700);     /* links texto · light · AA em texto pequeno */
+  --eia-link-hover: #085535;
+  /* Glow verde — linguagem EXCLUSIVA do dark · no light é none */
+  --eia-glow-brand:        none;
+  --eia-glow-brand-strong: none;
+  --eia-glow-ring: 0 0 0 3px rgba(15, 169, 104, 0.15);
+
+  --eia-accent:       var(--eia-brand-500);   /* CTA · fills · headers fortes */
+  --eia-accent-deep:  var(--eia-brand-600);   /* gradient stops · hover de fill */
+  --eia-accent-soft:  var(--eia-brand-400);   /* gradient highlights */
+  --eia-accent-warm:  var(--eia-brand-600);   /* alias semântico legado */
+  --eia-accent-light: var(--eia-brand-400);   /* alias semântico legado */
+
+  /* ========== RED (destrutivo only) ===== */
+  --eia-red:       #dc2626;               /* destrutivo · cancel · error */
+  --eia-red-dark:  #991b1b;               /* destrutivo texto */
+  --eia-red-deep:  #b91c1c;               /* destrutivo hover */
+
+  /* ========== ACENTOS FUNCIONAIS ============================== */
+  --eia-accent-ia:    #7c3aed;              /* violet · features de IA */
+  --eia-accent-info:  #0891b2;              /* cyan · informativo */
+  --eia-accent-alert: #d97706;              /* amber · alerta (== warning) */
+
+  /* ========== ALIASES (compat) ================================
+     Aliases curtos pra Display / Mono
+     ============================================================ */
+  --eia-display: var(--eia-font-display);
+  --eia-mono:    var(--eia-font-mono);
+
+  /* ========== BG SOFT (surfaces) ============================== */
+  --eia-bg-soft: rgba(5, 5, 5, 0.025);   /* card soft alternate */
+}
+
+/* =============================================================
+   DARK MODE · [data-theme="dark"] no <html> — o TEMA CANÔNICO
+   grafite-950/900/800 + verde com glow
+   ============================================================= */
+:root[data-theme="dark"] {
+  /* =================================================
+     SURFACES · escala com mais separação entre camadas
+     grafite-950 → 900 → 800 (canônico do handoff)
+     ================================================= */
+  --eia-bg:           #050505;    /* canvas principal · grafite-950 */
+  --eia-bg-2:         #141414;    /* surface alt · grafite-900 */
+  --eia-bg-3:         #262626;    /* surface elevated · grafite-800 */
+  --eia-surface:      #141414;    /* card base */
+  --eia-surface-elev: #262626;    /* card elevado · modals/popovers */
+  --eia-bg-soft:      rgba(255, 255, 255, 0.04);
+
+  /* =================================================
+     GRAYS CLAROS como SUPERFÍCIE · adaptam no dark
+     Razão: gray-50/100 são usados SÓ como background
+     (seções, painéis, command palette). No dark precisam
+     virar painel escuro sutil, senão viram "mancha clara".
+     gray-200+ NÃO adaptam (são usados como texto claro). */
+  --eia-gray-50:  #0f0f0f;        /* painel sutil · 1 passo acima do canvas */
+  --eia-gray-100: #1e1e1e;        /* painel · 2 passos acima */
+  /* STAGE · backdrops/wells/avatares que usam gray-200/300/400 como FUNDO.
+     Não dá pra adaptar gray-200/300/400 direto (são usados como TEXTO claro
+     em contexto escuro). Então: tokens de palco que no light valem o mesmo
+     cinza (no-op) e no dark viram superfície escura. */
+  --eia-stage-soft: #262626;      /* era gray-200 (#e5e5e5) */
+  --eia-stage-1:    #141414;      /* era gray-300 (#d4d4d4) */
+  --eia-stage-2:    #050505;      /* era gray-400 (#a3a3a3) */
+
+  /* =================================================
+     TEXT · cores SÓLIDAS (não rgba com opacity)
+     Razão: rgba(white, 0.X) sobre dark = alfa-composted
+     em cinza escurecido, perde contraste WCAG
+     ================================================= */
+  --eia-text-primary: #f5f5f5;   /* near-white · headlines, links primários */
+  --eia-text-body:    #d4d4d4;   /* gray-300 sólido · body text · WCAG AAA */
+  --eia-text-muted:   #a3a3a3;   /* secondary · passa AA mesmo sobre vidro elevado · ainda claramente "quieto" vs body */
+  --eia-text-faint:   #9e9e9e;   /* helper · o mais discreto, mas legível sobre vidro */
+  --eia-text-inverse: var(--eia-ink);
+
+  /* Data-viz dark · rampa clara (visível sobre grafite escuro) */
+  --eia-chart-1:     #a3a3a3;
+  --eia-chart-2:     #b8b8b8;
+  --eia-chart-3:     #cbcbcb;
+  --eia-chart-4:     #dedede;
+  --eia-chart-5:     #ededed;
+  --eia-chart-ink:   #2ec886;   /* dado verde claro · legível sobre card escuro */
+  --eia-chart-ink-2: #0fa968;
+
+  --eia-text:      #d4d4d4;
+  --eia-text-soft: #a3a3a3;
+  --eia-ink-2:     #b3b3b3;
+  --eia-ink-3:     #aaaaaa;
+
+  /* =================================================
+     BORDERS · mais visíveis que antes (0.06 → 0.12)
+     ================================================= */
+  --eia-border-hairline: rgba(255, 255, 255, 0.10);
+  --eia-border:          rgba(255, 255, 255, 0.15);
+  --eia-border-soft:     rgba(255, 255, 255, 0.05);
+  --eia-border-strong:   rgba(255, 255, 255, 0.30);
+
+  /* =================================================
+     SLATE ALPHAS · TODOS invertidos pra rgba(white, X)
+     Razão: em dark, grafite alpha real fica invisível sobre
+     bg dark. Atmospheres radiais, hairlines, backgrounds
+     sutis precisam usar white com mesma intensidade.
+     ================================================= */
+  --eia-ink-02: rgba(255, 255, 255, 0.025);
+  --eia-ink-03: rgba(255, 255, 255, 0.035);
+  --eia-ink-04: rgba(255, 255, 255, 0.045);
+  --eia-ink-05: rgba(255, 255, 255, 0.055);
+  --eia-ink-06: rgba(255, 255, 255, 0.07);
+  --eia-ink-08: rgba(255, 255, 255, 0.09);
+  --eia-ink-10: rgba(255, 255, 255, 0.11);
+  --eia-ink-12: rgba(255, 255, 255, 0.13);
+  --eia-ink-14: rgba(255, 255, 255, 0.15);
+  --eia-ink-16: rgba(255, 255, 255, 0.17);
+  --eia-ink-18: rgba(255, 255, 255, 0.19);
+  --eia-ink-20: rgba(255, 255, 255, 0.22);
+  --eia-ink-22: rgba(255, 255, 255, 0.24);
+  --eia-ink-25: rgba(255, 255, 255, 0.28);
+  --eia-ink-30: rgba(255, 255, 255, 0.32);
+  --eia-ink-40: rgba(255, 255, 255, 0.42);
+  --eia-ink-60: rgba(255, 255, 255, 0.55);
+  --eia-ink-80: rgba(255, 255, 255, 0.72);
+
+  /* SHADOWS · as sombras grafite somem no escuro · usar preto com mais opacidade */
+  --eia-shadow-xs: 0 1px 2px rgba(0,0,0,0.30);
+  --eia-shadow-sm: 0 2px 6px rgba(0,0,0,0.34), 0 1px 2px rgba(0,0,0,0.24);
+  --eia-shadow-md: 0 6px 18px rgba(0,0,0,0.42), 0 1px 3px rgba(0,0,0,0.30);
+  --eia-shadow-lg: 0 16px 40px rgba(0,0,0,0.52), 0 2px 8px rgba(0,0,0,0.34);
+  --eia-shadow-xl: 0 32px 80px rgba(0,0,0,0.62), 0 4px 16px rgba(0,0,0,0.40);
+  --eia-shadow-focus: 0 0 0 3px rgba(15, 169, 104, 0.25);
+  /* Marca no dark: links clareiam · glow LIGA (linguagem do escuro) */
+  --eia-link:       var(--eia-brand-400);
+  --eia-link-hover: #6fe0ae;
+  --eia-glow-brand:        0 0 20px rgba(15, 169, 104, 0.3);
+  --eia-glow-brand-strong: 0 0 30px rgba(15, 169, 104, 0.5);
+  --eia-glow-ring: 0 0 0 3px rgba(15, 169, 104, 0.2);
+  --eia-accent-ia:    #a78bfa;
+  --eia-accent-info:  #22d3ee;
+  --eia-accent-alert: #fbbf24;
+  --eia-warning:      #fbbf24;
+  --eia-success:      #2ec886;
+  /* Tinta de sombra no ESCURO: preta e mais densa — grafite sobre grafite
+     não produz sombra nenhuma, e token que inverte vira halo branco. */
+  --eia-shadow-ink-03: rgba(0, 0, 0, 0.18);
+  --eia-shadow-ink-06: rgba(0, 0, 0, 0.26);
+  --eia-shadow-ink-10: rgba(0, 0, 0, 0.34);
+  --eia-shadow-ink-14: rgba(0, 0, 0, 0.40);
+  --eia-shadow-ink-20: rgba(0, 0, 0, 0.46);
+  --eia-shadow-ink-30: rgba(0, 0, 0, 0.54);
+  --eia-shadow-ink-40: rgba(0, 0, 0, 0.62);
+  --eia-shadow-ink-60: rgba(0, 0, 0, 0.72);
+
+
+  color-scheme: dark;
+}
+
+/* If prefers-color-scheme: dark and no explicit theme set */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    /* Note: light é nosso padrão da marca · esse bloco só ativa
+       quando NÃO há [data-theme] no <html> · útil pra evitar flash
+       em casos extremos (SSR sem hidratação) */
+    --eia-bg:           #050505;
+    --eia-bg-2:         #141414;
+    --eia-surface:      #141414;
+    --eia-text-primary: #f5f5f5;
+    --eia-text-body:    #d4d4d4;
+    --eia-text:         #d4d4d4;
+    --eia-text-soft:    #a3a3a3;
+    --eia-ink-2:        #bfbfbf;
+    --eia-ink-3:        #a3a3a3;
+    --eia-border-soft:  rgba(255, 255, 255, 0.08);
+    color-scheme: dark;
+  }
+}
+
+/* =================================================
+   GLASS SURFACES · tokens semânticos (resolvem dark sozinhos)
+   =================================================
+   --eia-glass-card  · superfície de card glass forte
+   --eia-glass-card-2· superfície de card glass média (alt)
+   Componentes usam var(--eia-glass-card) em vez de gradient
+   branco hardcoded → adapta light/dark automaticamente.
+   ================================================= */
+:root {
+  --eia-glass-card:   linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(255, 255, 255, 0.84) 10%, rgba(247, 248, 250, 0.58) 100%);  /* sheen de topo embutido · luz no vidro */
+  --eia-glass-card-2: linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(247, 248, 250, 0.62));
+  /* Vidro de BARRA/chrome (nav sticky, toolbar, painel flutuante) · translúcido
+     DE VERDADE pra o conteúdo passar DESFOCADO por baixo (frosted estilo Apple).
+     Só usar com backdrop-filter blur. NÃO usar em card de conteúdo (texto
+     precisa de fundo mais sólido). */
+  --eia-glass-bar:    rgba(255, 255, 255, 0.6);
+  /* Superfície branca FIXA · pra botões/cards SOBRE hero grafite (grafite nos
+     2 temas) · NÃO adapta · sempre clara porque texto sobre ela é grafite */
+  --eia-surface-onink: linear-gradient(180deg, #FFFFFF 0%, #f7f7f7 100%);
+  /* Edge highlight (a "linha de luz" no topo dos cards glass) · forte em
+     light, sutil em dark · senão vira moldura branca berrante no escuro */
+  --eia-edge-hi: rgba(255, 255, 255, 0.95);
+  /* Edge highlight inferior/sutil · 1px de luz na base · quase nulo em dark */
+  --eia-edge-lo: rgba(255, 255, 255, 0.4);
+  /* Sheen · o "brilho" branco que desce do topo dos cards glass (::before).
+     Forte em light (vidro pega luz), quase nulo em dark (vidro escuro reflete
+     pouco) · senão o topo do card vira um lavado branco berrante no escuro */
+  --eia-glass-sheen: linear-gradient(180deg, rgba(255, 255, 255, 0.6), transparent);
+}
+
+:root[data-theme="dark"] {
+  --eia-glass-card:   linear-gradient(180deg, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0.05) 10%, rgba(255, 255, 255, 0.022) 100%);  /* sheen de topo · luz no vidro escuro */
+  --eia-glass-card-2: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.018));
+  --eia-glass-bar:    rgba(5, 5, 5, 0.55);
+  /* onink NÃO muda · permanece branco mesmo em dark */
+  --eia-edge-hi: rgba(255, 255, 255, 0.08);
+  --eia-edge-lo: rgba(255, 255, 255, 0.05);
+  --eia-glass-sheen: linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent);
+  /* accent-warm = alias de grafite-deep · só usado como COR DE TEXTO ·
+     grafite-deep não adapta → invisível no dark.
+     Vira texto claro pra continuar legível sobre superfícies escuras. */
+  --eia-accent-warm: var(--eia-text-primary);
+  /* red-dark = texto destrutivo/erro sobre fundo red-tint · escuro demais
+     no dark → red CLARO legível, mantendo o sinal "erro/destrutivo" */
+  --eia-red-dark: #fca5a5;
+  /* danger usado como texto de erro em campos · clareia no dark */
+  --eia-danger: #f87171;
+}
+
+/* =============================================================
+   SYSTEM TOKENS · fora de :root principal pra resolver dependência
+   circular com os media queries acima. Tudo abaixo é base do DS.
+   ============================================================= */
+:root {
+  /* ========== TYPOGRAPHY ====================================== */
+
+  /* Two-family system: Sora (display · wordmark, headings) +
+     Inter (body/UI). JetBrains Mono para código, métricas e labels.
+     Itálico não faz parte da voz — contraste editorial vem por
+     peso + cor (não por inclinação). */
+  --eia-font-display: 'Sora', 'Inter', system-ui, -apple-system, sans-serif;
+  --eia-font:         'Inter', system-ui, -apple-system, sans-serif;
+  --eia-font-mono:    'JetBrains Mono', ui-monospace, monospace;
+
+  /* Weights */
+  --eia-fw-light:    300;
+  --eia-fw-regular:  400;
+  --eia-fw-medium:   500;
+  --eia-fw-semibold: 600;
+  --eia-fw-bold:     700;
+  --eia-fw-black:    900;
+
+  /* Type scale */
+  --eia-fs-hero:    5rem;       /* 80px */
+  --eia-fs-display: 3.5rem;     /* 56px */
+  --eia-fs-h1:      2.5rem;     /* 40px */
+  --eia-fs-h2:      2rem;       /* 32px */
+  --eia-fs-h3:      1.5rem;     /* 24px */
+  --eia-fs-h4:      1.125rem;   /* 18px */
+  --eia-fs-body:    1rem;       /* 16px */
+  --eia-fs-sm:      0.875rem;   /* 14px */
+  --eia-fs-caption: 0.8125rem;  /* 13px · meta densa / legendas */
+  --eia-fs-xs:      0.75rem;    /* 12px */
+  --eia-fs-label:   0.6875rem;  /* 11px · canônico (pill/eyebrow) */
+  --eia-fs-micro:   0.625rem;   /* 10px · micro-rótulos / kbd / badges */
+
+  /* Letter-spacing buckets — Sora pede tight no display
+     (wordmark −0.04em vive no componente de logo, não aqui) */
+  --eia-ls-brand: 0.32em;
+  --eia-ls-mark:  0.22em;
+  --eia-ls-label: 0.18em;
+  --eia-ls-wide:  0.08em;
+  --eia-ls-tight: -0.02em;
+  --eia-ls-tighter: -0.03em;
+
+  /* Line heights */
+  --eia-lh-tight:  1.02;
+  --eia-lh-snug:   1.2;
+  --eia-lh-normal: 1.5;
+  --eia-lh-loose:  1.65;
+
+  /* ========== SPACING · base 4px + half-steps de 2px (conv. Tailwind) ===== */
+  --eia-space-0_5: 2px;
+  --eia-space-1:   4px;
+  --eia-space-1_5: 6px;
+  --eia-space-2:   8px;
+  --eia-space-2_5: 10px;
+  --eia-space-3:   12px;
+  --eia-space-3_5: 14px;
+  --eia-space-4:   16px;
+  --eia-space-4_5: 18px;
+  --eia-space-5:   20px;
+  --eia-space-5_5: 22px;
+  --eia-space-6:   24px;
+  --eia-space-7:   28px;
+  --eia-space-8:   32px;
+  --eia-space-9:   36px;
+  --eia-space-10:  40px;
+  --eia-space-12:  48px;
+  --eia-space-14:  56px;
+  --eia-space-16:  64px;
+  --eia-space-20:  80px;
+  --eia-space-24:  96px;
+  --eia-space-32:  128px;
+
+  /* ========== RADII ===========================================
+     Escala generosa (cantos suaves = leitura premium/Apple). Cada degrau
+     é perceptivelmente diferente do vizinho — nada de 14 vs 16 vs 18, que
+     só tira o ritmo. SEMPRE usar o token, nunca px cru.
+       xs  chip/tag minúscula · sm  badge, input pequeno, thumb
+       md  botão, input, card pequeno · lg  CARD PADRÃO
+       xl  card grande, modal, drawer · 2xl painel hero / seção full  */
+  --eia-radius-xs:   6px;
+  --eia-radius-sm:   10px;
+  --eia-radius-md:   14px;
+  --eia-radius-lg:   20px;
+  --eia-radius-xl:   28px;
+  --eia-radius-2xl:  40px;
+  --eia-radius-pill: 999px;
+
+  /* ========== TINTA DE SOMBRA · use ISTO em box-shadow ==========
+     ⚠️ A ARMADILHA Nº1 DO DS (139 ocorrências achadas em auditoria):
+     `--eia-ink-40`, `--eia-edge-hi` e `--eia-white` INVERTEM no tema
+     escuro — viram branco. Quem usa esses tokens numa SOMBRA ganha um
+     HALO BRANCO no escuro (medimos glow de 24px em botão, auréola em
+     card, anel branco em avatar). E sombra grafite fixa some sobre fundo
+     grafite, deixando o elemento sem elevação nenhuma.
+
+     REGRA: em `box-shadow` de elevação, use SEMPRE --eia-shadow-ink-*.
+     Ele já é grafite no claro e PRETO no escuro (sombra no escuro precisa
+     ser mais densa pra existir). Nunca --eia-ink-* numa sombra.
+
+     Exceção legítima: `inset 0 1px 0 var(--eia-edge-hi)` — a linha de
+     luz no topo do vidro. Ali o branco é o efeito desejado. */
+  --eia-shadow-ink-03: rgba(5, 5, 5, 0.03);
+  --eia-shadow-ink-06: rgba(5, 5, 5, 0.06);
+  --eia-shadow-ink-10: rgba(5, 5, 5, 0.10);
+  --eia-shadow-ink-14: rgba(5, 5, 5, 0.14);
+  --eia-shadow-ink-20: rgba(5, 5, 5, 0.20);
+  --eia-shadow-ink-30: rgba(5, 5, 5, 0.30);
+  --eia-shadow-ink-40: rgba(5, 5, 5, 0.40);
+  --eia-shadow-ink-60: rgba(5, 5, 5, 0.60);
+
+  /* ========== DATAVIZ · paleta de série (VALIDADA por script) ===
+     Regra desta marca: a paleta é grafite-only, o que torna gráfico
+     multi-série por COR matematicamente impossível — medido, não
+     achismo. Validador (CVD/contraste/ΔE) reprovou toda tentativa
+     de 3+ séries na família fria: azul×petróleo dá ΔE 4.9 pra
+     deuteranopia (indistinguível). O que PASSOU em todos os checks:
+     o par abaixo, no claro.
+
+     COMO USAR — a regra que evita gráfico ilegível:
+       1 série   → --eia-data-1 (ou o grafite da marca). Sem legenda:
+                   o título já nomeia a série.
+       2 séries  → --eia-data-1 + --eia-data-2 e SEMPRE um segundo
+                   canal além da cor (tracejado/textura/marcador) +
+                   rótulo direto. Assim funciona no dark e pra CVD.
+       3+ séries → NÃO invente uma 3ª cor. Use small multiples (um
+                   gráfico por série) ou agrupe o resto em "Outros".
+     Status (bom/atenção/crítico) é reservado — NUNCA vira série. */
+  --eia-data-1:      #0b6b43;   /* série primária verde · light · AA como rótulo */
+  --eia-data-2:      #737373;   /* série secundária grafite · exige 2º canal */
+  --eia-data-1-dark: #2ec886;   /* passo próprio do dark, não flip */
+  --eia-data-2-dark: #a3a3a3;
+  --eia-data-grid:   var(--eia-ink-08);   /* grade recessiva */
+  --eia-data-axis:   var(--eia-ink-20);   /* linha de base/eixo */
+  --eia-data-ink:    var(--eia-text-muted);/* rótulo de eixo — texto usa token de TEXTO, nunca a cor da série */
+
+  /* ========== LIQUID GLASS · receitas prontas ==================
+     Assinatura da marca. Use a receita inteira (superfície + borda fina +
+     linha de luz no topo + sombra grafite), não só o fundo.
+       eia-glass-card  card/painel de conteúdo (mais sólido, texto legível)
+       eia-glass-bar   nav sticky/toolbar/overlay (translúcido de verdade)
+     Vidro só "aparece" com algo atrás pra desfocar — sobre fundo
+     atmosférico/escuro/conteúdo rolando. Sobre branco liso ele some. */
+  --eia-glass-blur:      blur(24px) saturate(175%);
+  --eia-glass-blur-bar:  blur(26px) saturate(185%);
+  --eia-glass-ring:      1px solid var(--eia-border-soft);
+  --eia-glass-shadow:
+    inset 0 1px 0 var(--eia-edge-hi),
+    0 12px 32px -14px var(--eia-ink-14),
+    0 2px 8px -4px var(--eia-ink-06);
+  --eia-glass-shadow-lift:
+    inset 0 1px 0 var(--eia-edge-hi),
+    0 24px 56px -20px var(--eia-ink-20),
+    0 4px 12px -6px var(--eia-ink-08);
+
+  /* ========== BORDERS ========================================= */
+  --eia-border-fine:   0.5px solid var(--eia-border-hairline);
+  --eia-border-1:      1px solid var(--eia-border);
+  --eia-border-strong: 1px solid var(--eia-ink-40);
+
+  /* ========== SHADOWS ========================================= */
+  /* Grafite-tinted, gentle. The brand never uses gray-black shadows. */
+  --eia-shadow-xs: 0 1px 2px rgba(5, 5, 5,0.04);
+  --eia-shadow-sm: 0 2px 6px rgba(5, 5, 5,0.05), 0 1px 2px rgba(5, 5, 5,0.03);
+  --eia-shadow-md: 0 6px 18px rgba(5, 5, 5,0.07), 0 1px 3px rgba(5, 5, 5,0.04);
+  --eia-shadow-lg: 0 16px 40px rgba(5, 5, 5,0.10), 0 2px 8px rgba(5, 5, 5,0.05);
+  --eia-shadow-xl: 0 32px 80px rgba(5, 5, 5,0.14), 0 4px 16px rgba(5, 5, 5,0.06);
+
+  /* Glass-specific shadow: inner highlight + soft outer drop */
+  --eia-shadow-glass-light:
+    inset 0 1px 0 rgba(255,255,255,0.95),
+    inset 0 -1px 0 rgba(255,255,255,0.30),
+    0 12px 32px rgba(5, 5, 5,0.08),
+    0 2px 8px rgba(5, 5, 5,0.04);
+
+  --eia-shadow-glass-dark:
+    inset 0 1px 0 rgba(255,255,255,0.25),
+    inset 0 -1px 0 rgba(255,255,255,0.06),
+    0 16px 40px rgba(0,0,0,0.30),
+    0 4px 12px rgba(0,0,0,0.15);
+
+  --eia-shadow-focus: var(--eia-glow-ring);
+
+  /* ========== BLUR =========================================== */
+  --eia-blur-sm: blur(8px)  saturate(140%);
+  --eia-blur-md: blur(16px) saturate(160%);
+  --eia-blur-lg: blur(28px) saturate(180%);
+  --eia-blur-xl: blur(48px) saturate(180%);
+
+  /* ========== MOTION ========================================== */
+  --eia-ease:        cubic-bezier(0.32, 0.08, 0.24, 1);
+  --eia-ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+  --eia-ease-spring: cubic-bezier(.34, 1.56, .64, 1);  /* overshoot suave (check/radio/toggle) */
+  --eia-ease-snap:   cubic-bezier(.2, .7, .2, 1);      /* resposta rápida (hover/press) */
+  --eia-t-fast:      120ms var(--eia-ease);
+  --eia-t:           180ms var(--eia-ease);
+  --eia-t-slow:      360ms var(--eia-ease);
+  --eia-dur:         220ms;                             /* duração de interação padrão (era .22s solto) */
+
+  /* ========== LAYOUT ========================================== */
+  --eia-container: 1280px;
+  --eia-content:   760px;
+  --eia-narrow:    560px;
+
+  /* ========== SIGNATURE ATMOSPHERES =========================== */
+  /* Mesh light — base cinza-azulada com 4 stops de cor grafite */
+  --eia-mesh-light:
+    radial-gradient(ellipse 60% 70% at 12% 0%,  rgba(51,65,85,0.28) 0%,  transparent 55%),
+    radial-gradient(ellipse 50% 60% at 95% 8%,  rgba(71,85,105,0.22) 0%, transparent 55%),
+    radial-gradient(ellipse 70% 80% at 100% 100%, rgba(5, 5, 5,0.30) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 60% at 5% 100%, rgba(15, 169, 104,0.10) 0%, transparent 55%),
+    linear-gradient(135deg, #d9d9d9 0%, #b6b6b6 100%);
+
+  /* Mesh grafite — fundo dark dramático com glow azul */
+  --eia-mesh-ink:
+    radial-gradient(circle at 30% 20%, rgba(15, 169, 104,0.25) 0%, transparent 55%),
+    radial-gradient(circle at 80% 90%, rgba(167,139,250,0.20) 0%, transparent 55%),
+    radial-gradient(ellipse 70% 55% at 50% 115%, rgba(15, 169, 104,0.16) 0%, transparent 70%),
+    linear-gradient(135deg, #141414 0%, #050505 100%);
+
+  /* Noise texture: data-URI SVG turbulence em 4% opacity */
+  --eia-noise:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.12 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/></svg>");
+
+  /* Glow grafite — aura sutil pra elementos grafite sólidos */
+  --eia-glow-ink:
+    0 0 0 1px rgba(5, 5, 5,0.05),
+    0 8px 24px rgba(5, 5, 5,0.20),
+    0 16px 48px rgba(5, 5, 5,0.14);
+
+  --eia-glow-ink-strong:
+    0 0 0 1px rgba(5, 5, 5,0.10),
+    0 16px 48px rgba(5, 5, 5,0.30),
+    0 32px 80px rgba(5, 5, 5,0.20);
+}
+
+/* =============================================================
+   SIGNATURE UTILITIES
+   ============================================================= */
+
+/* Atmosphere wrappers — drop on any container */
+.eia-mesh-light {
+  background: var(--eia-mesh-light);
+  position: relative;
+}
+.eia-mesh-ink {
+  background: var(--eia-mesh-ink);
+  color: var(--eia-white);
+  position: relative;
+}
+
+/* Noise overlay — add on top of any mesh */
+.eia-noise::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--eia-noise);
+  background-repeat: repeat;
+  mix-blend-mode: overlay;
+  opacity: 0.6;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+/* =============================================================
+   BASE
+   ============================================================= */
+
+html { font-size: var(--eia-fs-body); -webkit-font-smoothing: antialiased; }
+
+body {
+  font-family: var(--eia-font);
+  font-weight: var(--eia-fw-regular);
+  font-size: var(--eia-fs-body);
+  line-height: var(--eia-lh-loose);
+  color: var(--eia-text-body);
+  background: var(--eia-bg);
+}
+
+/* Headings · color usa :where() pra ter specificity ZERO.
+   Qualquer container com `color: #fff` (cards grafite escuros, glass dark, etc)
+   sobrescreve sem precisar de override por classe — o color herda da cadeia. */
+:where(h1, h2, h3, h4) { color: var(--eia-text-primary); }
+h1, h2, h3, h4 { margin: 0; }
+h1 { font-family: var(--eia-font-display); font-weight: var(--eia-fw-bold); font-size: var(--eia-fs-h1); line-height: var(--eia-lh-tight); letter-spacing: var(--eia-ls-tighter); }
+h2 { font-family: var(--eia-font-display); font-weight: var(--eia-fw-bold); font-size: var(--eia-fs-h2); line-height: var(--eia-lh-snug);  letter-spacing: var(--eia-ls-tighter); }
+h3 { font-family: var(--eia-font); font-weight: var(--eia-fw-semibold); font-size: var(--eia-fs-h3); line-height: var(--eia-lh-snug); letter-spacing: var(--eia-ls-tight); }
+h4 { font-family: var(--eia-font); font-weight: var(--eia-fw-semibold); font-size: var(--eia-fs-h4); }
+
+/* Cards/heroes em superfície grafite escura — herdam color pra ficarem brancos.
+   Resolve bug onde `h1,h2,h3,h4 { color: var(--eia-text-primary) }` global
+   sobrescrevia `color: #fff` setado no container ancestral.
+
+   Cobre: .eia-mesh-ink · .eia-glass-dark · [data-on-dark] (utility opt-in). */
+.eia-mesh-ink h1, .eia-mesh-ink h2, .eia-mesh-ink h3, .eia-mesh-ink h4,
+.eia-glass-dark h1, .eia-glass-dark h2, .eia-glass-dark h3, .eia-glass-dark h4,
+[data-on-dark] h1, [data-on-dark] h2, [data-on-dark] h3, [data-on-dark] h4 {
+  color: inherit;
+}
+
+/* ===============================================================
+   FIX SISTÊMICO · gradient text em containers escuros
+   ===============================================================
+   Quando um <em> dentro de h1-h4 está em container escuro (mesh grafite,
+   glass dark ou on-dark), o gradient grafite→
+   grafite-deep com -webkit-text-fill-color: transparent fica INVISÍVEL
+   (texto escuro sobre fundo escuro).
+
+   Solução: dentro desses containers, qualquer `em` ganha gradient
+   white→gray-200 que contrasta corretamente. Specificity alta (3 níveis)
+   pra sobrescrever a regra do componente.
+   =============================================================== */
+.eia-mesh-ink :is(h1, h2, h3, h4) em,
+.eia-glass-dark :is(h1, h2, h3, h4) em,
+[data-on-dark] :is(h1, h2, h3, h4) em {
+  background: linear-gradient(135deg, var(--eia-white) 0%, rgba(255, 255, 255, 0.78) 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  color: var(--eia-white); /* fallback se gradient não suportado */
+}
+
+/* ── Fix sistêmico · clip do glifo itálico em gradient-text ──────────────
+   `background-clip: text` pinta o gradiente só dentro da caixa inline do <em>.
+   O glifo itálico inclina pra direita e seu traço final ("o", "t", "s"…)
+   ultrapassa a borda da caixa em ~3–6px — região que o gradiente não pinta,
+   então o último glifo aparece cortado. (Palavras terminadas em "." não mostram
+   o bug: o ponto ocupa essa folga.) padding-right estende a caixa de pintura
+   pra cobrir o overhang; margin-right negativo cancela 100% do deslocamento de
+   layout (medido: texto seguinte move 0px). No-op visual em <em> sem gradiente. */
+:is(h1, h2, h3, h4, h5) em,
+:is(h1, h2, h3, h4, h5) i {
+  padding-right: 0.16em;
+  margin-right: -0.16em;
+}
+
+
+p { margin: 0; }
+a { color: var(--eia-link); text-decoration: none; }
+a:hover { text-decoration: underline; }
+/* links crus (sem classe) · --eia-link já resolve por tema (verde 600/400) */
+
+/* =============================================================
+   GLASS — utilitários (no claro ficam discretos; o vidro de
+   verdade é linguagem do escuro)
+   ============================================================= */
+
+/* Light glass: white-tinted, used on gray-50 / gray-100 surfaces */
+.eia-glass {
+  background: linear-gradient(180deg, rgba(255,255,255,0.70) 0%, rgba(255,255,255,0.42) 100%);
+  backdrop-filter: var(--eia-blur-md);
+  -webkit-backdrop-filter: var(--eia-blur-md);
+  border: 1px solid rgba(255,255,255,0.80);
+  border-radius: var(--eia-radius-lg);
+  box-shadow: var(--eia-shadow-glass-light);
+}
+
+.eia-glass-strong {
+  background: linear-gradient(180deg, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0.58) 100%);
+  backdrop-filter: var(--eia-blur-lg);
+  -webkit-backdrop-filter: var(--eia-blur-lg);
+  border: 1px solid rgba(255,255,255,0.95);
+  border-radius: var(--eia-radius-lg);
+  box-shadow: var(--eia-shadow-glass-light);
+}
+
+/* Dark glass: used in the rare full-bleed grafite moments (footer, CTA) */
+.eia-glass-dark {
+  background: linear-gradient(180deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.03) 100%);
+  backdrop-filter: var(--eia-blur-md);
+  -webkit-backdrop-filter: var(--eia-blur-md);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: var(--eia-radius-lg);
+  box-shadow: var(--eia-shadow-glass-dark);
+  color: var(--eia-white);
+}
+
+/* Liquid pill — for status / announcement labels */
+.eia-liquid {
+  background: linear-gradient(180deg, rgba(255,255,255,0.80), rgba(255,255,255,0.55));
+  backdrop-filter: var(--eia-blur-md);
+  -webkit-backdrop-filter: var(--eia-blur-md);
+  border: 1px solid rgba(255,255,255,0.95);
+  border-radius: var(--eia-radius-pill);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,1), 0 4px 16px rgba(5, 5, 5,0.08);
+}
+
+/* Dark: vidro branco hardcoded vira vidro escuro translúcido (senão estes
+   utilitários viram blocos brancos berrantes no tema escuro) */
+[data-theme="dark"] .eia-glass {
+  background: linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.03) 100%);
+  border-color: rgba(255,255,255,0.10);
+}
+[data-theme="dark"] .eia-glass-strong {
+  background: linear-gradient(180deg, rgba(255,255,255,0.09) 0%, rgba(255,255,255,0.05) 100%);
+  border-color: rgba(255,255,255,0.14);
+}
+[data-theme="dark"] .eia-liquid {
+  background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.05));
+  border-color: rgba(255,255,255,0.14);
+  box-shadow: inset 0 1px 0 var(--eia-edge-hi), 0 4px 16px rgba(0,0,0,0.3);
+}
+
+/* =============================================================
+   SURFACES
+   ============================================================= */
+
+.eia-surface {
+  background: var(--eia-surface);
+  border: var(--eia-border-fine);
+  border-radius: var(--eia-radius-md);
+}
+
+.eia-card {
+  background: var(--eia-white);
+  border: var(--eia-border-fine);
+  border-radius: var(--eia-radius-lg);
+  box-shadow: var(--eia-shadow-sm);
+  padding: var(--eia-space-6);
+}
+
+.eia-card-dark {
+  background: var(--eia-ink);
+  border-radius: var(--eia-radius-lg);
+  padding: var(--eia-space-6);
+  color: var(--eia-white);
+}
+
+/* =============================================================
+   TYPE UTILITIES
+   ============================================================= */
+
+.eia-hero {
+  font-family: var(--eia-font-display);
+  font-size: clamp(2.5rem, 6vw, var(--eia-fs-hero));
+  font-weight: var(--eia-fw-bold);
+  line-height: var(--eia-lh-tight);
+  letter-spacing: var(--eia-ls-tighter);
+  color: var(--eia-text-primary);
+}
+
+.eia-display {
+  font-family: var(--eia-font-display);
+  font-size: clamp(2rem, 4.5vw, var(--eia-fs-display));
+  font-weight: var(--eia-fw-bold);
+  line-height: var(--eia-lh-tight);
+  letter-spacing: var(--eia-ls-tighter);
+  color: var(--eia-text-primary);
+}
+
+.eia-label {
+  font-family: var(--eia-font);
+  font-size: var(--eia-fs-label);
+  font-weight: var(--eia-fw-semibold);
+  letter-spacing: var(--eia-ls-label);
+  text-transform: uppercase;
+  color: var(--eia-text-muted);
+}
+
+.eia-wordmark {
+  font-family: var(--eia-font);
+  font-weight: var(--eia-fw-light);
+  letter-spacing: var(--eia-ls-brand);
+  text-transform: uppercase;
+  color: currentColor;
+}
+
+/* =============================================================
+   ACESSIBILIDADE · prefers-reduced-motion (rede de segurança global)
+   Zera animações/transições pra quem pede menos movimento — cobre
+   qualquer componente, além dos blocos por-componente já existentes.
+   ============================================================= */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

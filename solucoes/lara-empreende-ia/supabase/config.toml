@@ -1,0 +1,20 @@
+project_id = "lara-empreende-ia"
+
+# Webhooks públicos: Meta e Zernio chamam sem JWT.
+# A segurança é feita por verificação de token (Meta hub.verify_token)
+# e assinatura HMAC-SHA256 (Zernio X-Zernio-Signature).
+[functions.whatsapp-webhook]
+verify_jwt = false
+
+[functions.zernio-webhook]
+verify_jwt = false
+
+# Proxy de mídia: tags <img>/<audio>/<video> não enviam header Authorization,
+# então o token do usuário vai na query e a function valida por conta própria.
+[functions.zernio-media]
+verify_jwt = false
+
+# O redirect do Hosted OAuth do Nylas chega sem Authorization; o state de uso
+# único e o gate de admin ficam na própria function.
+[functions.nylas-calendar]
+verify_jwt = false

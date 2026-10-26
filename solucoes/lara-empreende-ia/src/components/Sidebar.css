@@ -1,0 +1,292 @@
+.app-sidebar-panel,
+.app-sidebar-drawer,
+.app-sidebar-mobilebar {
+  background:
+    radial-gradient(circle at 14% 0%, rgba(255, 255, 255, 0.08), transparent 28%),
+    linear-gradient(180deg, var(--eia-ink) 0%, var(--eia-ink-deep) 100%);
+}
+
+.app-sidebar-panel {
+  border-right-color: rgba(255, 255, 255, 0.1);
+  box-shadow:
+    inset -1px 0 0 rgba(255, 255, 255, 0.035),
+    18px 0 42px -34px var(--eia-shadow-ink-40);
+}
+
+.app-sidebar-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 6px 2px 2px;
+  color: var(--eia-white);
+}
+
+.app-sidebar-brand-lockup {
+  width: 154px;
+  height: auto;
+  display: block;
+}
+
+.app-sidebar-workspace {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 11px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--eia-radius-md);
+  background:
+    radial-gradient(circle at 0% 0%, rgba(255, 255, 255, 0.09), transparent 60%),
+    rgba(255, 255, 255, 0.055);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.09),
+    0 12px 24px -20px var(--eia-shadow-ink-40);
+}
+
+.app-sidebar-workspace-icon {
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.075);
+}
+
+.app-sidebar-workspace-icon svg {
+  width: 15px;
+  height: 15px;
+  stroke-width: 1.8;
+}
+
+.app-sidebar-workspace-label,
+.app-sidebar-workspace-name {
+  display: block;
+}
+
+.app-sidebar-workspace-label {
+  margin-bottom: 2px;
+  color: rgba(255, 255, 255, 0.55);
+  font-family: var(--eia-font-mono);
+  font-size: 9px;
+  font-weight: var(--eia-fw-medium);
+  letter-spacing: 0.16em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.app-sidebar-workspace-name {
+  overflow: hidden;
+  color: var(--eia-white);
+  font-size: 13px;
+  font-weight: var(--eia-fw-medium);
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.app-sidebar-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+.app-sidebar-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.app-sidebar-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.app-sidebar-scroll::-webkit-scrollbar-thumb {
+  border-radius: var(--eia-radius-pill);
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.app-sidebar-link {
+  min-height: 44px;
+  border-radius: var(--eia-radius-md);
+  letter-spacing: -0.008em;
+  transition:
+    transform var(--eia-dur) var(--eia-ease-snap),
+    color var(--eia-dur) var(--eia-ease-snap),
+    background var(--eia-dur) var(--eia-ease-snap),
+    border-color var(--eia-dur) var(--eia-ease-snap),
+    box-shadow var(--eia-dur) var(--eia-ease-snap);
+}
+
+.app-sidebar-link:hover {
+  transform: translateX(2px);
+  background: rgba(255, 255, 255, 0.075);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+/* O tokens.css do DS sublinha qualquer <a> no hover. Faz sentido em link de
+   texto corrido; dentro da navegação vira ruído, porque superfície e borda já
+   marcam o estado. Mesmo tratamento que o DS dá a .eia-row-card, mas escopado
+   pelo contêiner: item de menu, wordmark e card do workspace são todos links,
+   e nem todos carregam classe própria (o logo colapsado só tem utilitários). */
+.app-sidebar-panel a:hover,
+.app-sidebar-panel a:focus-visible,
+.app-sidebar-mobilebar a:hover,
+.app-sidebar-drawer a:hover {
+  text-decoration: none;
+}
+
+.app-sidebar-link.app-sidebar-link--active {
+  background:
+    radial-gradient(circle at 0% 50%, rgba(255, 255, 255, 0.08), transparent 52%),
+    rgba(255, 255, 255, 0.11);
+  border-color: rgba(255, 255, 255, 0.13);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.11),
+    0 10px 20px -16px var(--eia-shadow-ink-40);
+}
+
+.app-sidebar-link svg {
+  width: 18px;
+  height: 18px;
+  stroke-width: 1.9;
+}
+
+.app-sidebar-toggle {
+  border-color: rgba(255, 255, 255, 0.14);
+  background: rgba(20, 20, 20, 0.88);
+  backdrop-filter: var(--eia-glass-blur-bar);
+  -webkit-backdrop-filter: var(--eia-glass-blur-bar);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 8px 20px -10px var(--eia-shadow-ink-40);
+}
+
+.app-sidebar-toggle:hover {
+  transform: translateY(-50%) scale(1.06);
+}
+
+.app-sidebar-mobilebar {
+  min-height: 60px;
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 12px 28px -22px var(--eia-shadow-ink-40);
+}
+
+.app-sidebar-mobilebrand {
+  display: inline-flex;
+  align-items: center;
+}
+
+.app-sidebar-mobilebrand img {
+  width: 156px;
+  height: auto;
+}
+
+.app-sidebar-menu-button,
+.app-sidebar-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--eia-radius-pill);
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--eia-white);
+  cursor: pointer;
+}
+
+.app-sidebar-menu-button {
+  width: 38px;
+  height: 38px;
+}
+
+.app-sidebar-close {
+  width: 36px;
+  height: 36px;
+}
+
+.app-sidebar-menu-button:hover,
+.app-sidebar-close:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.app-sidebar-menu-button:focus-visible,
+.app-sidebar-close:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.18);
+}
+
+.app-sidebar-menu-button svg,
+.app-sidebar-close svg {
+  width: 19px;
+  height: 19px;
+}
+
+/* ---------------------------------------------------------------
+   Celular · a barra e o drawer são a única navegação que existe abaixo
+   de 768px. Alvo de toque de 44px e largura devolvida ao conteúdo.
+   --------------------------------------------------------------- */
+@media (max-width: 767px) {
+  /* A barra vinha com 60px de altura e 16px de folga em cima e embaixo:
+     sobravam 28px para o botão, abaixo do mínimo de toque. Com 8px o alvo de
+     44px cabe inteiro dentro da barra, sem estourar a borda de baixo.
+     A classe dobrada vence os utilitários de padding do componente. */
+  .app-sidebar-mobilebar.app-sidebar-mobilebar {
+    min-height: 60px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+  }
+
+  .app-sidebar-menu-button,
+  .app-sidebar-close {
+    width: 44px;
+    height: 44px;
+  }
+
+  /* 40px de recuo em cada lado tiravam 80px dos 360px de um telefone comum —
+     um quinto da tela só de margem. 20px devolve a largura aos itens de menu.
+     A rolagem entra para o celular deitado, onde a lista não cabe. */
+  .app-sidebar-drawer.app-sidebar-drawer {
+    padding: 20px;
+    padding-top: max(20px, env(safe-area-inset-top, 0px));
+    padding-bottom: max(20px, env(safe-area-inset-bottom, 0px));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .app-sidebar-drawer .app-sidebar-close {
+    top: 14px;
+    right: 16px;
+  }
+
+  .app-sidebar-mobilebrand img {
+    width: min(156px, calc(100vw - 116px));
+  }
+}
+
+@media (max-width: 480px) {
+  .app-sidebar-drawer.app-sidebar-drawer {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+  .app-sidebar-drawer .app-sidebar-close {
+    right: 12px;
+  }
+
+  .app-sidebar-brand-lockup {
+    width: 138px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-sidebar-link,
+  .app-sidebar-toggle {
+    transition: none;
+  }
+
+  .app-sidebar-link:hover {
+    transform: none;
+  }
+}

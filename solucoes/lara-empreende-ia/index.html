@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Lara · SDR com IA</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <meta name="description" content="Lara — agente de SDR com IA para WhatsApp e Instagram. Qualifica leads, agenda reuniões e responde com base no conhecimento do seu negócio.">
+
+    <!-- Aplicativo no celular. A venda acontece em campo, e o vendedor precisa
+         da Lara na tela de início, a um toque, e não numa aba perdida. O
+         manifest torna o app instalável; theme-color pinta a barra do sistema
+         com o grafite da marca; as apple-* dão o mesmo comportamento no iPhone,
+         que ignora o manifest. viewport-fit=cover libera a área do notch, e o
+         CSS devolve o espaço com env(safe-area-inset-*). -->
+    <link rel="manifest" href="/manifest.webmanifest">
+    <meta name="theme-color" content="#050505">
+    <meta name="color-scheme" content="dark light">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Lara">
+    <link rel="apple-touch-icon" href="/favicon.svg">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Lara · SDR com IA">
+    <meta property="og:description" content="Agente de SDR com IA para WhatsApp e Instagram.">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Lara · SDR com IA">
+    <meta name="twitter:description" content="Agente de SDR com IA para WhatsApp e Instagram.">
+    <script>
+      // Resolve o tema ANTES do primeiro paint. Sem isto o app pinta o tema
+      // errado, o React monta e troca — o flash clássico. Dark-first: sem
+      // preferência gravada, a marca nasce escura.
+      // Mantém a mesma chave e a mesma dupla de marcadores do useTheme.tsx.
+      (function () {
+        try {
+          var stored = localStorage.getItem('lara-theme');
+          var mode = stored === 'light' || stored === 'dark' || stored === 'system' ? stored : 'dark';
+          var dark =
+            mode === 'dark' ||
+            (mode === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+          if (dark) {
+            document.documentElement.classList.add('dark');
+            document.documentElement.setAttribute('data-theme', 'dark');
+          } else {
+            document.documentElement.classList.remove('dark');
+            document.documentElement.setAttribute('data-theme', 'light');
+          }
+        } catch (e) {
+          /* localStorage bloqueado (modo privado/iframe): segue no escuro, que é o padrão da marca */
+          document.documentElement.classList.add('dark');
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      })();
+
+      // A barra do sistema no celular segue o tema resolvido. Sem isto o
+      // theme-color fica preso no grafite e o app no claro abre com uma
+      // faixa preta em cima. Observa o data-theme para acompanhar a troca
+      // feita em Configurações, sem depender do React.
+      (function () {
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (!meta) return;
+        var root = document.documentElement;
+        var paint = function () {
+          meta.setAttribute(
+            'content',
+            root.getAttribute('data-theme') === 'light' ? '#fafafa' : '#050505'
+          );
+        };
+        paint();
+        try {
+          new MutationObserver(paint).observe(root, {
+            attributes: true,
+            attributeFilter: ['data-theme'],
+          });
+        } catch (e) {
+          /* sem MutationObserver: a cor do primeiro paint já está certa */
+        }
+      })();
+    </script>
+  </head>
+  <body class="min-h-screen bg-background font-sans antialiased">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

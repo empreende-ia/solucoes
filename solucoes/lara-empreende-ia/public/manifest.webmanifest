@@ -1,0 +1,22 @@
+{
+  "name": "Lara",
+  "short_name": "Lara",
+  "description": "Agente de SDR com IA para WhatsApp e Instagram. Qualifica leads, agenda reuniões e responde com base no conhecimento do seu negócio.",
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "id": "/",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#050505",
+  "theme_color": "#050505",
+  "categories": ["business", "productivity"],
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any"
+    }
+  ]
+}

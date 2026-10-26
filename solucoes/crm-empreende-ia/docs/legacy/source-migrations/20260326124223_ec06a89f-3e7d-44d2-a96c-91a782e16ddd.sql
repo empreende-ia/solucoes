@@ -1,0 +1,1 @@
+UPDATE public.user_roles SET role = 'owner' WHERE user_id = '3ec5172a-fcb8-46ee-9b4b-0eff875aa8df' AND org_id = '00b1a362-94c8-43d7-bb2b-ebee57d5299c';

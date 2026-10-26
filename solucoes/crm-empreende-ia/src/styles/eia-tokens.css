@@ -1,0 +1,186 @@
+/* Empreende.IA V2 · Vidro em movimento
+ * Semantic tokens only: opt in with .eia-theme. Portals opt in independently.
+ * The approved STUDY03 experiment remains untouched.
+ */
+.eia-theme {
+  color-scheme: dark;
+  --eia-color-bg: #080a09;
+  --eia-color-surface: #111613;
+  --eia-color-surface-raised: #1b221e;
+  --eia-color-surface-hover: #242e28;
+  --eia-color-text: #f6f7f6;
+  --eia-color-text-muted: #b4bdb7;
+  --eia-color-text-subtle: #929f96;
+  --eia-color-text-inverse: #062418;
+  --eia-color-accent: #0fa968;
+  --eia-color-accent-bright: #65dfab;
+  --eia-color-accent-text: #8de7bb;
+  --eia-color-accent-hover: #158359;
+  --eia-color-accent-pressed: #095436;
+  --eia-color-on-accent: #ffffff;
+  --eia-color-focus: #91f2c3;
+  --eia-color-selection: #165a3d;
+  --eia-color-success: #8de7bb;
+  --eia-color-success-surface: #102d20;
+  --eia-color-warning: #f1ce87;
+  --eia-color-warning-surface: #302719;
+  --eia-color-danger: #f4aaa8;
+  --eia-color-danger-surface: #34201f;
+  --eia-color-info: #d3dbd6;
+  --eia-color-info-surface: #202923;
+  --eia-color-code-bg: #0d1510;
+  --eia-color-code-text: #c1dccb;
+  --eia-color-chart-1: #65dfab;
+  --eia-color-chart-2: #c3dccd;
+  --eia-color-chart-3: #d8c393;
+  --eia-color-chart-4: #9ab8ad;
+  --eia-color-chart-5: #e4eae6;
+
+  --eia-font-body: 'Manrope', Arial, sans-serif;
+  --eia-font-display: 'Manrope', Arial, sans-serif;
+  --eia-font-mono: 'SFMono-Regular', Consolas, monospace;
+  --eia-type-caption: 0.75rem;
+  --eia-type-label: 0.8125rem;
+  --eia-type-control: 0.875rem;
+  --eia-type-body: 1rem;
+  --eia-type-lead: 1.125rem;
+  --eia-type-title: clamp(1.5rem, 2.2vw, 2rem);
+  --eia-type-display: clamp(2.5rem, 6vw, 5.5rem);
+  --eia-line-tight: 1.12;
+  --eia-line-control: 1.45;
+  --eia-line-body: 1.65;
+  --eia-weight-regular: 450;
+  --eia-weight-medium: 550;
+  --eia-weight-semibold: 650;
+  --eia-weight-bold: 750;
+  --eia-tracking-tight: -0.055em;
+  --eia-tracking-label: 0.075em;
+
+  --eia-space-1: 0.25rem;
+  --eia-space-2: 0.5rem;
+  --eia-space-3: 0.75rem;
+  --eia-space-4: 1rem;
+  --eia-space-5: 1.25rem;
+  --eia-space-6: 1.5rem;
+  --eia-space-8: 2rem;
+  --eia-space-10: 2.5rem;
+  --eia-space-12: 3rem;
+  --eia-space-16: 4rem;
+  --eia-space-20: 5rem;
+  --eia-space-24: 6rem;
+  --eia-control-sm: 2.25rem;
+  --eia-control-md: 2.75rem;
+  --eia-control-lg: 3.25rem;
+  --eia-radius-small: 0.5rem;
+  --eia-radius-control: 0.8125rem;
+  --eia-radius-panel: 1.4375rem;
+  --eia-radius-hero: 1.875rem;
+  --eia-radius-pill: 999px;
+  --eia-border-width: 1px;
+  --eia-border-subtle: #ffffff1c;
+  --eia-border-default: #ffffff30;
+  --eia-border-control: #76877c;
+  --eia-border-strong: #b4c5ba;
+  --eia-border-accent: #74d8a855;
+  --eia-shadow-inset: inset 0 1px 0 #ffffff30, inset 0 -1px 0 #00000055;
+  --eia-shadow-panel:
+    inset 0 1px 0 #ffffff26, inset 1px 0 0 #ffffff0a, 0 18px 45px #00000033;
+  --eia-shadow-hero:
+    inset 0 1px 0 #ffffff40, inset 1px 0 0 #ffffff0b, 0 25px 60px #00000055;
+  --eia-shadow-action:
+    inset 0 1px 0 #b0f1d173, inset 0 -1px 1px #004726, 0 6px 25px #0fa96826;
+  --eia-shadow-overlay: 0 30px 100px #00000099, inset 0 1px 0 #ffffff25;
+
+  /* Hero: optical depth; panel: everyday grouping; dense: opaque data plane. */
+  --eia-material-hero:
+    linear-gradient(135deg, #ffffff12, #ffffff03 38%, #b8d5c30a), #12221b8c;
+  --eia-material-panel:
+    linear-gradient(145deg, #ffffff08, #ffffff02 60%), #151c18c9;
+  --eia-material-dense: #111713;
+  --eia-material-control:
+    linear-gradient(145deg, #ffffff07, #ffffff02), #101813;
+  --eia-material-primary: linear-gradient(130deg, #13794f, #0b6140);
+  --eia-material-secondary:
+    linear-gradient(145deg, #ffffff14, #ffffff03), #15211a;
+  --eia-material-scrim: #020805c9;
+  --eia-material-hero-blur: 24px;
+  --eia-material-panel-blur: 14px;
+  --eia-material-dense-blur: 0px;
+  --eia-material-saturation: 115%;
+  --eia-motion-fast: 140ms;
+  --eia-motion-normal: 220ms;
+  --eia-motion-slow: 420ms;
+  --eia-motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --eia-opacity-disabled: 0.48;
+  --eia-z-popup: 80;
+  --eia-z-overlay: 70;
+  --eia-z-toast: 90;
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eia-theme { --eia-motion-fast: 0ms; --eia-motion-normal: 0ms; --eia-motion-slow: 0ms; }
+}
+
+html.eia-theme[data-eia-theme='light'] {
+  color-scheme: light;
+  --eia-color-bg: #f4f7f5;
+  --eia-color-surface: #ffffff;
+  --eia-color-surface-raised: #eaf0ec;
+  --eia-color-surface-hover: #dcebe2;
+  --eia-color-text: #10251a;
+  --eia-color-text-muted: #405d4c;
+  --eia-color-text-subtle: #546f5f;
+  --eia-color-text-inverse: #ffffff;
+  --eia-color-accent: #0fa968;
+  --eia-color-accent-bright: #13794f;
+  --eia-color-accent-text: #08643e;
+  --eia-color-accent-hover: #0c7048;
+  --eia-color-accent-pressed: #095436;
+  --eia-color-on-accent: #ffffff;
+  --eia-color-focus: #07683f;
+  --eia-color-selection: #c9ebd7;
+  --eia-color-success: #176340;
+  --eia-color-success-surface: #e4f4ea;
+  --eia-color-warning: #73510c;
+  --eia-color-warning-surface: #fcf3dc;
+  --eia-color-danger: #a42c31;
+  --eia-color-danger-surface: #fcebee;
+  --eia-color-info: #405d4c;
+  --eia-color-info-surface: #eaf0ec;
+  --eia-color-code-bg: #eaf1ed;
+  --eia-color-code-text: #254b37;
+  --eia-color-chart-1: #087749;
+  --eia-color-chart-2: #56856c;
+  --eia-color-chart-3: #92762c;
+  --eia-color-chart-4: #344c42;
+  --eia-color-chart-5: #76877d;
+  --eia-border-subtle: #164d2d24;
+  --eia-border-default: #164d2d38;
+  --eia-border-control: #6c8575;
+  --eia-border-strong: #365f47;
+  --eia-border-accent: #1683566b;
+  --eia-shadow-inset: inset 0 1px 0 #ffffffed, inset 0 -1px 0 #2b62471c;
+  --eia-shadow-panel:
+    inset 0 1px 0 #ffffff, inset 1px 0 0 #ffffffb3, 0 2px 5px #183d2910,
+    0 14px 30px #183d2910;
+  --eia-shadow-hero:
+    inset 0 1px 0 #ffffff, inset 1px 0 0 #ffffffcc, inset 0 -1px 0 #ffffff80,
+    0 2px 5px #183d2912, 0 22px 48px #183d2919;
+  --eia-shadow-action:
+    inset 0 1px 0 #b0f1d180, inset 0 -1px 1px #00472666, 0 5px 14px #0c704825;
+  --eia-shadow-overlay:
+    inset 0 1px 0 #ffffff, 0 2px 8px #183d2914, 0 24px 72px #183d292e;
+  --eia-material-hero:
+    linear-gradient(135deg, #ffffffa8 0%, #ffffff26 43%, #e0f2e952), #ffffff70;
+  --eia-material-panel:
+    linear-gradient(145deg, #ffffff91, #ffffff25 65%), #f6fbf8a8;
+  --eia-material-dense: #ffffff;
+  --eia-material-control:
+    linear-gradient(145deg, #fffffff2, #ffffffb8 70%), #e1ece5;
+  --eia-material-primary: linear-gradient(130deg, #13794f, #0b6140);
+  --eia-material-secondary:
+    linear-gradient(145deg, #ffffffe6, #ffffff7a), #dceae1;
+  --eia-material-scrim: #25463552;
+  --eia-opacity-disabled: 0.56;
+}

@@ -1,0 +1,40 @@
+import { useState } from 'react';
+import { useQuery,useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
+import { crmDb } from '@/integrations/supabase/crm-client';
+import { useAuth } from '@/contexts/AuthContext';
+import { useCrmPermissions } from '@/hooks/useCrmPermissions';
+import { allCrmRows } from '@/lib/crm-pagination';
+import { PageScaffold } from '@/components/shell/PageScaffold';
+import { Button } from '@/components/ds/button';
+import { Input } from '@/components/ds/input';
+import { Dialog,DialogContent,DialogHeader,DialogTitle,DialogDescription } from '@/components/ds/dialog';
+const roles:Record<string,string>={owner:'Dono',admin:'Administrador',member:'Colaborador',viewer:'Somente leitura'};
+const permissionCopy:Record<string,string>={owner:'Gerencia equipe, organização e todos os registros.',admin:'Gerencia equipe e organização. Não altera o papel de donos.',member:'Consulta e altera os registros comerciais da organização.',viewer:'Consulta registros. Não altera dados nem configurações.'};
+export default function Team() {
+ const {profile}=useAuth();const orgId=profile?.org_id;const permissions=useCrmPermissions();const {canManage}=permissions;const qc=useQueryClient();
+ const [email,setEmail]=useState(''),[role,setRole]=useState('member'),[busy,setBusy]=useState(false),[error,setError]=useState('');
+ const [change,setChange]=useState<{id:string;name:string;role:string}|null>(null),[lastLink,setLastLink]=useState('');
+ const query=useQuery({queryKey:['crm',orgId,'team'],enabled:!!orgId,queryFn:async()=>{
+  const [people,memberRoles,invitations]=await Promise.all([
+   allCrmRows((from,to)=>crmDb.from('profiles').select('*').eq('org_id',orgId!).order('id').range(from,to)),
+   allCrmRows((from,to)=>crmDb.from('user_roles').select('*').eq('org_id',orgId!).order('id').range(from,to)),
+   allCrmRows((from,to)=>crmDb.from('invitations').select('*').eq('org_id',orgId!).order('created_at',{ascending:false}).range(from,to))]);
+  return {people,memberRoles,invitations};
+ }});
+ async function invite(e:React.FormEvent) {e.preventDefault();setBusy(true);setError('');try {
+  const {data,error:failure}=await crmDb.from('invitations').insert({org_id:orgId!,email:email.trim().toLowerCase(),role,invited_by:profile!.id}).select('id').single();if(failure)throw failure;
+  setLastLink(`${window.location.origin}/?invite=${data.id}`);setEmail('');await qc.invalidateQueries({queryKey:['crm']});toast.success('Convite criado. Copie o link para compartilhar com a pessoa.');
+ }catch{setError('Não foi possível criar o convite. Verifique se há um convite pendente para este e-mail. Seu preenchimento foi preservado.');}finally{setBusy(false);}}
+ async function changeRole(){if(!change)return;setBusy(true);setError('');try{const {error:failure}=await crmDb.rpc('set_member_role',{p_user_id:change.id,p_role:change.role});if(failure)throw failure;setChange(null);await qc.invalidateQueries({queryKey:['crm']});toast.success('Permissão atualizada');}catch{setError('Não foi possível alterar o papel. A organização precisa manter pelo menos um dono, e somente donos podem alterar esse papel.');}finally{setBusy(false);}}
+ async function cancelInvitation(id:string) {setBusy(true);setError('');try{const {error:failure}=await crmDb.from('invitations').delete().eq('id',id).eq('org_id',orgId!).select('id').single();if(failure)throw failure;await qc.invalidateQueries({queryKey:['crm']});toast.success('Convite revogado');}catch{setError('Não foi possível revogar o convite. Tente novamente.');}finally{setBusy(false);}}
+ async function copyLink(link:string){try{await navigator.clipboard.writeText(link);toast.success('Link copiado');}catch{setLastLink(link);toast.info('Selecione e copie o link exibido.');}}
+ return <PageScaffold title="Equipe"><div className="mx-auto max-w-5xl space-y-6"><p className="text-sm text-muted-foreground">Pessoas e permissões da organização. Os dados comerciais são compartilhados entre os membros desta equipe.</p>
+  {error&&<p role="alert" className="rounded-xl border border-destructive p-4 text-sm">{error}</p>}
+  {query.isPending&&<p role="status">Carregando equipe…</p>}{query.isError&&<div role="alert"><p>Não foi possível carregar a equipe.</p><Button onClick={()=>void query.refetch()}>Tentar novamente</Button></div>}
+  {query.data&&<section className="space-y-3" aria-label="Membros">{query.data.people.map(person=>{const current=query.data.memberRoles.find(r=>r.user_id===person.id)?.role??'viewer';return <article key={person.id} className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-border p-5"><div className="min-w-0"><h2 className="break-words font-semibold">{person.name||'Pessoa sem nome'}{person.id===profile?.id?' (você)':''}</h2><p className="break-all text-sm text-muted-foreground">{person.email}</p><p className="mt-2 text-sm">{roles[current]}</p><p className="max-w-lg text-xs text-muted-foreground">{permissionCopy[current]}</p></div>{canManage&&(current!=='owner'||permissions.roles.includes('owner'))&&<Button variant="outline" onClick={()=>setChange({id:person.id,name:person.name||person.email,role:current})}>Alterar papel</Button>}</article>;})}</section>}
+  {canManage&&<section className="space-y-4 rounded-2xl border border-border p-5"><h2 className="text-lg font-semibold">Convidar uma pessoa</h2><p className="text-sm text-muted-foreground">Crie um link válido por 7 dias. A pessoa deve entrar com o e-mail convidado e confirmá-lo. O convite não envia e-mail automaticamente.</p><form onSubmit={invite} className="grid gap-3 sm:grid-cols-[1fr_180px_auto]"><Input type="email" aria-label="E-mail da pessoa" placeholder="pessoa@empresa.com" value={email} onChange={e=>setEmail(e.target.value)} required/><select aria-label="Papel do convite" className="h-11 rounded-xl border border-input bg-background px-3 text-sm" value={role} onChange={e=>setRole(e.target.value)}>{['member','viewer','admin'].map(r=><option value={r} key={r}>{roles[r]}</option>)}</select><Button disabled={busy}>{busy?'Salvando…':'Criar convite'}</Button></form>{lastLink&&<div className="space-y-2"><Input aria-label="Link do convite" value={lastLink} readOnly onFocus={e=>e.target.select()}/><Button variant="outline" onClick={()=>void copyLink(lastLink)}>Copiar link</Button></div>}
+   <div className="space-y-3">{query.data?.invitations.filter(i=>!i.accepted_at).map(invitation=><div key={invitation.id} className="flex flex-wrap items-center justify-between gap-3 border-t border-border pt-3"><div className="min-w-0"><p className="break-all text-sm">{invitation.email}</p><p className="text-xs text-muted-foreground">{roles[invitation.role]} · {Date.parse(invitation.expires_at)<Date.now()?'Expirado':'Válido até '+new Date(invitation.expires_at).toLocaleDateString('pt-BR')}</p></div><div className="flex gap-2"><Button size="sm" variant="outline" onClick={()=>void copyLink(`${window.location.origin}/?invite=${invitation.id}`)}>Copiar</Button><Button size="sm" variant="ghost" disabled={busy} onClick={()=>void cancelInvitation(invitation.id)}>Revogar</Button></div></div>)}</div>
+  </section>}
+ </div><Dialog open={!!change} onOpenChange={open=>{if(!open&&!busy){setChange(null);setError('');}}}><DialogContent><DialogHeader><DialogTitle>Alterar permissão</DialogTitle><DialogDescription>O novo papel se aplica ao acesso de {change?.name} nesta organização.</DialogDescription></DialogHeader>{change&&<><label className="space-y-2 text-sm"><span>Novo papel</span><select className="h-11 w-full rounded-xl border border-input bg-background px-3" value={change.role} onChange={e=>setChange({...change,role:e.target.value})}>{Object.keys(roles).filter(r=>r!=='owner'||permissions.roles.includes('owner')).map(r=><option key={r} value={r}>{roles[r]}</option>)}</select></label><p className="text-sm text-muted-foreground">{permissionCopy[change.role]}</p>{error&&<p role="alert" className="text-sm text-destructive">{error}</p>}<Button onClick={()=>void changeRole()} disabled={busy}>{busy?'Salvando…':'Confirmar alteração'}</Button></>}</DialogContent></Dialog></PageScaffold>;
+}

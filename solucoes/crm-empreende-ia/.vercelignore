@@ -1,0 +1,12 @@
+.git/
+.claude/
+.env
+.env.*
+node_modules/
+dist/
+docs/
+supabase/
+tests/
+test-results/
+playwright-report/
+*.log

@@ -1,0 +1,123 @@
+@import "./styles/eia-tokens.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Manrope';
+  src: url('/fonts/Manrope-Variable.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+}
+
+/* Empreende.IA V2: bridge from the official palette to Tailwind 3 HSL utilities. */
+@layer base {
+  :root {
+    --background: 150.000 11.111% 3.529%;
+    --foreground: 120.000 5.882% 96.667%;
+    --card: 144.000 12.821% 7.647%;
+    --popover: 140.000 15.000% 7.843%;
+    --primary: 154.426 65.591% 63.529%;
+    --primary-foreground: 156.000 71.429% 8.235%;
+    --secondary: 145.714 11.475% 11.961%;
+    --muted: 145.714 11.475% 11.961%;
+    --muted-foreground: 140.000 6.383% 72.353%;
+    --accent: 150.667 65.217% 72.941%;
+    --accent-foreground: 156.000 71.429% 8.235%;
+    --destructive: 1.579 77.551% 80.784%;
+    --destructive-foreground: 2.857 25.301% 16.275%;
+    --success: 150.667 65.217% 72.941%;
+    --success-foreground: 153.103 47.541% 11.961%;
+    --warning: 40.189 79.104% 73.725%;
+    --warning-foreground: 36.522 31.507% 14.314%;
+    --border: 138.000 9.434% 20.784%;
+    --input: 141.176 6.719% 49.608%;
+    --ring: 150.928 78.862% 75.882%;
+    --sidebar-background: 144.000 12.821% 7.647%;
+    --sidebar-foreground: 120.000 5.882% 96.667%;
+    --sidebar-primary: 154.426 65.591% 63.529%;
+    --sidebar-primary-foreground: 156.000 71.429% 8.235%;
+    --sidebar-accent: 144.000 12.195% 16.078%;
+    --sidebar-accent-foreground: 120.000 5.882% 96.667%;
+    --sidebar-border: 138.000 9.434% 20.784%;
+    --sidebar-ring: 150.928 78.862% 75.882%;
+    --brand-cyan: 154.426 65.591% 63.529%;
+    --brand-blue: 154.675 83.696% 36.078%;
+    --brand-navy: 156.000 80.645% 18.235%;
+    --card-foreground: 120.000 5.882% 96.667%;
+    --popover-foreground: 120.000 5.882% 96.667%;
+    --secondary-foreground: 120.000 5.882% 96.667%;
+  }
+  :root[data-eia-theme="light"] {
+    --background: 140.000 15.789% 96.275%;
+    --foreground: 148.571 39.623% 10.392%;
+    --card: 0.000 0.000% 100.000%;
+    --popover: 0.000 0.000% 100.000%;
+    --primary: 155.217 85.185% 21.176%;
+    --primary-foreground: 0.000 0.000% 100.000%;
+    --secondary: 140.000 16.667% 92.941%;
+    --muted: 140.000 16.667% 92.941%;
+    --muted-foreground: 144.828 18.471% 30.784%;
+    --accent: 155.217 85.185% 21.176%;
+    --accent-foreground: 0.000 0.000% 100.000%;
+    --destructive: 357.500 57.692% 40.784%;
+    --destructive-foreground: 0.000 0.000% 100.000%;
+    --success: 152.368 62.295% 23.922%;
+    --success-foreground: 0.000 0.000% 100.000%;
+    --warning: 40.194 81.102% 24.902%;
+    --warning-foreground: 0.000 0.000% 100.000%;
+    --border: 140.000 16.129% 81.765%;
+    --input: 141.600 10.373% 47.255%;
+    --ring: 154.639 87.387% 21.765%;
+    --sidebar-background: 144.000 38.462% 97.451%;
+    --sidebar-foreground: 148.571 39.623% 10.392%;
+    --sidebar-primary: 155.217 85.185% 21.176%;
+    --sidebar-primary-foreground: 0.000 0.000% 100.000%;
+    --sidebar-accent: 144.000 27.273% 89.216%;
+    --sidebar-accent-foreground: 148.571 39.623% 10.392%;
+    --sidebar-border: 140.000 16.129% 81.765%;
+    --sidebar-ring: 154.639 87.387% 21.765%;
+    --brand-cyan: 155.294 72.857% 27.451%;
+    --brand-blue: 154.675 83.696% 36.078%;
+    --brand-navy: 156.000 80.645% 18.235%;
+    --card-foreground: 148.571 39.623% 10.392%;
+    --popover-foreground: 148.571 39.623% 10.392%;
+    --secondary-foreground: 148.571 39.623% 10.392%;
+  }
+
+  :root { --radius: 0.8125rem; --brand-gradient: var(--eia-material-primary); }
+  * { @apply border-border; }
+  body { @apply bg-background text-foreground font-sans antialiased; margin: 0; font-feature-settings: "ss01"; }
+  h1, h2, h3, h4 { letter-spacing: -0.035em; }
+  button, a, input, textarea, select { transition: color var(--eia-motion-fast), background-color var(--eia-motion-fast), border-color var(--eia-motion-fast); }
+  *:focus-visible { @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background; }
+  ::selection { background: var(--eia-color-selection); color: var(--eia-color-text); }
+}
+@layer utilities {
+  .text-gradient-brand { color: var(--eia-color-accent-text); }
+  .bg-brand-gradient { background: var(--eia-material-primary); color: var(--eia-color-on-accent); }
+}
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: hsl(var(--border)); border-radius: 999px; }
+.overflow-x-auto { scrollbar-width: thin; scrollbar-color: hsl(var(--border)) transparent; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+/* Onboarding modal slide animations */
+@keyframes onboardingSlideLeft {
+  from { transform: translateX(30px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes onboardingSlideRight {
+  from { transform: translateX(-30px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.onboarding-slide-in {
+  animation-duration: 200ms;
+  animation-timing-function: ease-out;
+  animation-fill-mode: both;
+}

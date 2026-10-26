@@ -1,0 +1,1 @@
+DELETE FROM public.integration_configs WHERE provider = 'slack';

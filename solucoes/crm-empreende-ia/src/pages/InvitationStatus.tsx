@@ -1,0 +1,5 @@
+import { useSearchParams,Link } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
+import { PageScaffold } from '@/components/shell/PageScaffold';
+import { Button } from '@/components/ds/button';
+export default function InvitationStatus(){const [params]=useSearchParams();const {signOut}=useAuth();return <PageScaffold title="Convite de equipe"><div className="mx-auto max-w-xl space-y-5 rounded-2xl border border-border p-6"><h2 className="text-xl font-semibold">Sua conta já pertence a uma organização</h2><p className="text-sm text-muted-foreground">Este convite não foi aceito. Para entrar em outra equipe, use uma conta que ainda não esteja vinculada a uma organização ou fale com o administrador.</p><div className="flex flex-wrap gap-3"><Button asChild><Link to="/dashboard">Continuar no meu CRM</Link></Button><Button variant="outline" onClick={()=>void signOut().then(success=>{if(success)window.location.assign('/?invite='+encodeURIComponent(params.get('invite')??''));})}>Entrar com outra conta</Button></div></div></PageScaffold>;}

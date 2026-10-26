@@ -1,0 +1,103 @@
+/* ─── React Flow overrides do builder novo (porte do protótipo zapflow) ─────
+   Tudo escopado sob .dispara-canvas para não vazar para outros canvases. */
+
+.dispara-canvas {
+  background: var(--ds-bg-base);
+}
+
+/* O React Flow pinta o pane com --xy-background-color (transparent no light,
+   #141414 no dark) — apontamos pro token pra seguir o tema do app. */
+.dispara-canvas .react-flow {
+  --xy-background-color: var(--ds-bg-base);
+}
+
+/* Handles invisíveis mas mensuráveis (NUNCA display:none) */
+.dispara-canvas .react-flow__handle {
+  opacity: 0;
+  pointer-events: none;
+  min-width: 0;
+  min-height: 0;
+}
+
+/* Re-layout animado: transição de transform nos nós.
+   Habilitada só depois do primeiro render (classe .animated no wrapper). */
+.dispara-canvas.animated .react-flow__node {
+  transition: transform 300ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.dispara-canvas .react-flow__node {
+  cursor: pointer;
+}
+
+/* Edges não interativas (o "+" vive no EdgeLabelRenderer, portal separado) */
+.dispara-canvas .react-flow__edge {
+  pointer-events: none;
+}
+
+/* Modo picking do Go To: nós válidos pulsam (cor da marca) */
+@keyframes dispara-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--ds-brand-primary) 45%, transparent);
+  }
+  50% {
+    box-shadow: 0 0 0 8px transparent;
+  }
+}
+
+.dispara-canvas.picking .react-flow__node.pickable {
+  cursor: crosshair;
+}
+
+.dispara-canvas.picking .react-flow__node.pickable > div {
+  animation: dispara-pulse 1.4s ease-in-out infinite;
+  border-radius: 10px;
+}
+
+/* Controles estilo GHL — tokens seguem o tema */
+.dispara-canvas .react-flow__controls {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: var(--ds-shadow-md);
+}
+
+.dispara-canvas .react-flow__controls-button {
+  background: var(--ds-bg-elevated);
+  border-bottom: 1px solid var(--ds-border-default);
+  color: var(--ds-text-secondary);
+}
+
+.dispara-canvas .react-flow__controls-button:hover {
+  background: var(--ds-bg-hover);
+  color: var(--ds-text-primary);
+}
+
+.dispara-canvas .react-flow__controls-button svg {
+  fill: currentColor;
+}
+
+.dispara-canvas .react-flow__minimap {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: var(--ds-shadow-md);
+  background: var(--ds-bg-elevated);
+}
+
+.dispara-canvas .react-flow__minimap-mask {
+  fill: color-mix(in srgb, var(--ds-bg-base) 65%, transparent);
+}
+
+/* ─── Chips de ícone dos passos ──────────────────────────────────────────────
+   Usados dentro do canvas (StepNode) e fora dele (ActionPicker, ConfigPanel).
+   Os valores por passo vêm de stepChipStyle() como custom properties; aqui só
+   escolhemos o par certo por tema: pastéis do STEP_META no claro (visual do
+   protótipo/GHL), re-skin translúcido no escuro. */
+.step-chip {
+  background: var(--chip-bg-light);
+  color: var(--chip-fg-light);
+}
+
+.dark .step-chip {
+  background: var(--chip-bg-dark);
+  color: var(--chip-fg-dark);
+}

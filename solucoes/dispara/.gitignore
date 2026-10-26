@@ -1,0 +1,135 @@
+# Dependencies
+node_modules
+
+# Next.js
+.next/
+out/
+
+# Production
+build/
+dist/
+dist-server/
+
+# Environment
+# Environment
+.env*
+!.env.example
+
+# Vercel CLI env pulls (sometimes created by tooling) - NEVER COMMIT
+.env.vercel
+.env.vercel.*
+
+# Common secret file types
+*.pem
+*.key
+*.p12
+*.pfx
+*.cer
+*.crt
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+
+# Editor
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.sw?
+
+# AI/IDE agent tooling (dev-only, local configs)
+.agent/
+.claude/
+.agents/
+.Jules/
+.codex/
+.cursor/
+.gemini/
+.kiro/
+.opencode/
+.specify/
+.specswarm/
+.trae/
+.windsurf/
+.auto-claude/
+.devtools
+
+# Security audit evidence (sensitive - contains architecture details)
+.sb-pentest-evidence/
+.sb-pentest-context.json
+
+# GitHub AI configs (dev-only)
+.github/agents/
+.github/prompts/
+.github/copilot-instructions.md
+
+# Backups and specs (dev artifacts)
+_backup/
+specs/
+
+# Docs
+# (Mantido versionado para distribuição/guia. Se precisar ignorar algo específico,
+# adicione padrões mais restritos aqui.)
+SECURITY.md
+metadata.json
+
+# Local-only maintenance scripts
+# Importante: não ignore o diretório inteiro (scripts/) se você quiser permitir
+# exceções pontuais. Por isso usamos scripts/* e liberamos explicitamente o arquivo.
+scripts/*
+!scripts/meta-audit.mjs
+!scripts/check-migrations.mjs
+
+# OS
+.DS_Store
+*.local
+
+# Supabase CLI temp files
+supabase/.temp/
+
+# Vercel
+.vercel
+
+# TypeScript
+*.tsbuildinfo
+
+
+# Testing
+test-results/
+playwright-report/
+coverage/
+.nyc_output/
+
+# Testes (suites pesadas mantidas apenas localmente)
+# Usa tests/* (não tests/) para que a negação de tests/helpers/ funcione:
+# git não reinclui subpastas de um diretório inteiramente excluído.
+tests/*
+# Helpers de teste são necessários no CI
+!tests/helpers/
+!tests/helpers/**
+
+# Legacy (can be removed)
+# vite.config.ts
+# server.ts
+# worker.ts
+# queue.ts
+
+# Backups / Utility
+tmp/
+
+# Local dev files (not for GitHub)
+.mcp.json
+logs_result.json
+placeholder.txt
+research.md
+PRD-campaigns-new.md
+
+# Docs (dev-only, kept locally) - /docs/ ignora apenas na raiz
+/docs/
+.env*.local
+.env.local
+.env.local.*
+
+# Graphify (knowledge graph local — artefato gerado)
+graphify-out/

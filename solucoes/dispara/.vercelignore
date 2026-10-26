@@ -1,0 +1,31 @@
+# Environment files - NEVER upload to Vercel
+.env
+.env.*
+.env.local
+.env.development
+.env.production
+
+# Local development
+node_modules/
+.git/
+
+# Build outputs (Vercel builds fresh)
+dist/
+dist-server/
+.next/
+
+# IDE
+.vscode/
+.idea/
+
+# macOS
+.DS_Store
+
+# Testing
+coverage/
+
+# Artifacts / scratch (não devem ir para produção)
+tmp/
+test-results/
+logs_result.json
+metadata.json

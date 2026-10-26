@@ -1,0 +1,1433 @@
+/* Fonts carregadas via next/font/google em app/layout.tsx (Inter + JetBrains Mono) */
+
+@import "tailwindcss";
+
+@import "tw-animate-css";
+@import "react-international-phone/style.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* CSS Variables for theming */
+:root {
+  /* ================================
+     DESIGN SYSTEM TOKENS
+     ================================ */
+
+  /* DS - Typography (não muda com tema) — Inter + JetBrains Mono via next/font */
+  --ds-font-display: var(--font-inter), "Inter", -apple-system, "SF Pro Display", system-ui, sans-serif;
+  --ds-font-body: var(--font-inter), "Inter", -apple-system, "SF Pro Display", system-ui, sans-serif;
+  --ds-font-mono: var(--font-jetbrains-mono), "JetBrains Mono", "SF Mono", Menlo, ui-monospace, monospace;
+
+  /* DS - Text sizes (não muda com tema) */
+  --ds-text-xs: 0.75rem;
+  --ds-text-sm: 0.875rem;
+  --ds-text-base: 1rem;
+  --ds-text-lg: 1.125rem;
+  --ds-text-xl: 1.25rem;
+  --ds-text-2xl: 1.5rem;
+  --ds-text-3xl: 1.875rem;
+  --ds-text-4xl: 2.25rem;
+
+  /* DS - Brand colors (Emerald - Henrique Gabriel) */
+  --ds-brand-primary: #10b981;
+  --ds-brand-primary-hover: #059669;
+  --ds-brand-primary-muted: rgba(16, 185, 129, 0.1);
+
+  /* DS - Brand secondary (alias do primary — indigo antigo aposentado) */
+  --ds-brand-secondary: #10b981;
+  --ds-brand-secondary-hover: #059669;
+  --ds-brand-secondary-muted: rgba(16, 185, 129, 0.1);
+  --ds-brand-secondary-text: #047857;
+
+  /* ================================
+     TEMA CLARO (:root) — Henrique Gabriel brand
+     O produto tem DOIS temas via next-themes (dark segue
+     sendo o default): o html recebe class="dark"|"light".
+     O :root carrega o tema LIGHT; o bloco .dark carrega
+     o tema dark completo.
+     ================================ */
+
+  /* DS - Backgrounds (light) */
+  --ds-bg-base: #f8fafc;
+  --ds-bg-elevated: #ffffff;
+  --ds-bg-surface: #f1f5f9;
+  --ds-bg-overlay: rgba(15, 23, 42, 0.5);
+  --ds-bg-glass: rgba(255, 255, 255, 0.7);
+  --ds-bg-hover: rgba(15, 23, 42, 0.04);
+  --ds-bg-glass-header: rgba(255, 255, 255, 0.8);
+
+  /* DS - Text colors (light) */
+  --ds-text-primary: #0f172a;
+  --ds-text-secondary: #475569;
+  --ds-text-muted: #64748b;
+  --ds-text-brand: #047857;
+  --ds-text-disabled: #94a3b8;
+
+  /* DS - Border colors (light) */
+  --ds-border-subtle: rgba(15, 23, 42, 0.06);
+  --ds-border-default: #e2e8f0;
+  --ds-border-strong: #cbd5e1;
+  --ds-border-focus: #10b981;
+
+  /* DS - Theme extras (light) */
+  --ds-focus-outline: #059669;
+  --ds-selection-bg: rgba(16, 185, 129, 0.2);
+  --ds-dot-grid: rgba(15, 23, 42, 0.06);
+
+  /* DS - Status colors (light — escurecidos p/ AA) */
+  --ds-status-success: #059669;
+  --ds-status-success-text: #047857;
+  --ds-status-success-bg: rgba(16, 185, 129, 0.1);
+  --ds-status-error: #dc2626;
+  --ds-status-error-text: #b91c1c;
+  --ds-status-error-bg: rgba(239, 68, 68, 0.1);
+  --ds-status-warning: #d97706;
+  --ds-status-warning-text: #b45309;
+  --ds-status-warning-bg: rgba(245, 158, 11, 0.1);
+  --ds-status-info: #2563eb;
+  --ds-status-info-text: #1d4ed8;
+  --ds-status-info-bg: rgba(59, 130, 246, 0.1);
+
+  /* DS - Campaign status colors (light — texts AA, bgs tint) */
+  --ds-campaign-draft-text: #475569;
+  --ds-campaign-draft-bg: rgba(100, 116, 139, 0.12);
+  --ds-campaign-scheduled-text: #4f46e5;
+  --ds-campaign-scheduled-bg: rgba(99, 102, 241, 0.12);
+  --ds-campaign-sending-text: #1d4ed8;
+  --ds-campaign-sending-bg: rgba(59, 130, 246, 0.12);
+  --ds-campaign-completed-text: #047857;
+  --ds-campaign-completed-bg: rgba(16, 185, 129, 0.12);
+  --ds-campaign-paused-text: #b45309;
+  --ds-campaign-paused-bg: rgba(245, 158, 11, 0.12);
+  --ds-campaign-failed-text: #b91c1c;
+  --ds-campaign-failed-bg: rgba(239, 68, 68, 0.12);
+
+  /* DS - Shadows (light) */
+  --ds-shadow-xs: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
+  --ds-shadow-sm: 0 2px 4px 0 rgba(15, 23, 42, 0.06);
+  --ds-shadow-md: 0 4px 8px -1px rgba(15, 23, 42, 0.07), 0 2px 4px -2px rgba(15, 23, 42, 0.05);
+  --ds-shadow-lg: 0 12px 28px -4px rgba(15, 23, 42, 0.10), 0 4px 10px -4px rgba(15, 23, 42, 0.06);
+  --ds-shadow-xl: 0 24px 48px -8px rgba(15, 23, 42, 0.12), 0 10px 20px -6px rgba(15, 23, 42, 0.08);
+  --ds-shadow-2xl: 0 25px 50px -12px rgba(15, 23, 42, 0.12);
+
+  /* DS - Glow effects (assinatura emerald — reduzidos ~50% no claro) */
+  --glow-primary: 0 0 40px rgba(16, 185, 129, 0.15);
+  --glow-strong: 0 0 50px rgba(16, 185, 129, 0.22);
+  --ds-glow-brand-sm: 0 0 12px rgba(16, 185, 129, 0.12);
+  --ds-glow-brand-md: 0 0 24px rgba(16, 185, 129, 0.18);
+  --ds-glow-brand-ring: 0 0 0 3px rgba(16, 185, 129, 0.15);
+  --ds-glow-error-ring: 0 0 0 3px rgba(239, 68, 68, 0.15);
+  --ds-glow-secondary-sm: 0 0 12px rgba(16, 185, 129, 0.08);
+  --ds-glow-secondary-ring: 0 0 0 3px rgba(16, 185, 129, 0.15);
+
+  /* DS - Composite shadows (light — sem inset branco) */
+  --ds-shadow-card: 0 20px 40px -20px rgba(15, 23, 42, 0.10);
+  --ds-shadow-card-hover: 0 0 40px rgba(16, 185, 129, 0.15);
+  --ds-shadow-button: 0 1px 3px 0 rgba(15, 23, 42, 0.08);
+  --ds-shadow-button-hover: 0 3px 6px 0 rgba(15, 23, 42, 0.10);
+  --ds-shadow-button-primary: 0 2px 6px 0 rgba(15, 23, 42, 0.08), 0 0 12px rgba(16, 185, 129, 0.12);
+  --ds-shadow-button-primary-hover: 0 4px 12px -2px rgba(15, 23, 42, 0.10), 0 0 24px rgba(16, 185, 129, 0.18);
+  --ds-shadow-input-focus: 0 0 0 3px rgba(16, 185, 129, 0.15);
+  --ds-shadow-modal: 0 24px 48px -8px rgba(15, 23, 42, 0.12), 0 0 0 1px rgba(15, 23, 42, 0.05);
+  --ds-shadow-dropdown: 0 12px 28px -4px rgba(15, 23, 42, 0.10), 0 0 0 1px rgba(15, 23, 42, 0.05);
+
+  /* DS - Motion (não muda com tema) */
+  --ds-duration-fastest: 75ms;
+  --ds-duration-fast: 150ms;
+  --ds-duration-normal: 200ms;
+  --ds-duration-slow: 300ms;
+  --ds-ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ds-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ds-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ds-transition-fast: all 150ms cubic-bezier(0, 0, 0.2, 1);
+  --ds-transition-normal: all 200ms cubic-bezier(0, 0, 0.2, 1);
+  --ds-transition-colors: color 200ms cubic-bezier(0, 0, 0.2, 1), background-color 200ms cubic-bezier(0, 0, 0.2, 1), border-color 200ms cubic-bezier(0, 0, 0.2, 1);
+
+  /* DS - Border radius (brand: sm 8px pills/chips, md 12px botões/inputs, lg 16px cards) */
+  --ds-radius-sm: 0.5rem;
+  --ds-radius-md: 0.75rem;
+  --ds-radius-lg: 1rem;
+  --ds-radius-xl: 1rem;
+  --ds-radius-2xl: 1.25rem;
+  --ds-radius-full: 9999px;
+
+  /* Slate colors (premium neutral palette) */
+  --color-gray-50: #f8fafc;
+  --color-gray-100: #f1f5f9;
+  --color-gray-200: #e2e8f0;
+  --color-gray-300: #cbd5e1;
+  --color-gray-400: #94a3b8;
+  --color-gray-500: #64748b;
+  --color-gray-600: #475569;
+  --color-gray-700: #334155;
+  --color-gray-800: #1e293b;
+  --color-gray-900: #0f172a;
+  --color-gray-950: #020617;
+
+  /* Emerald (Henrique Gabriel — cor assinatura #10b981) */
+  --color-primary-50: #ecfdf5;
+  --color-primary-100: #d1fae5;
+  --color-primary-200: #a7f3d0;
+  --color-primary-300: #6ee7b7;
+  --color-primary-400: #34d399;
+  --color-primary-500: #10b981;
+  --color-primary-600: #059669;
+  --color-primary-700: #047857;
+  --color-primary-800: #065f46;
+  --color-primary-900: #064e3b;
+  --color-primary-950: #022c22;
+
+  /* ================================
+     LANGFLOW COLOR SYSTEM
+     ================================ */
+
+  /* Status Colors (light — escurecidos p/ contraste sobre branco) */
+  --status-red: #dc2626;
+  --status-yellow: #ca8a04;
+  --status-green: #16a34a;
+  --status-blue: #2563eb;
+  --status-gray: #6b7280;
+
+  /* Node Category Colors (datatype) — hues iguais nos dois temas; bgs em tint claro */
+  --node-emerald: hsl(161.4, 93.5%, 30.4%);
+  /* Messages */
+  --node-emerald-bg: hsl(164, 86%, 94%);
+  --node-violet: hsl(262.1, 83.3%, 57.8%);
+  /* AI/Agent (violeta é exceção semântica — hue fica) */
+  --node-violet-bg: hsl(263, 70%, 95%);
+  --node-blue: hsl(221.2, 83.2%, 53.3%);
+  /* Flow control */
+  --node-blue-bg: hsl(224, 64%, 95%);
+  --node-orange: hsl(20.5, 90.2%, 48.2%);
+  /* Triggers/Start */
+  --node-orange-bg: hsl(20, 80%, 94%);
+  --node-pink: hsl(333.3, 71.4%, 50.6%);
+  /* Media */
+  --node-pink-bg: hsl(326, 60%, 95%);
+  --node-cyan: hsl(191.6, 91.4%, 36.5%);
+  /* Data/Templates */
+  --node-cyan-bg: hsl(192, 80%, 94%);
+  --node-gray: hsl(215, 13.8%, 34.1%);
+  /* Others */
+  --node-gray-bg: hsl(220, 14%, 94%);
+
+  /* Gradient Animation Colors */
+  --gradient-1: rgb(156, 138, 236);
+  --gradient-2: rgb(255, 130, 184);
+  --gradient-3: rgb(255, 165, 100);
+
+  /* Node Ring/Selected (ring visível sobre fundo claro) */
+  --node-selected: hsl(243, 75%, 59%);
+  --node-ring: hsl(215, 16%, 65%);
+
+  /* ================================
+     SHADCN/UI VARIABLES (light)
+     ================================ */
+  --radius: 0.75rem;
+  --background: #ffffff;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+  --primary: #10b981;
+  --primary-foreground: #030712;
+  --secondary: #f1f5f9;
+  --secondary-foreground: #0f172a;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --accent: #f1f5f9;
+  --accent-foreground: #0f172a;
+  --destructive: #dc2626;
+  --border: #e2e8f0;
+  --input: #e2e8f0;
+  --ring: #10b981;
+  --chart-1: #10b981;
+  --chart-2: #3b82f6;
+  --chart-3: #d97706;
+  --chart-4: #059669;
+  --chart-5: #6366f1;
+  --sidebar: #f8fafc;
+  --sidebar-foreground: #475569;
+  --sidebar-primary: #10b981;
+  --sidebar-primary-foreground: #030712;
+  --sidebar-accent: #f1f5f9;
+  --sidebar-accent-foreground: #0f172a;
+  --sidebar-border: #e2e8f0;
+  --sidebar-ring: #10b981;
+
+  /* ================================
+     INTERNATIONAL PHONE INPUT THEME (light)
+     ================================ */
+  --react-international-phone-height: 48px;
+  --react-international-phone-background-color: #ffffff;
+  --react-international-phone-text-color: #0f172a;
+  --react-international-phone-font-size: 14px;
+  --react-international-phone-border-radius: 0.75rem; /* rounded-xl */
+  --react-international-phone-border-color: #e2e8f0;
+
+  --react-international-phone-country-selector-background-color: #ffffff;
+  --react-international-phone-country-selector-background-color-hover: #f1f5f9;
+  --react-international-phone-country-selector-border-color: #e2e8f0;
+  --react-international-phone-country-selector-arrow-color: #64748b;
+
+  --react-international-phone-dropdown-item-background-color: #ffffff;
+  --react-international-phone-dropdown-item-text-color: #0f172a;
+  --react-international-phone-dropdown-shadow: 0 10px 30px rgba(15, 23, 42, .12);
+  --react-international-phone-dropdown-item-dial-code-color: #64748b;
+  --react-international-phone-selected-dropdown-item-background-color: #f1f5f9;
+  --react-international-phone-selected-dropdown-item-text-color: #0f172a;
+}
+
+/* Tailwind v4 theme customizations */
+@theme {
+  --font-family-sans: var(--font-inter), 'Inter', system-ui, sans-serif;
+  --font-family-mono: var(--font-jetbrains-mono), 'JetBrains Mono', 'SF Mono', monospace;
+
+  /* Colors */
+  --color-primary-50: var(--color-primary-50);
+  --color-primary-100: var(--color-primary-100);
+  --color-primary-200: var(--color-primary-200);
+  --color-primary-300: var(--color-primary-300);
+  --color-primary-400: var(--color-primary-400);
+  --color-primary-500: var(--color-primary-500);
+  --color-primary-600: var(--color-primary-600);
+  --color-primary-700: var(--color-primary-700);
+  --color-primary-800: var(--color-primary-800);
+  --color-primary-900: var(--color-primary-900);
+  --color-primary-950: var(--color-primary-950);
+}
+
+/* Base styles — theme-aware (dark é o default via next-themes) */
+body {
+  font-family: var(--ds-font-body);
+  background-color: var(--ds-bg-base);
+  color: var(--ds-text-primary);
+}
+
+/* ================================
+   ACCESSIBILITY ENHANCEMENTS
+   ================================ */
+
+/* Screen reader only - hidden visually but accessible */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Show on focus for skip links */
+.sr-only:focus,
+.sr-only:focus-visible {
+  position: fixed;
+  width: auto;
+  height: auto;
+  padding: 0.5rem 1rem;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+/* Enhanced focus indicators for keyboard navigation */
+/* Excluindo inputs pois cada componente gerencia seu próprio focus */
+:focus-visible:not(input):not(textarea):not(select) {
+  outline: 2px solid var(--ds-focus-outline);
+  outline-offset: 2px;
+}
+
+/* Specific focus styles for interactive elements */
+button:focus-visible,
+a:focus-visible,
+[role="button"]:focus-visible {
+  outline: 2px solid var(--ds-focus-outline);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2);
+}
+
+/* Input focus styles removidos - cada componente gerencia seu próprio focus */
+select:focus-visible,
+textarea:focus-visible {
+  outline: none;
+  border-color: var(--color-primary-500);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+}
+
+/* Remove default focus outline when using :focus-visible */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Improved placeholder contrast for WCAG AA */
+::placeholder {
+  color: #64748b;
+  /* slate-500 - 4.6:1 contrast ratio */
+  opacity: 1;
+}
+
+/* Text selection — theme-aware (emerald tint, texto mantém a própria cor) */
+::selection {
+  background-color: var(--ds-selection-bg);
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .animate-spin,
+  .animate-pulse,
+  .animate-ping,
+  .animate-in {
+    animation: none !important;
+  }
+}
+
+/* ================================
+   VISUAL DESIGN
+   ================================ */
+
+/* The Dot Grid Background Effect - theme-aware */
+.bg-grid-dots {
+  background-color: var(--ds-bg-base);
+  background-image: radial-gradient(var(--ds-bg-surface) 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+}
+
+/* Custom Scrollbar - theme-aware */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--ds-bg-base);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--ds-bg-surface);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ds-border-strong);
+}
+
+/* Glass panel effect - theme-aware */
+.glass-panel {
+  background: var(--ds-bg-glass);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--ds-border-subtle);
+}
+
+/* No scrollbar utility */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Animation utilities */
+@keyframes ping {
+
+  75%,
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.animate-ping {
+  animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes pulse {
+  50% {
+    opacity: .5;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Animate in utilities */
+@keyframes zoom-in-95 {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-in {
+  animation-fill-mode: both;
+}
+
+.zoom-in-95 {
+  animation-name: zoom-in-95;
+}
+
+.duration-200 {
+  animation-duration: 200ms;
+}
+
+/* ================================
+   LANGFLOW NODE ANIMATIONS
+   ================================ */
+
+/* Gradient animation for edges (Langflow style) */
+@keyframes gradient-flow {
+  0% {
+    stroke: var(--gradient-1);
+  }
+
+  33% {
+    stroke: var(--gradient-2);
+  }
+
+  66% {
+    stroke: var(--gradient-3);
+  }
+
+  100% {
+    stroke: var(--gradient-1);
+  }
+}
+
+/* Wiggle animation for status icon */
+@keyframes wiggle {
+
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+
+  25% {
+    transform: rotate(-3deg);
+  }
+
+  75% {
+    transform: rotate(3deg);
+  }
+}
+
+.animate-wiggle {
+  animation: wiggle 0.3s ease-in-out;
+}
+
+/* Glow effect for selected nodes */
+@keyframes node-glow {
+
+  0%,
+  100% {
+    box-shadow: 0 0 5px 0 var(--node-selected);
+  }
+
+  50% {
+    box-shadow: 0 0 20px 5px var(--node-selected);
+  }
+}
+
+/* ================================
+   LANGFLOW NODE STYLES
+   ================================ */
+
+/* Base node wrapper */
+.langflow-node {
+  @apply relative flex flex-col bg-card rounded-xl border-2 transition-all duration-200;
+  @apply hover:shadow-lg;
+}
+
+.langflow-node.selected {
+  @apply ring-2 ring-offset-2 ring-offset-background;
+  animation: node-glow 2s ease-in-out infinite;
+}
+
+/* Node categories by color */
+.node-category-message {
+  border-color: var(--node-emerald);
+  --node-accent: var(--node-emerald);
+  --node-accent-bg: var(--node-emerald-bg);
+}
+
+.node-category-ai {
+  border-color: var(--node-violet);
+  --node-accent: var(--node-violet);
+  --node-accent-bg: var(--node-violet-bg);
+}
+
+.node-category-flow {
+  border-color: var(--node-blue);
+  --node-accent: var(--node-blue);
+  --node-accent-bg: var(--node-blue-bg);
+}
+
+.node-category-trigger {
+  border-color: var(--node-orange);
+  --node-accent: var(--node-orange);
+  --node-accent-bg: var(--node-orange-bg);
+}
+
+.node-category-media {
+  border-color: var(--node-pink);
+  --node-accent: var(--node-pink);
+  --node-accent-bg: var(--node-pink-bg);
+}
+
+.node-category-data {
+  border-color: var(--node-cyan);
+  --node-accent: var(--node-cyan);
+  --node-accent-bg: var(--node-cyan-bg);
+}
+
+/* Node header with colored icon */
+.langflow-node-header {
+  @apply flex items-center gap-2 px-3 py-2 rounded-t-lg;
+  background: var(--node-accent-bg);
+}
+
+.langflow-node-icon {
+  @apply w-8 h-8 rounded-lg flex items-center justify-center;
+  background: var(--node-accent);
+  color: white;
+}
+
+.langflow-node-title {
+  @apply text-sm font-semibold text-foreground;
+}
+
+/* Node content area */
+.langflow-node-content {
+  @apply p-3 text-xs text-muted-foreground;
+}
+
+/* Node status indicators */
+.node-status {
+  @apply absolute -top-1 -right-1 w-3 h-3 rounded-full border-2 border-background;
+}
+
+.node-status-success {
+  background: var(--status-green);
+}
+
+.node-status-error {
+  background: var(--status-red);
+}
+
+.node-status-warning {
+  background: var(--status-yellow);
+}
+
+.node-status-running {
+  background: var(--status-blue);
+  animation: pulse 1s infinite;
+}
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+.dark {
+  /* ================================
+     TEMA DARK (default do produto)
+     O app tem dois temas via next-themes: o :root carrega
+     o tema LIGHT e este bloco sobrescreve TODOS os tokens
+     temáticos com os valores dark da marca.
+     ================================ */
+
+  /* DS - Brand secondary text (dark) */
+  --ds-brand-secondary-text: #34d399;
+
+  /* DS - Backgrounds (dark brand) */
+  --ds-bg-base: #030712;
+  --ds-bg-elevated: #0f172a;
+  --ds-bg-surface: #1e293b;
+  --ds-bg-overlay: rgba(3, 7, 18, 0.85);
+  --ds-bg-glass: rgba(15, 23, 42, 0.7);
+  --ds-bg-hover: rgba(255, 255, 255, 0.05);
+  --ds-bg-glass-header: rgba(3, 7, 18, 0.8);
+
+  /* DS - Text colors (dark brand) */
+  --ds-text-primary: #f8fafc;
+  --ds-text-secondary: #94a3b8;
+  --ds-text-muted: #64748b;
+  --ds-text-brand: #34d399;
+  --ds-text-disabled: #475569;
+
+  /* DS - Border colors (dark brand) */
+  --ds-border-subtle: rgba(255, 255, 255, 0.05);
+  --ds-border-default: #1e293b;
+  --ds-border-strong: #334155;
+  --ds-border-focus: #10b981;
+
+  /* DS - Theme extras (dark) */
+  --ds-focus-outline: #34d399;
+  --ds-selection-bg: rgba(16, 185, 129, 0.35);
+  --ds-dot-grid: rgba(255, 255, 255, 0.08);
+
+  /* DS - Status colors (dark brand) */
+  --ds-status-success: #10b981;
+  --ds-status-success-text: #34d399;
+  --ds-status-success-bg: rgba(16, 185, 129, 0.1);
+  --ds-status-error: #ef4444;
+  --ds-status-error-text: #f87171;
+  --ds-status-error-bg: rgba(239, 68, 68, 0.1);
+  --ds-status-warning: #f59e0b;
+  --ds-status-warning-text: #fbbf24;
+  --ds-status-warning-bg: rgba(245, 158, 11, 0.1);
+  --ds-status-info: #3b82f6;
+  --ds-status-info-text: #60a5fa;
+  --ds-status-info-bg: rgba(59, 130, 246, 0.1);
+
+  /* DS - Campaign status colors (dark brand) */
+  --ds-campaign-draft-text: #94a3b8;
+  --ds-campaign-draft-bg: rgba(148, 163, 184, 0.1);
+  --ds-campaign-scheduled-text: #818cf8;
+  --ds-campaign-scheduled-bg: rgba(99, 102, 241, 0.1);
+  --ds-campaign-sending-text: #60a5fa;
+  --ds-campaign-sending-bg: rgba(59, 130, 246, 0.1);
+  --ds-campaign-completed-text: #34d399;
+  --ds-campaign-completed-bg: rgba(16, 185, 129, 0.1);
+  --ds-campaign-paused-text: #fbbf24;
+  --ds-campaign-paused-bg: rgba(245, 158, 11, 0.1);
+  --ds-campaign-failed-text: #f87171;
+  --ds-campaign-failed-bg: rgba(239, 68, 68, 0.1);
+
+  /* ================================
+     LANGFLOW COLOR SYSTEM (dark)
+     ================================ */
+  --status-red: #ef4444;
+  --status-yellow: #eab308;
+  --status-green: #4ade80;
+  --status-blue: #2563eb;
+  --status-gray: #6b7280;
+
+  --node-emerald: hsl(161.4, 93.5%, 30.4%);
+  --node-emerald-bg: hsl(164, 86%, 16%);
+  --node-violet: hsl(262.1, 83.3%, 57.8%);
+  --node-violet-bg: hsl(263, 70%, 24%);
+  --node-blue: hsl(221.2, 83.2%, 53.3%);
+  --node-blue-bg: hsl(224, 64%, 20%);
+  --node-orange: hsl(20.5, 90.2%, 48.2%);
+  --node-orange-bg: hsl(20, 80%, 18%);
+  --node-pink: hsl(333.3, 71.4%, 50.6%);
+  --node-pink-bg: hsl(326, 60%, 18%);
+  --node-cyan: hsl(191.6, 91.4%, 36.5%);
+  --node-cyan-bg: hsl(192, 80%, 14%);
+  --node-gray: hsl(215, 13.8%, 34.1%);
+  --node-gray-bg: hsl(220, 14%, 12%);
+
+  --gradient-1: rgb(156, 138, 236);
+  --gradient-2: rgb(255, 130, 184);
+  --gradient-3: rgb(255, 165, 100);
+
+  --node-selected: hsl(243, 75%, 59%);
+  --node-ring: hsl(240, 6%, 90%);
+
+  /* DS - Shadows (dark brand) */
+  --ds-shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
+  --ds-shadow-sm: 0 2px 4px 0 rgba(0, 0, 0, 0.4);
+  --ds-shadow-md: 0 4px 8px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+  --ds-shadow-lg: 0 12px 28px -4px rgba(0, 0, 0, 0.6), 0 4px 10px -4px rgba(0, 0, 0, 0.4);
+  --ds-shadow-xl: 0 24px 48px -8px rgba(0, 0, 0, 0.7), 0 10px 20px -6px rgba(0, 0, 0, 0.5);
+  --ds-shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+
+  /* DS - Glow effects (glow emerald assinatura) */
+  --glow-primary: 0 0 40px rgba(16, 185, 129, 0.30);
+  --glow-strong: 0 0 50px rgba(16, 185, 129, 0.40);
+  --ds-glow-brand-sm: 0 0 12px rgba(16, 185, 129, 0.2);
+  --ds-glow-brand-md: 0 0 24px rgba(16, 185, 129, 0.3);
+  --ds-glow-brand-ring: 0 0 0 3px rgba(16, 185, 129, 0.2);
+  --ds-glow-error-ring: 0 0 0 3px rgba(239, 68, 68, 0.2);
+  --ds-glow-secondary-sm: 0 0 12px rgba(16, 185, 129, 0.15);
+  --ds-glow-secondary-ring: 0 0 0 3px rgba(16, 185, 129, 0.2);
+
+  /* DS - Composite shadows (dark brand) */
+  --ds-shadow-card: 0 20px 40px -20px rgba(0, 0, 0, 0.5);
+  --ds-shadow-card-hover: 0 0 40px rgba(16, 185, 129, 0.30);
+  --ds-shadow-button: 0 1px 3px 0 rgba(0, 0, 0, 0.4), inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+  --ds-shadow-button-hover: 0 3px 6px 0 rgba(0, 0, 0, 0.5), inset 0 1px 0 0 rgba(255, 255, 255, 0.12);
+  --ds-shadow-button-primary: 0 2px 6px 0 rgba(0, 0, 0, 0.4), 0 0 12px rgba(16, 185, 129, 0.2);
+  --ds-shadow-button-primary-hover: 0 4px 12px -2px rgba(0, 0, 0, 0.4), 0 0 24px rgba(16, 185, 129, 0.3);
+  --ds-shadow-input-focus: 0 0 0 3px rgba(16, 185, 129, 0.15);
+  --ds-shadow-modal: 0 24px 48px -8px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  --ds-shadow-dropdown: 0 12px 28px -4px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.05);
+
+  /* ================================
+     INTERNATIONAL PHONE INPUT (dark)
+     ================================ */
+  --react-international-phone-background-color: #1e293b;
+  --react-international-phone-text-color: #f8fafc;
+  --react-international-phone-border-color: #334155;
+  --react-international-phone-country-selector-background-color: #1e293b;
+  --react-international-phone-country-selector-background-color-hover: #334155;
+  --react-international-phone-country-selector-border-color: #334155;
+  --react-international-phone-country-selector-arrow-color: #94a3b8;
+  --react-international-phone-dropdown-item-background-color: #0f172a;
+  --react-international-phone-dropdown-item-text-color: #f8fafc;
+  --react-international-phone-dropdown-shadow: 0 10px 30px rgba(0, 0, 0, .5);
+  --react-international-phone-dropdown-item-dial-code-color: #94a3b8;
+  --react-international-phone-selected-dropdown-item-background-color: #1e293b;
+  --react-international-phone-selected-dropdown-item-text-color: #f8fafc;
+
+  /* ================================
+     SHADCN/UI VARIABLES (dark)
+     ================================ */
+  --background: #030712;
+  --foreground: #f8fafc;
+  --card: #0f172a;
+  --card-foreground: #f8fafc;
+  --popover: #0f172a;
+  --popover-foreground: #f8fafc;
+  --primary: #10b981;
+  --primary-foreground: #030712;
+  --secondary: #1e293b;
+  --secondary-foreground: #f8fafc;
+  --muted: #1e293b;
+  --muted-foreground: #94a3b8;
+  --accent: #1e293b;
+  --accent-foreground: #f8fafc;
+  --destructive: #ef4444;
+  --border: #1e293b;
+  --input: #334155;
+  --ring: #10b981;
+  --chart-1: #10b981;
+  --chart-2: #3b82f6;
+  --chart-3: #f59e0b;
+  --chart-4: #34d399;
+  --chart-5: #60a5fa;
+  --sidebar: #020617;
+  --sidebar-foreground: #94a3b8;
+  --sidebar-primary: #10b981;
+  --sidebar-primary-foreground: #030712;
+  --sidebar-accent: #0f172a;
+  --sidebar-accent-foreground: #f8fafc;
+  --sidebar-border: #1e293b;
+  --sidebar-ring: #10b981;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--ds-font-body);
+    background-image: radial-gradient(
+      var(--ds-dot-grid) 1px,
+      transparent 1px
+    );
+    background-size: 24px 24px;
+    background-position: 0 0;
+  }
+}
+
+/* ================================
+   DESIGN SYSTEM TYPOGRAPHY CLASSES
+   ================================ */
+
+/* Headings - Inter com tracking negativo (assinatura da marca) */
+.text-heading-1 {
+  font-family: var(--ds-font-display);
+  font-size: var(--ds-text-4xl);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+  color: var(--ds-text-primary);
+}
+
+.text-heading-2 {
+  font-family: var(--ds-font-display);
+  font-size: var(--ds-text-3xl);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+  color: var(--ds-text-primary);
+}
+
+.text-heading-3 {
+  font-family: var(--ds-font-display);
+  font-size: var(--ds-text-2xl);
+  font-weight: 600;
+  line-height: 1.375;
+  color: var(--ds-text-primary);
+}
+
+.text-heading-4 {
+  font-family: var(--ds-font-display);
+  font-size: var(--ds-text-xl);
+  font-weight: 600;
+  line-height: 1.375;
+  color: var(--ds-text-primary);
+}
+
+/* Body text */
+.text-body {
+  font-family: var(--ds-font-body);
+  font-size: var(--ds-text-base);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--ds-text-primary);
+}
+
+.text-body-sm {
+  font-family: var(--ds-font-body);
+  font-size: var(--ds-text-sm);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--ds-text-secondary);
+}
+
+/* Labels */
+.text-label {
+  font-family: var(--ds-font-body);
+  font-size: var(--ds-text-sm);
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--ds-text-primary);
+}
+
+.text-label-sm {
+  font-family: var(--ds-font-body);
+  font-size: var(--ds-text-xs);
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 0.025em;
+  color: var(--ds-text-secondary);
+}
+
+/* Captions */
+.text-caption {
+  font-family: var(--ds-font-body);
+  font-size: var(--ds-text-xs);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--ds-text-muted);
+}
+
+/* Stats (dashboard numbers) */
+.text-stat {
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-4xl);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.025em;
+  color: var(--ds-text-primary);
+}
+
+.text-stat-label {
+  font-family: var(--ds-font-body);
+  font-size: var(--ds-text-xs);
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+  color: var(--ds-text-muted);
+}
+
+/* Overline */
+.text-overline {
+  font-family: var(--ds-font-body);
+  font-size: var(--ds-text-xs);
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ds-text-secondary);
+}
+
+/* Code */
+.text-code {
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-sm);
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+/* ================================
+   DESIGN SYSTEM CONTAINER CLASSES
+   ================================ */
+
+.ds-container {
+  background-color: var(--ds-bg-elevated);
+  border: 1px solid var(--ds-border-default);
+  border-radius: var(--ds-radius-xl);
+  box-shadow: var(--ds-shadow-card);
+  transition: var(--ds-transition-normal);
+}
+
+.ds-container-hover:hover {
+  box-shadow: var(--ds-shadow-card-hover);
+  border-color: var(--ds-border-strong);
+}
+
+.ds-container-glass {
+  background-color: var(--ds-bg-glass);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--ds-border-subtle);
+  border-radius: var(--ds-radius-xl);
+  box-shadow: var(--ds-shadow-card);
+}
+
+.ds-container-elevated {
+  background-color: var(--ds-bg-surface);
+  border: 1px solid var(--ds-border-default);
+  border-radius: var(--ds-radius-xl);
+  box-shadow: var(--ds-shadow-md);
+}
+
+/* ================================
+   PREMIUM DESIGN UTILITIES
+   ================================ */
+
+/* Glass header — backdrop blur premium */
+.ds-glass-header {
+  background: var(--ds-bg-glass-header);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--ds-border-subtle);
+}
+
+/* Hero gradient card — emerald brand gradient */
+.ds-gradient-hero {
+  background: linear-gradient(135deg,
+    var(--color-primary-800) 0%,
+    var(--color-primary-700) 40%,
+    var(--color-primary-900) 100%
+  );
+  border: 1px solid var(--color-primary-600);
+  border-radius: var(--ds-radius-2xl);
+  box-shadow: var(--ds-shadow-xl);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Hero gradient card — indigo secondary variant (accent raro) */
+
+/* Stat card premium */
+.ds-stat-card {
+  background-color: var(--ds-bg-elevated);
+  border: 1px solid var(--ds-border-default);
+  border-radius: var(--ds-radius-2xl);
+  box-shadow: var(--ds-shadow-lg);
+  transition: var(--ds-transition-normal);
+}
+
+.ds-stat-card:hover {
+  box-shadow: var(--ds-shadow-xl);
+  border-color: var(--ds-border-strong);
+}
+
+/* Premium table wrapper */
+.ds-table-wrapper {
+  background-color: var(--ds-bg-elevated);
+  border: 1px solid var(--ds-border-default);
+  border-radius: 1.5rem;
+  box-shadow: var(--ds-shadow-xl);
+  overflow: hidden;
+}
+
+/* Filter pill active/inactive */
+.ds-pill {
+  padding: 0.625rem 1.5rem;
+  border-radius: var(--ds-radius-full);
+  font-size: var(--ds-text-xs);
+  font-weight: 700;
+  white-space: nowrap;
+  transition: var(--ds-transition-fast);
+}
+
+.ds-pill-active {
+  background-color: var(--color-primary-600);
+  color: white;
+  box-shadow: 0 4px 12px -2px rgba(16, 185, 129, 0.3);
+}
+
+.ds-pill-inactive {
+  background-color: var(--ds-bg-elevated);
+  border: 1px solid var(--ds-border-default);
+  color: var(--ds-text-secondary);
+}
+
+.ds-pill-inactive:hover {
+  color: var(--ds-text-primary);
+  background-color: var(--ds-bg-surface);
+}
+
+/* Premium badge — uppercase tracking with border */
+.ds-badge-premium {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.025em;
+  border-radius: var(--ds-radius-full);
+}
+
+/* Ghost icon decorative background (for hero cards) */
+.ds-ghost-icon {
+  position: absolute;
+  right: -10px;
+  bottom: -10px;
+  opacity: 0.08;
+  font-size: 200px;
+  transition: transform 700ms cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+.group:hover .ds-ghost-icon {
+  transform: scale(1.1);
+}
+
+/* ================================
+   BLADE RUNNER INSTALLER THEME
+   ================================ */
+
+/* Paleta do install wizard ("boot room") — re-mapeada para o brand emerald Dispara */
+:root {
+  /* Primary neon colors */
+  --br-neon-cyan: #10b981;
+  --br-neon-magenta: #34d399;
+  --br-neon-orange: #f59e0b;
+  --br-neon-pink: #ef4444;
+
+  /* Backgrounds */
+  --br-void-black: #030712;
+  --br-deep-navy: #0f172a;
+  --br-dark-teal: #0f172a;
+
+  /* Text */
+  --br-hologram-white: #f8fafc;
+  --br-muted-cyan: #94a3b8;
+  --br-dust-gray: #64748b;
+
+  /* Glow effects */
+  --br-glow-cyan: 0 0 5px rgba(16, 185, 129, 0.5), 0 0 20px rgba(16, 185, 129, 0.3), 0 0 40px rgba(16, 185, 129, 0.1);
+  --br-glow-magenta: 0 0 5px rgba(52, 211, 153, 0.5), 0 0 20px rgba(52, 211, 153, 0.3), 0 0 40px rgba(52, 211, 153, 0.1);
+  --br-glow-orange: 0 0 5px rgba(245, 158, 11, 0.5), 0 0 20px rgba(245, 158, 11, 0.3);
+}
+
+/* Scoped class para ativar tema no container */
+.blade-runner {
+  color-scheme: dark;
+}
+
+/* ============================================================
+   Fundo corporativo do install wizard
+   (substitui a antiga "chuva matrix" — visual sóbrio, on-brand:
+   grade sutil + auroras emerald com deriva lenta + vinheta)
+   ============================================================ */
+.corp-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Grade técnica discreta, com fade radial para as bordas sumirem */
+.corp-grid {
+  position: absolute;
+  inset: -2px;
+  background-image:
+    linear-gradient(to right, rgba(148, 163, 184, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(148, 163, 184, 0.05) 1px, transparent 1px);
+  background-size: 48px 48px;
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 38%, #000 28%, transparent 100%);
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 38%, #000 28%, transparent 100%);
+}
+
+/* Auroras emerald: blobs desfocados que derivam devagar (respiração) */
+.corp-aurora {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(90px);
+  opacity: 0.16;
+  will-change: transform, opacity;
+}
+.corp-aurora-1 {
+  width: 520px;
+  height: 520px;
+  margin-left: -260px;
+  top: -170px;
+  left: 50%;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.5), transparent 70%);
+  animation: corp-drift-1 26s ease-in-out infinite;
+}
+.corp-aurora-2 {
+  width: 440px;
+  height: 440px;
+  right: -80px;
+  bottom: -150px;
+  background: radial-gradient(circle, rgba(52, 211, 153, 0.35), transparent 70%);
+  animation: corp-drift-2 32s ease-in-out infinite;
+}
+.corp-aurora-3 {
+  width: 360px;
+  height: 360px;
+  left: -130px;
+  bottom: 8%;
+  background: radial-gradient(circle, rgba(13, 148, 136, 0.3), transparent 70%);
+  animation: corp-drift-3 30s ease-in-out infinite;
+}
+
+@keyframes corp-drift-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.14; }
+  50% { transform: translate(40px, 30px) scale(1.08); opacity: 0.2; }
+}
+@keyframes corp-drift-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.12; }
+  50% { transform: translate(-50px, -22px) scale(1.1); opacity: 0.18; }
+}
+@keyframes corp-drift-3 {
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.1; }
+  50% { transform: translate(28px, -30px) scale(1.06); opacity: 0.16; }
+}
+
+/* Vinheta suave para dar foco ao card central */
+.corp-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 100% 80% at 50% 40%, transparent 55%, rgba(3, 7, 18, 0.6) 100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .corp-aurora {
+    animation: none !important;
+  }
+}
+
+/* Neon glow text */
+.br-text-glow-cyan {
+  color: var(--br-neon-cyan);
+  text-shadow: 0 0 5px var(--br-neon-cyan), 0 0 10px var(--br-neon-cyan), 0 0 20px rgba(16, 185, 129, 0.5);
+}
+
+.br-text-glow-magenta {
+  color: var(--br-neon-magenta);
+  text-shadow: 0 0 5px var(--br-neon-magenta), 0 0 10px var(--br-neon-magenta), 0 0 20px rgba(52, 211, 153, 0.5);
+}
+
+/* Neon border glow */
+.br-border-glow-cyan {
+  border-color: var(--br-neon-cyan);
+  box-shadow: var(--br-glow-cyan);
+}
+
+.br-border-glow-magenta {
+  border-color: var(--br-neon-magenta);
+  box-shadow: var(--br-glow-magenta);
+}
+
+/* Voight-Kampff eye scanning animation */
+@keyframes br-eye-scan {
+  0%, 100% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(100%);
+  }
+}
+
+.br-eye-scan {
+  animation: br-eye-scan 2s ease-in-out infinite;
+}
+
+/* Pulse glow animation */
+@keyframes br-pulse-glow {
+  0%, 100% {
+    opacity: 0.5;
+    box-shadow: 0 0 5px var(--br-neon-cyan);
+  }
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 20px var(--br-neon-cyan), 0 0 40px rgba(16, 185, 129, 0.5);
+  }
+}
+
+.br-pulse-glow {
+  animation: br-pulse-glow 2s ease-in-out infinite;
+}
+
+/* Glitch effect for errors */
+@keyframes br-glitch {
+  0% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    transform: translate(-2px, -2px);
+  }
+  60% {
+    transform: translate(2px, 2px);
+  }
+  80% {
+    transform: translate(2px, -2px);
+  }
+  100% {
+    transform: translate(0);
+  }
+}
+
+.br-glitch {
+  animation: br-glitch 0.3s ease-in-out;
+}
+
+/* Terminal cursor blink */
+@keyframes br-cursor-blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.br-cursor {
+  animation: br-cursor-blink 1s step-end infinite;
+}
+
+/* Progress bar segments (not smooth) */
+.br-progress-segment {
+  background: linear-gradient(
+    90deg,
+    var(--br-neon-cyan) 0%,
+    var(--br-neon-cyan) 90%,
+    transparent 90%,
+    transparent 100%
+  );
+  background-size: 10px 100%;
+}
+
+/* Input focus transition */
+.br-input-focus {
+  transition: all 0.3s ease;
+}
+
+.br-input-focus:focus-within {
+  border-color: var(--br-neon-magenta);
+  box-shadow: 0 0 5px var(--br-neon-magenta), 0 0 15px rgba(52, 211, 153, 0.3);
+}
+
+/* Card with gradient border */
+.br-card {
+  background: linear-gradient(135deg, var(--br-deep-navy), var(--br-void-black));
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  position: relative;
+}
+
+.br-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, var(--br-neon-cyan), var(--br-neon-magenta));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* ================================
+   CHAT / INBOX ANIMATIONS
+   ================================ */
+
+/* Typing indicator animation */
+@keyframes typing-dot {
+  0%, 60%, 100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-4px);
+  }
+}
+
+.animate-typing-dot {
+  animation: typing-dot 1.4s ease-in-out infinite;
+}
+
+.animate-typing-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.animate-typing-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+/*
+ * Chat bubble styles are now inline Tailwind in MessageBubble.tsx
+ * Design: Editorial Minimal - clean, monochromatic, typography-focused
+ */

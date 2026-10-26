@@ -1,0 +1,980 @@
+openapi: 3.0.3
+
+info:
+  title: Dispara API
+  description: |
+    API de automação de marketing via WhatsApp.
+
+    ## Autenticação
+
+    Todas as rotas protegidas exigem autenticação via:
+    - **Session Cookie** (para navegador/UI)
+    - **Bearer Token**: `Authorization: Bearer {DISPARA_API_KEY}`
+    - **API Key Header**: `X-API-Key: {DISPARA_API_KEY}`
+
+    ## Rotas Públicas
+
+    As seguintes rotas NÃO exigem autenticação (fonte da verdade: `lib/route-policy.ts`):
+    - `POST /api/auth/login`, `POST /api/auth/logout`, `GET /api/auth/status` - Login/logout/status
+    - `GET /api/brand` - Marca (nome/logo/cor)
+    - `GET /api/health` - Health check (payload mínimo sem autenticação; completo para o dono)
+    - `/api/webhook` - Webhooks da Meta (assinatura X-Hub-Signature-256)
+    - `/api/public/lead-forms/{slug}` - Formulário público
+    - `/api/installer/*` - Setup inicial (só até a instalação; depois exige sessão ou DISPARA_ADMIN_KEY)
+  version: 1.0.0
+  contact:
+    name: Dispara
+  license:
+    name: Proprietary
+    url: https://dispara.app/license
+
+servers:
+  - url: http://localhost:3000
+    description: Desenvolvimento
+  - url: https://{domain}
+    description: Produção
+    variables:
+      domain:
+        default: seu-app.vercel.app
+
+tags:
+  - name: Auth
+    description: Autenticação e sessão
+  - name: Campaigns
+    description: Campanhas de marketing
+  - name: Contacts
+    description: Gerenciamento de contatos
+  - name: Templates
+    description: Templates do WhatsApp
+  - name: Inbox
+    description: Conversas e mensagens
+  - name: AI Agents
+    description: Agentes de IA
+  - name: Settings
+    description: Configurações
+  - name: System
+    description: Sistema e health
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Use DISPARA_API_KEY como token
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: Use DISPARA_API_KEY
+
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+        details:
+          type: object
+
+    Campaign:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        status:
+          type: string
+          enum: [Rascunho, Agendado, Enviando, Concluído, Pausado, Falhou, Cancelado]
+        templateName:
+          type: string
+        recipients:
+          type: integer
+        sent:
+          type: integer
+        delivered:
+          type: integer
+        read:
+          type: integer
+        failed:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        scheduledAt:
+          type: string
+          format: date-time
+          nullable: true
+        completedAt:
+          type: string
+          format: date-time
+          nullable: true
+
+    Contact:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        phone:
+          type: string
+          description: Formato E.164
+        email:
+          type: string
+          format: email
+          nullable: true
+        status:
+          type: string
+          enum: [Opt-in, Opt-out, Desconhecido]
+        tags:
+          type: array
+          items:
+            type: string
+        custom_fields:
+          type: object
+        createdAt:
+          type: string
+          format: date-time
+
+    Template:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        status:
+          type: string
+          enum: [APPROVED, PENDING, REJECTED]
+        category:
+          type: string
+          enum: [MARKETING, UTILITY, AUTHENTICATION]
+        language:
+          type: string
+        components:
+          type: array
+          items:
+            type: object
+
+    Conversation:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        phone:
+          type: string
+        status:
+          type: string
+          enum: [open, closed]
+        mode:
+          type: string
+          enum: [bot, human]
+        priority:
+          type: string
+          enum: [low, normal, high, urgent]
+        unread_count:
+          type: integer
+        last_message_at:
+          type: string
+          format: date-time
+
+    Message:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        direction:
+          type: string
+          enum: [inbound, outbound]
+        content:
+          type: string
+        message_type:
+          type: string
+          enum: [text, image, audio, video, document, template]
+        delivery_status:
+          type: string
+          enum: [pending, sent, delivered, read, failed]
+        created_at:
+          type: string
+          format: date-time
+
+    AIAgent:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        system_prompt:
+          type: string
+        model:
+          type: string
+        is_active:
+          type: boolean
+        handoff_enabled:
+          type: boolean
+
+security:
+  - BearerAuth: []
+  - ApiKeyAuth: []
+
+paths:
+  # ==================== AUTH ====================
+  /api/auth/login:
+    post:
+      tags: [Auth]
+      summary: Login
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [password]
+              properties:
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Login bem-sucedido
+        '401':
+          description: Senha incorreta
+
+  /api/auth/logout:
+    post:
+      tags: [Auth]
+      summary: Logout
+      description: >-
+        Encerra a sessão do dashboard (cookie dispara_session) e o cookie de atendente.
+        Proteção contra CSRF: só apaga cookies quando a request vem da própria origem
+        (Sec-Fetch-Site same-origin ou Origin igual ao host). Sem esses headers (ex.: curl),
+        só encerra quando o cookie de sessão enviado é válido.
+      security: []
+      responses:
+        '200':
+          description: >-
+            Logout realizado — ou nada a fazer (request sem headers de origem e sem
+            sessão válida: responde 200 sem Set-Cookie).
+        '403':
+          description: Origem não permitida (request cross-site); nenhum cookie é alterado.
+
+  /api/auth/status:
+    get:
+      tags: [Auth]
+      summary: Status da autenticação
+      security: []
+      responses:
+        '200':
+          description: Status
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  isConfigured:
+                    type: boolean
+                  isSetup:
+                    type: boolean
+                  isAuthenticated:
+                    type: boolean
+
+  # ==================== CAMPAIGNS ====================
+  /api/campaigns:
+    get:
+      tags: [Campaigns]
+      summary: Listar campanhas
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+        - name: status
+          in: query
+          schema:
+            type: string
+        - name: search
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Lista de campanhas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Campaign'
+        '401':
+          description: Não autenticado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    post:
+      tags: [Campaigns]
+      summary: Criar campanha
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, templateName]
+              properties:
+                name:
+                  type: string
+                templateName:
+                  type: string
+                scheduledAt:
+                  type: string
+                  format: date-time
+                contacts:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      phone:
+                        type: string
+                      name:
+                        type: string
+      responses:
+        '201':
+          description: Campanha criada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Campaign'
+
+  /api/campaigns/{id}:
+    get:
+      tags: [Campaigns]
+      summary: Obter campanha
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Detalhes da campanha
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Campaign'
+        '404':
+          description: Não encontrada
+
+    patch:
+      tags: [Campaigns]
+      summary: Atualizar campanha
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                status:
+                  type: string
+      responses:
+        '200':
+          description: Campanha atualizada
+
+    delete:
+      tags: [Campaigns]
+      summary: Deletar campanha
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Campanha deletada
+
+  # ==================== CONTACTS ====================
+  /api/contacts:
+    get:
+      tags: [Contacts]
+      summary: Listar contatos
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 10
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+        - name: search
+          in: query
+          schema:
+            type: string
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [Opt-in, Opt-out, Desconhecido]
+        - name: tag
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Lista de contatos
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  contacts:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Contact'
+                  total:
+                    type: integer
+
+    post:
+      tags: [Contacts]
+      summary: Criar contato
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, phone]
+              properties:
+                name:
+                  type: string
+                phone:
+                  type: string
+                email:
+                  type: string
+                status:
+                  type: string
+                  enum: [Opt-in, Opt-out, Desconhecido]
+                tags:
+                  type: array
+                  items:
+                    type: string
+                custom_fields:
+                  type: object
+      responses:
+        '201':
+          description: Contato criado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+
+  /api/contacts/{id}:
+    get:
+      tags: [Contacts]
+      summary: Obter contato
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Detalhes do contato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+
+    patch:
+      tags: [Contacts]
+      summary: Atualizar contato
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                phone:
+                  type: string
+                email:
+                  type: string
+                status:
+                  type: string
+                tags:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        '200':
+          description: Contato atualizado
+
+    delete:
+      tags: [Contacts]
+      summary: Deletar contato
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Contato deletado
+
+  /api/contacts/import:
+    post:
+      tags: [Contacts]
+      summary: Importar contatos em massa
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [contacts]
+              properties:
+                contacts:
+                  type: array
+                  maxItems: 10000
+                  items:
+                    type: object
+                    required: [name, phone]
+                    properties:
+                      name:
+                        type: string
+                      phone:
+                        type: string
+                      email:
+                        type: string
+                      tags:
+                        type: array
+                        items:
+                          type: string
+      responses:
+        '200':
+          description: Importação concluída
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  imported:
+                    type: integer
+                  skipped:
+                    type: integer
+                  errors:
+                    type: array
+                    items:
+                      type: object
+
+  # ==================== TEMPLATES ====================
+  /api/templates:
+    get:
+      tags: [Templates]
+      summary: Listar templates
+      responses:
+        '200':
+          description: Lista de templates
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Template'
+
+  /api/templates/{name}:
+    get:
+      tags: [Templates]
+      summary: Obter template por nome
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Template
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Template'
+
+  # ==================== INBOX ====================
+  /api/inbox/conversations:
+    get:
+      tags: [Inbox]
+      summary: Listar conversas
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [open, closed]
+        - name: mode
+          in: query
+          schema:
+            type: string
+            enum: [bot, human]
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+      responses:
+        '200':
+          description: Lista de conversas
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  conversations:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Conversation'
+                  total:
+                    type: integer
+
+  /api/inbox/conversations/{id}/messages:
+    get:
+      tags: [Inbox]
+      summary: Listar mensagens da conversa
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 50
+      responses:
+        '200':
+          description: Mensagens
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Message'
+
+    post:
+      tags: [Inbox]
+      summary: Enviar mensagem
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [content]
+              properties:
+                content:
+                  type: string
+                message_type:
+                  type: string
+                  enum: [text, template]
+                  default: text
+      responses:
+        '201':
+          description: Mensagem enviada
+
+  # ==================== AI AGENTS ====================
+  /api/ai-agents:
+    get:
+      tags: [AI Agents]
+      summary: Listar agentes
+      responses:
+        '200':
+          description: Lista de agentes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AIAgent'
+
+    post:
+      tags: [AI Agents]
+      summary: Criar agente
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, system_prompt]
+              properties:
+                name:
+                  type: string
+                system_prompt:
+                  type: string
+                model:
+                  type: string
+                  default: gemini-2.0-flash
+                temperature:
+                  type: number
+                  default: 0.7
+                is_active:
+                  type: boolean
+                  default: true
+                handoff_enabled:
+                  type: boolean
+                  default: true
+      responses:
+        '201':
+          description: Agente criado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AIAgent'
+
+  /api/ai-agents/{id}:
+    get:
+      tags: [AI Agents]
+      summary: Obter agente
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Agente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AIAgent'
+
+    patch:
+      tags: [AI Agents]
+      summary: Atualizar agente
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                system_prompt:
+                  type: string
+                model:
+                  type: string
+                is_active:
+                  type: boolean
+      responses:
+        '200':
+          description: Agente atualizado
+
+    delete:
+      tags: [AI Agents]
+      summary: Deletar agente
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Agente deletado
+
+  # ==================== SETTINGS ====================
+  /api/settings/all:
+    get:
+      tags: [Settings]
+      summary: Obter todas as configurações
+      responses:
+        '200':
+          description: Configurações
+          content:
+            application/json:
+              schema:
+                type: object
+
+  /api/settings/credentials:
+    get:
+      tags: [Settings]
+      summary: Obter credenciais WhatsApp
+      responses:
+        '200':
+          description: Credenciais
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  phoneNumberId:
+                    type: string
+                  businessAccountId:
+                    type: string
+                  isConnected:
+                    type: boolean
+
+    post:
+      tags: [Settings]
+      summary: Salvar credenciais WhatsApp
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [phoneNumberId, businessAccountId, accessToken]
+              properties:
+                phoneNumberId:
+                  type: string
+                businessAccountId:
+                  type: string
+                accessToken:
+                  type: string
+      responses:
+        '200':
+          description: Credenciais salvas
+
+  # ==================== SYSTEM ====================
+  /api/health:
+    get:
+      tags: [System]
+      summary: Health check
+      security: []
+      responses:
+        '200':
+          description: Sistema saudável
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  overall:
+                    type: string
+                    enum: [healthy, degraded, unhealthy]
+                  services:
+                    type: object
+                  timestamp:
+                    type: string
+                    format: date-time
+
+  /api/system:
+    get:
+      tags: [System]
+      summary: Informações do sistema
+      responses:
+        '200':
+          description: Info do sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  version:
+                    type: string
+                  environment:
+                    type: string
+
+  /api/webhook:
+    get:
+      tags: [System]
+      summary: Validação do webhook (Meta Challenge)
+      security: []
+      parameters:
+        - name: hub.mode
+          in: query
+          schema:
+            type: string
+        - name: hub.challenge
+          in: query
+          schema:
+            type: string
+        - name: hub.verify_token
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Challenge aceito
+        '403':
+          description: Token inválido
+
+    post:
+      tags: [System]
+      summary: Receber eventos da Meta
+      security: []
+      description: |
+        Webhook para receber mensagens e status de entrega da Meta.
+        Usa verificação HMAC-SHA256.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Evento processado

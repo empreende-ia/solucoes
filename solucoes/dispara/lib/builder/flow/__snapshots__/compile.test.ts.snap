@@ -1,0 +1,38 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`compileFlow — cenário principal (keywords → whatsapp → perguntar → condição → convergência → end) > snapshot da estrutura compilada (nodes + edges) 1`] = `
+{
+  "edges": [
+    "__trigger -> w1",
+    "ask -> ask__var",
+    "ask__cond_0 -> w2",
+    "ask__cond_1 -> cond__cond_0",
+    "ask__cond_1 -> cond__cond_none",
+    "ask__cond_else -> cond__cond_0",
+    "ask__cond_else -> cond__cond_none",
+    "ask__var -> ask__cond_0",
+    "ask__var -> ask__cond_1",
+    "ask__var -> ask__cond_else",
+    "cond__cond_0 -> w3",
+    "cond__cond_none -> w4",
+    "w1 -> ask",
+    "w2 -> cond__cond_0",
+    "w2 -> cond__cond_none",
+    "w3 -> w4",
+  ],
+  "nodes": [
+    "__trigger :: trigger",
+    "ask :: whatsapp/ask-question",
+    "ask__cond_0 :: Condition",
+    "ask__cond_1 :: Condition",
+    "ask__cond_else :: Condition",
+    "ask__var :: Get Variable",
+    "cond__cond_0 :: Condition",
+    "cond__cond_none :: Condition",
+    "w1 :: whatsapp/send-message",
+    "w2 :: whatsapp/send-message",
+    "w3 :: whatsapp/send-message",
+    "w4 :: whatsapp/send-message",
+  ],
+}
+`;

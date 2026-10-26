@@ -1,0 +1,306 @@
+'use client';
+
+import React, { useState, useEffect, useCallback } from 'react';
+import { Route, Info, Loader2, Check, ExternalLink, ChevronDown, AlertTriangle } from 'lucide-react';
+import { toast } from 'sonner';
+import { DEFAULT_AI_GATEWAY, type AiGatewayConfig } from '@/lib/ai/ai-center-defaults';
+
+// Modelos disponíveis para fallback no Gateway (baseados em providers.ts)
+const GATEWAY_FALLBACK_MODELS = [
+  { id: 'google/gemini-2.5-flash', name: 'Gemini 2.5 Flash', provider: 'Google' },
+  { id: 'google/gemini-2.5-pro', name: 'Gemini 2.5 Pro', provider: 'Google' },
+  { id: 'google/gemini-3-flash-preview', name: 'Gemini 3 Flash Preview', provider: 'Google' },
+  { id: 'openai/gpt-5', name: 'GPT-5', provider: 'OpenAI' },
+  { id: 'openai/gpt-5-mini', name: 'GPT-5 Mini', provider: 'OpenAI' },
+  { id: 'anthropic/claude-sonnet-4-5', name: 'Claude Sonnet 4.5', provider: 'Anthropic' },
+  { id: 'anthropic/claude-haiku-4-5', name: 'Claude Haiku 4.5', provider: 'Anthropic' },
+];
+
+/**
+ * AIGatewayPanel - Configuração do Vercel AI Gateway
+ *
+ * O AI Gateway usa autenticação OIDC automática - não requer API key manual.
+ * - Em produção (Vercel): token é injetado automaticamente
+ * - Local: requer `vercel dev` ou `vercel env pull`
+ */
+export function AIGatewayPanel() {
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [config, setConfig] = useState<AiGatewayConfig>(DEFAULT_AI_GATEWAY);
+  const [showFallbackConfig, setShowFallbackConfig] = useState(false);
+
+  const fetchConfig = useCallback(async () => {
+    try {
+      setLoading(true);
+      const res = await fetch('/api/settings/ai');
+      const data = await res.json();
+
+      if (data.gateway) {
+        setConfig(data.gateway);
+      }
+    } catch (error) {
+      console.error('Error fetching AI Gateway config:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchConfig();
+  }, [fetchConfig]);
+
+  const handleSaveConfig = async (updates: Partial<AiGatewayConfig>) => {
+    setSaving(true);
+    try {
+      const newConfig = { ...config, ...updates };
+
+      const res = await fetch('/api/settings/ai', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ gateway: newConfig }),
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        setConfig(newConfig);
+        toast.success('Configuração salva!');
+        return true;
+      } else {
+        toast.error(data.error || 'Erro ao salvar');
+        return false;
+      }
+    } catch (error) {
+      console.error('Error saving AI Gateway config:', error);
+      toast.error('Erro ao salvar configuração');
+      return false;
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleToggle = async (enabled: boolean) => {
+    // Se habilitando o Gateway, desativa o Helicone automaticamente
+    if (enabled) {
+      try {
+        await fetch('/api/settings/helicone', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ enabled: false }),
+        });
+      } catch (error) {
+        console.error('Error disabling Helicone:', error);
+      }
+    }
+
+    await handleSaveConfig({ enabled });
+  };
+
+  const handleToggleFallbackModel = (modelId: string) => {
+    const currentModels = config.fallbackModels || [];
+    const newModels = currentModels.includes(modelId)
+      ? currentModels.filter((m) => m !== modelId)
+      : [...currentModels, modelId];
+
+    handleSaveConfig({ fallbackModels: newModels });
+  };
+
+  if (loading) {
+    return (
+      <section className="glass-panel rounded-2xl p-6">
+        <div className="flex items-center gap-2 text-[var(--ds-text-muted)]">
+          <Loader2 size={16} className="animate-spin" />
+          <span className="text-sm">Carregando...</span>
+        </div>
+      </section>
+    );
+  }
+
+  return (
+    <section className="glass-panel rounded-2xl p-6">
+      {/* Header */}
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <div className="space-y-1">
+          <div className="flex items-center gap-2 text-sm font-semibold text-[var(--ds-text-primary)]">
+            <Route className="size-4 text-violet-400" />
+            AI Gateway (Vercel)
+          </div>
+          <p className="text-sm text-[var(--ds-text-secondary)]">
+            Roteamento inteligente com fallbacks automáticos entre providers.
+          </p>
+        </div>
+
+        {/* Toggle */}
+        <div className="flex items-center gap-3">
+          {config.enabled && (
+            <span className="rounded-full bg-violet-500/20 px-2.5 py-1 text-xs font-medium text-violet-300">
+              Ativo
+            </span>
+          )}
+          <button
+            type="button"
+            role="switch"
+            aria-checked={config.enabled}
+            aria-label="Habilitar AI Gateway"
+            disabled={saving}
+            onClick={() => handleToggle(!config.enabled)}
+            className={`relative inline-flex h-6 w-11 items-center rounded-full border transition ${
+              config.enabled
+                ? 'border-violet-500/40 bg-violet-500/20'
+                : 'border-[var(--ds-border-default)] bg-[var(--ds-bg-hover)]'
+            } ${saving ? 'cursor-not-allowed opacity-60' : ''}`}
+          >
+            <span
+              className={`inline-block size-4 rounded-full transition ${
+                config.enabled ? 'translate-x-6 bg-violet-300' : 'translate-x-1 bg-[var(--ds-text-muted)]'
+              }`}
+            />
+          </button>
+        </div>
+      </div>
+
+      {/* Config Status / API Key Input */}
+      <div className="mt-5 space-y-4">
+        {/* Aviso sobre autenticação OIDC */}
+        <div className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-4">
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="size-5 shrink-0 text-amber-400 mt-0.5" />
+            <div className="text-sm">
+              <div className="font-medium text-amber-200">Autenticação Automática (OIDC)</div>
+              <p className="text-amber-300/70 mt-1 text-xs leading-relaxed">
+                O AI Gateway usa autenticação OIDC gerenciada automaticamente pela Vercel.
+                <strong className="block mt-1">Em produção:</strong> Token injetado automaticamente.
+                <strong className="block mt-1">Desenvolvimento local:</strong> Use <code className="bg-amber-500/20 px-1.5 py-0.5 rounded">vercel dev</code> ou execute <code className="bg-amber-500/20 px-1.5 py-0.5 rounded">vercel env pull</code>.
+              </p>
+              <a
+                href="https://vercel.com/docs/ai-gateway"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 text-amber-400 hover:text-amber-300 mt-2 text-xs font-medium hover:underline"
+              >
+                Ver documentação <ExternalLink size={12} />
+              </a>
+            </div>
+          </div>
+        </div>
+
+        {/* BYOK Toggle */}
+        <div className="rounded-xl border border-[var(--ds-border-default)] bg-[var(--ds-bg-elevated)] p-4">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <div className="text-sm font-medium text-[var(--ds-text-primary)]">Usar suas chaves (BYOK)</div>
+              <div className="text-xs text-[var(--ds-text-muted)] mt-0.5">
+                Usa as chaves dos providers já configuradas no Dispara
+              </div>
+            </div>
+            <button
+              type="button"
+              role="switch"
+              aria-checked={config.useBYOK}
+              aria-label="Usar BYOK"
+              disabled={saving}
+              onClick={() => handleSaveConfig({ useBYOK: !config.useBYOK })}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full border transition ${
+                config.useBYOK
+                  ? 'border-primary-500/40 bg-primary-500/20'
+                  : 'border-[var(--ds-border-default)] bg-[var(--ds-bg-hover)]'
+              } ${saving ? 'cursor-not-allowed opacity-60' : ''}`}
+            >
+              <span
+                className={`inline-block size-4 rounded-full transition ${
+                  config.useBYOK ? 'translate-x-6 bg-primary-300' : 'translate-x-1 bg-[var(--ds-text-muted)]'
+                }`}
+              />
+            </button>
+          </div>
+        </div>
+
+        {/* Fallback Models Configuration */}
+        {config.enabled && (
+          <div className="rounded-xl border border-[var(--ds-border-default)] bg-[var(--ds-bg-elevated)] p-4">
+            <button
+              type="button"
+              onClick={() => setShowFallbackConfig(!showFallbackConfig)}
+              className="flex w-full items-center justify-between"
+            >
+              <div>
+                <div className="text-sm font-medium text-[var(--ds-text-primary)] text-left">Modelos de Fallback</div>
+                <div className="text-xs text-[var(--ds-text-muted)] mt-0.5 text-left">
+                  {config.fallbackModels?.length || 0} modelos selecionados
+                </div>
+              </div>
+              <ChevronDown
+                className={`size-4 text-[var(--ds-text-muted)] transition-transform ${
+                  showFallbackConfig ? 'rotate-180' : ''
+                }`}
+              />
+            </button>
+
+            {showFallbackConfig && (
+              <div className="mt-4 space-y-2 border-t border-[var(--ds-border-subtle)] pt-4">
+                <p className="text-xs text-[var(--ds-text-secondary)] mb-3">
+                  Selecione os modelos que serão usados como fallback quando o modelo primário falhar.
+                </p>
+
+                {GATEWAY_FALLBACK_MODELS.map((model) => {
+                  const isSelected = config.fallbackModels?.includes(model.id);
+                  return (
+                    <button
+                      key={model.id}
+                      type="button"
+                      onClick={() => handleToggleFallbackModel(model.id)}
+                      disabled={saving}
+                      className={`flex w-full items-center justify-between rounded-lg border p-3 transition ${
+                        isSelected
+                          ? 'border-violet-500/30 bg-violet-500/10'
+                          : 'border-[var(--ds-border-default)] bg-[var(--ds-bg-surface)] hover:bg-[var(--ds-bg-hover)]'
+                      } ${saving ? 'opacity-60' : ''}`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div
+                          className={`flex size-5 items-center justify-center rounded border transition ${
+                            isSelected
+                              ? 'border-violet-500 bg-violet-500'
+                              : 'border-[var(--ds-border-default)] bg-[var(--ds-bg-surface)]'
+                          }`}
+                        >
+                          {isSelected && <Check size={12} className="text-white" />}
+                        </div>
+                        <div className="text-left">
+                          <div className="text-sm text-[var(--ds-text-primary)]">{model.name}</div>
+                          <div className="text-xs text-[var(--ds-text-muted)]">{model.provider}</div>
+                        </div>
+                      </div>
+                      <code className="text-xs text-[var(--ds-text-muted)] bg-[var(--ds-bg-hover)] px-2 py-0.5 rounded">
+                        {model.id}
+                      </code>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Benefits info */}
+        {config.enabled && (
+          <div className="flex items-start gap-2 rounded-lg border border-[var(--ds-border-subtle)] bg-[var(--ds-bg-tertiary)] p-3 text-xs text-[var(--ds-text-secondary)]">
+            <Info className="mt-0.5 size-4 shrink-0 text-violet-300/60" />
+            <div>
+              <p>Com o AI Gateway ativo, você tem:</p>
+              <ul className="mt-1 space-y-0.5 text-[var(--ds-text-muted)]">
+                <li>• Fallbacks automáticos entre providers</li>
+                <li>• Roteamento inteligente baseado em latência</li>
+                <li>• Observability centralizada no dashboard Vercel</li>
+                <li>• Suporte a BYOK (suas chaves existentes)</li>
+              </ul>
+              <p className="mt-2 text-amber-300/80">
+                <strong>Nota:</strong> Gateway e Helicone são mutuamente exclusivos. Ativar um desativa o outro automaticamente.
+              </p>
+            </div>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}

@@ -8,5 +8,6 @@ Repositório guarda-chuva das soluções da Empreende.IA. Cada solução vive em
 | --- | --- | --- |
 | [`solucoes/lara-empreende-ia`](solucoes/lara-empreende-ia) | Lara — SDR com IA da Empreende.IA (WhatsApp + Instagram via Zernio) | [henriquegabriel-ia/lara-empreende-ia](https://github.com/henriquegabriel-ia/lara-empreende-ia) |
 | [`solucoes/crm-empreende-ia`](solucoes/crm-empreende-ia) | CRM comercial multissegmento da Empreende.IA (React + Supabase) | [henriquegabriel-ia/crm-empreende-ia](https://github.com/henriquegabriel-ia/crm-empreende-ia) |
+| [`solucoes/dispara`](solucoes/dispara) | Dispara — SaaS de disparos e automação via WhatsApp API Oficial (Next.js + Supabase) | [henriquegabriel-ia/dispara](https://github.com/henriquegabriel-ia/dispara) |
 
 Os arquivos de cada solução foram copiados do estado atual do repositório de origem (sem histórico de commits).

@@ -2,6 +2,8 @@
 
 Data: 06/09/2026.
 
+> Documento histórico. As próximas entregas citadas aqui foram concluídas; consulte [STATUS-E-ROADMAP.md](STATUS-E-ROADMAP.md).
+
 ## Implementado
 
 - Assets oficiais do DS V2: logos, ícone, Manrope com licença e arte de vidro.

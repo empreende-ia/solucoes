@@ -237,6 +237,8 @@ Enquanto essas decisões não estiverem fechadas, o redesign pode seguir e a ori
 
 ## 9. Referências locais
 
+> Os links abaixo apontam para o diretório de trabalho original e para o projeto Lara, fora deste repositório. O código do CRM citado foi arquivado em `docs/legacy/`.
+
 ### CRM — evidências da inspeção
 
 - [Rotas ativas](</Users/henriquegabriel/Documents/ChatGPT/CRM - Empreende IA/src/App.tsx>).

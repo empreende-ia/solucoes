@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>CRM Empreende IA</title>
+<style>
+@font-face { font-family: 'Manrope'; src: url(img/Manrope-Variable.ttf) format('truetype'); font-weight: 200 800; }
+@page { size: 1920px 1080px; margin: 0; }
+:root {
+  --bg: #080a09; --surface: #111613; --raised: #1b221e;
+  --text: #f6f7f6; --muted: #b4bdb7; --subtle: #929f96;
+  --accent: #0fa968; --accent-bright: #65dfab; --accent-text: #8de7bb;
+  --border: rgba(255,255,255,.11); --border-strong: rgba(255,255,255,.18);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--bg); }
+body { font-family: 'Manrope', Arial, sans-serif; color: var(--text); font-weight: 450; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.slide {
+  width: 1920px; height: 1080px; position: relative; overflow: hidden; page-break-after: always;
+  padding: 104px 128px; display: flex; flex-direction: column;
+  background:
+    radial-gradient(900px 600px at 88% -10%, rgba(15,169,104,.16), transparent 60%),
+    radial-gradient(700px 500px at -5% 110%, rgba(101,223,171,.07), transparent 60%),
+    var(--bg);
+}
+.slide:last-child { page-break-after: auto; }
+.logo { height: 44px; width: auto; align-self: flex-start; }
+.top { display: flex; justify-content: space-between; align-items: center; }
+.pg { color: var(--subtle); font-size: 22px; font-weight: 550; letter-spacing: .02em; }
+.eyebrow { color: var(--accent-text); font-size: 22px; font-weight: 650; letter-spacing: .14em; text-transform: uppercase; margin-bottom: 28px; }
+h1 { font-size: 132px; line-height: 1.02; letter-spacing: -0.05em; font-weight: 750; }
+h2 { font-size: 76px; line-height: 1.06; letter-spacing: -0.045em; font-weight: 700; max-width: 1640px; }
+h3 { font-size: 34px; letter-spacing: -0.02em; font-weight: 650; margin-bottom: 14px; }
+p.lead { font-size: 34px; line-height: 1.45; color: var(--muted); max-width: 1180px; margin-top: 36px; }
+p { font-size: 25px; line-height: 1.55; color: var(--muted); }
+.accent { color: var(--accent-bright); }
+.glass {
+  background: linear-gradient(180deg, rgba(255,255,255,.075), rgba(255,255,255,.025));
+  border: 1px solid var(--border); border-radius: 28px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.12), 0 30px 80px rgba(0,0,0,.45);
+}
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: auto; }
+.grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 64px; }
+.card { padding: 44px; }
+.card .n { font-size: 22px; font-weight: 650; color: var(--accent-text); margin-bottom: 22px; letter-spacing: .08em; }
+.small { padding: 30px 32px; }
+.small h3 { font-size: 27px; margin-bottom: 8px; }
+.small p { font-size: 21px; line-height: 1.45; }
+
+/* capa */
+.cover { padding: 0; }
+.cover .art { position: absolute; inset: 0; background: url(img/empreende-glass-hero.jpg) center/cover; opacity: .9; }
+.cover .fade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(8,10,9,.97) 0%, rgba(8,10,9,.88) 42%, rgba(8,10,9,.2) 75%, rgba(8,10,9,.05)); }
+.cover .inner { position: relative; padding: 104px 128px; height: 100%; display: flex; flex-direction: column; }
+.cover .body { margin-top: auto; margin-bottom: auto; }
+.pill { display: inline-flex; gap: 12px; align-items: center; padding: 12px 24px; border-radius: 999px; border: 1px solid var(--border-strong); background: rgba(255,255,255,.06); font-size: 22px; font-weight: 550; color: var(--muted); }
+.dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent-bright); }
+
+/* tela + texto */
+.split { display: grid; grid-template-columns: 560px 1fr; gap: 80px; margin-top: 64px; flex: 1; align-items: center; }
+.split h2 { font-size: 64px; }
+.shot { padding: 14px; border-radius: 30px; }
+.shot img { display: block; width: 100%; border-radius: 18px; }
+ul.points { list-style: none; margin-top: 40px; }
+ul.points li { font-size: 25px; line-height: 1.45; color: var(--muted); padding: 18px 0 18px 44px; position: relative; border-top: 1px solid var(--border); }
+ul.points li::before { content: ''; position: absolute; left: 4px; top: 28px; width: 14px; height: 14px; border-radius: 4px; background: var(--accent); }
+ul.points li b { color: var(--text); font-weight: 650; }
+
+/* problema */
+.problems { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: auto; }
+.problems .card h3 { font-size: 36px; }
+.quote { font-size: 30px; color: var(--text); font-weight: 550; margin-bottom: 18px; }
+
+.tag { display: inline-block; font-size: 18px; font-weight: 650; letter-spacing: .06em; text-transform: uppercase; padding: 8px 14px; border-radius: 999px; margin-bottom: 20px; }
+.tag.on { color: var(--accent-text); background: rgba(15,169,104,.14); border: 1px solid rgba(101,223,171,.3); }
+.tag.next { color: #f1ce87; background: rgba(241,206,135,.1); border: 1px solid rgba(241,206,135,.28); }
+
+.steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: auto; }
+.steps .card { padding: 40px 36px; }
+.steps .num { font-size: 72px; font-weight: 750; letter-spacing: -0.05em; color: var(--accent-bright); line-height: 1; margin-bottom: 28px; }
+
+.final { justify-content: center; }
+.final h2 { font-size: 104px; max-width: 1500px; }
+</style>
+</head>
+<body>
+
+<!-- 1 · capa -->
+<section class="slide cover">
+  <div class="art"></div><div class="fade"></div>
+  <div class="inner">
+    <img class="logo" src="img/eia-light.svg" alt="Empreende.IA">
+    <div class="body">
+      <span class="pill"><span class="dot"></span>Solução Empreende.IA</span>
+      <h1 style="margin-top:40px">CRM<br>Empreende IA</h1>
+      <p class="lead">Cada relacionamento com um próximo passo, um responsável e um prazo. Para equipes comerciais de qualquer segmento.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 2 · problema -->
+<section class="slide">
+  <div class="top"><img class="logo" src="img/eia-light.svg" alt="Empreende.IA"><span class="pg">02</span></div>
+  <div style="margin-top:96px">
+    <div class="eyebrow">O problema</div>
+    <h2>Venda perdida raramente é um “não”. Quase sempre é um retorno que ninguém fez.</h2>
+  </div>
+  <div class="problems">
+    <div class="glass card"><p class="quote">“Quem ficou de ligar pra ele?”</p><p>Clientes espalhados em planilha, WhatsApp e memória. Ninguém sabe o responsável nem o histórico.</p></div>
+    <div class="glass card"><p class="quote">“Esqueci de voltar.”</p><p>Sem próxima ação com prazo, oportunidades esfriam em silêncio e só aparecem quando já é tarde.</p></div>
+    <div class="glass card"><p class="quote">“Quanto vamos fechar?”</p><p>Previsão no achismo: valor em negociação, venda ganha e dinheiro recebido viram o mesmo número.</p></div>
+  </div>
+</section>
+
+<!-- 3 · solução -->
+<section class="slide">
+  <div class="top"><img class="logo" src="img/eia-light.svg" alt="Empreende.IA"><span class="pg">03</span></div>
+  <div style="margin-top:96px">
+    <div class="eyebrow">A solução</div>
+    <h2>Um CRM que responde todo dia: <span class="accent">o que fazer agora, com quem e até quando.</span></h2>
+  </div>
+  <div class="grid3">
+    <div class="glass card"><div class="n">01 · ROTINA</div><h3>Hoje, sem ruído</h3><p>Tarefas, reuniões e uma fila de atenção que explica por que cada item está ali.</p></div>
+    <div class="glass card"><div class="n">02 · RELACIONAMENTO</div><h3>Contexto completo</h3><p>Ficha 360 de cada contato e empresa: dados, oportunidades, histórico e próxima ação.</p></div>
+    <div class="glass card"><div class="n">03 · RESULTADO</div><h3>Números honestos</h3><p>Pipeline com previsão ponderada separada de venda ganha e de recebimento.</p></div>
+  </div>
+</section>
+
+<!-- 4 · Hoje -->
+<section class="slide">
+  <div class="top"><img class="logo" src="img/eia-light.svg" alt="Empreende.IA"><span class="pg">04</span></div>
+  <div class="split">
+    <div>
+      <div class="eyebrow">Hoje</div>
+      <h2>A equipe abre o CRM e já sabe por onde começar.</h2>
+      <ul class="points">
+        <li><b>Para hoje, vencidas e sem prazo</b> em um só painel</li>
+        <li><b>Fila de atenção</b> com o motivo de cada alerta</li>
+        <li>Concluir ou reagendar em <b>um clique</b></li>
+      </ul>
+    </div>
+    <div class="glass shot"><img src="img/hoje.png" alt="Tela Hoje"></div>
+  </div>
+</section>
+
+<!-- 5 · Ficha 360 -->
+<section class="slide">
+  <div class="top"><img class="logo" src="img/eia-light.svg" alt="Empreende.IA"><span class="pg">05</span></div>
+  <div class="split">
+    <div>
+      <div class="eyebrow">Relacionamento 360</div>
+      <h2>Tudo sobre o cliente em uma ficha.</h2>
+      <ul class="points">
+        <li><b>Próxima ação</b> sempre visível, com responsável e prazo</li>
+        <li><b>Histórico</b> de tarefas, reuniões, ligações e notas</li>
+        <li>Busca, filtros e <b>visões salvas</b> por pessoa</li>
+      </ul>
+    </div>
+    <div class="glass shot"><img src="img/ficha.png" alt="Ficha 360 do contato"></div>
+  </div>
+</section>
+
+<!-- 6 · Pipeline -->
+<section class="slide">
+  <div class="top"><img class="logo" src="img/eia-light.svg" alt="Empreende.IA"><span class="pg">06</span></div>
+  <div class="split">
+    <div>
+      <div class="eyebrow">Pipeline</div>
+      <h2>Funil do seu jeito, previsão sem achismo.</h2>
+      <ul class="points">
+        <li><b>Funis e etapas</b> configuráveis para cada operação</li>
+        <li>Arraste ou mova pelo menu, com <b>histórico</b> de cada etapa</li>
+        <li><b>Valor em aberto, previsão e ganho</b> sempre separados</li>
+      </ul>
+    </div>
+    <div class="glass shot"><img src="img/pipeline.png" alt="Pipeline comercial"></div>
+  </div>
+</section>
+
+<!-- 7 · Copiloto -->
+<section class="slide">
+  <div class="top"><img class="logo" src="img/eia-light.svg" alt="Empreende.IA"><span class="pg">07</span></div>
+  <div class="split">
+    <div>
+      <div class="eyebrow">Copiloto de rotina</div>
+      <h2>Pergunte o que priorizar. Veja de onde vem a resposta.</h2>
+      <ul class="points">
+        <li>Cada análise aponta o <b>registro de origem</b></li>
+        <li>Diz claramente <b>o que não está confirmado</b></li>
+        <li>Sugere a próxima atividade; <b>nada é gravado sem revisão</b></li>
+      </ul>
+    </div>
+    <div class="glass shot"><img src="img/copiloto.png" alt="Copiloto de rotina"></div>
+  </div>
+</section>
+
+<!-- 8 · módulos -->
+<section class="slide">
+  <div class="top"><img class="logo" src="img/eia-light.svg" alt="Empreende.IA"><span class="pg">08</span></div>
+  <div style="margin-top:80px">
+    <div class="eyebrow">Tudo em um lugar</div>
+    <h2>Da primeira conversa ao recebimento.</h2>
+  </div>
+  <div class="grid4">
+    <div class="glass small"><h3>Contatos e empresas</h3><p>Cadastro, ficha 360 e visões salvas</p></div>
+    <div class="glass small"><h3>Pipeline</h3><p>Funis, etapas, ganho e perda com regras</p></div>
+    <div class="glass small"><h3>Agenda</h3><p>Visões diária e semanal das reuniões</p></div>
+    <div class="glass small"><h3>Atividades e tarefas</h3><p>Responsável, prazo, conclusão e reagendamento</p></div>
+    <div class="glass small"><h3>Financeiro</h3><p>Recebimentos pendentes, pagos e cancelados</p></div>
+    <div class="glass small"><h3>Relatórios</h3><p>Funil, previsão ponderada e exportação</p></div>
+    <div class="glass small"><h3>Automações</h3><p>Tarefas criadas por eventos do funil</p></div>
+    <div class="glass small"><h3>Templates</h3><p>Modelos de mensagens para a equipe</p></div>
+    <div class="glass small"><h3>Importação CSV</h3><p>Prévia, checagem de duplicidade e confirmação</p></div>
+    <div class="glass small"><h3>Exportação de agenda</h3><p>Reuniões em ICS para Google e Outlook</p></div>
+    <div class="glass small"><h3>Tours guiados</h3><p>Oito tours com pausa e retomada</p></div>
+    <div class="glass small"><h3>Claro, escuro e celular</h3><p>Funciona do desktop à tela de 320 px</p></div>
+  </div>
+</section>
+
+<!-- 9 · segurança -->
+<section class="slide">
+  <div class="top"><img class="logo" src="img/eia-light.svg" alt="Empreende.IA"><span class="pg">09</span></div>
+  <div style="margin-top:96px">
+    <div class="eyebrow">Equipe e segurança</div>
+    <h2>Cada pessoa vê e faz o que o papel dela permite.</h2>
+  </div>
+  <div class="grid3">
+    <div class="glass card"><div class="n">PAPÉIS</div><h3>Dono, colaborador e leitura</h3><p>Administradores configuram, colaboradores trabalham os registros e a leitura consulta sem alterar.</p></div>
+    <div class="glass card"><div class="n">ISOLAMENTO</div><h3>Dados protegidos no banco</h3><p>Cada empresa em um espaço separado, com regras de acesso aplicadas no próprio banco de dados.</p></div>
+    <div class="glass card"><div class="n">RASTRO</div><h3>Convites e auditoria</h3><p>Convites de uso único que expiram em 7 dias e histórico de alterações de configuração.</p></div>
+  </div>
+</section>
+
+<!-- 10 · implantação -->
+<section class="slide">
+  <div class="top"><img class="logo" src="img/eia-light.svg" alt="Empreende.IA"><span class="pg">10</span></div>
+  <div style="margin-top:96px">
+    <div class="eyebrow">Como começamos</div>
+    <h2>Do cadastro à rotina da equipe.</h2>
+  </div>
+  <div class="steps">
+    <div class="glass card"><div class="num">01</div><h3>Configurar</h3><p>Criamos o espaço da empresa, o funil e as regras de atenção da sua operação.</p></div>
+    <div class="glass card"><div class="num">02</div><h3>Importar</h3><p>Trazemos seus contatos por CSV, com prévia e checagem de duplicidade.</p></div>
+    <div class="glass card"><div class="num">03</div><h3>Convidar</h3><p>A equipe entra por convite, com o papel certo para cada pessoa.</p></div>
+    <div class="glass card"><div class="num">04</div><h3>Acompanhar</h3><p>Tours guiados e acompanhamento nas primeiras semanas de uso.</p></div>
+  </div>
+</section>
+
+<!-- 11 · evolução -->
+<section class="slide">
+  <div class="top"><img class="logo" src="img/eia-light.svg" alt="Empreende.IA"><span class="pg">11</span></div>
+  <div style="margin-top:96px">
+    <div class="eyebrow">Evolução</div>
+    <h2>O que já está pronto e o que vem a seguir.</h2>
+  </div>
+  <div class="grid3">
+    <div class="glass card"><span class="tag on">Disponível</span><h3>Operação comercial completa</h3><p>Rotina, ficha 360, pipeline, agenda, financeiro, relatórios, automações e Copiloto por regras.</p></div>
+    <div class="glass card"><span class="tag next">Em evolução</span><h3>IA generativa no Copiloto</h3><p>Respostas em linguagem natural mantendo as fontes e a revisão humana.</p></div>
+    <div class="glass card"><span class="tag next">Em evolução</span><h3>WhatsApp, e-mail e agenda</h3><p>Conversas registradas no histórico e sincronização contínua com Google e Outlook.</p></div>
+  </div>
+</section>
+
+<!-- 12 · encerramento -->
+<section class="slide final">
+  <div class="art" style="position:absolute;inset:0;background:url(img/empreende-glass-hero.jpg) center/cover;opacity:.35"></div>
+  <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,10,9,.96),rgba(8,10,9,.7))"></div>
+  <div style="position:relative">
+    <img class="logo" src="img/eia-light.svg" alt="Empreende.IA" style="height:56px;margin-bottom:72px">
+    <h2>Vamos colocar o próximo passo de cada cliente <span class="accent">na agenda da sua equipe?</span></h2>
+    <p class="lead">Agende uma demonstração com a Empreende.IA e veja o CRM com o funil da sua operação.</p>
+  </div>
+</section>
+
+</body>
+</html>

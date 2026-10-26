@@ -65,8 +65,20 @@ bunx playwright test
 
 O Playwright inicia um servidor de teste independente na porta configurada em `playwright.config.ts`, intercepta a API com fixtures e não usa dados ou credenciais reais. Screenshots e relatório ficam em `/tmp/crm-qa`.
 
+## Status (26/10/2026)
+
+Produto implementado e com aceite técnico local. Faltam publicação na Vercel, configuração de e-mails de Auth e piloto com usuários. Detalhes em [docs/STATUS-E-ROADMAP.md](docs/STATUS-E-ROADMAP.md).
+
+Uma cópia do código (sem histórico) fica em [empreende-ia/solucoes](https://github.com/empreende-ia/solucoes/tree/main/solucoes/crm-empreende-ia). O desenvolvimento continua neste repositório.
+
 ## Documentação
 
+Índice completo em [docs/README.md](docs/README.md).
+
+- [Visão geral do produto](docs/VISAO-GERAL.md)
+- [Arquitetura e modelo de dados](docs/ARQUITETURA.md)
+- [Status e roadmap](docs/STATUS-E-ROADMAP.md)
+- [Apresentação comercial (PDF)](docs/apresentacao/crm-empreende-ia.pdf)
 - [Contrato do Design System](DESIGN.md)
 - [Plano aprovado de produto e UX](docs/PLANO-CRM.md)
 - [Execução, decisões e pendências](docs/EXECUCAO-CRM.md)

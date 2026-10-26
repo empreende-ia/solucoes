@@ -1,0 +1,575 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Lara · SDR com IA — Empreende.IA</title>
+<style>
+@font-face{
+  font-family:'Manrope';
+  src:url('assets/Manrope-Variable.ttf') format('truetype-variations');
+  font-weight:200 800;
+  font-style:normal;
+}
+@page{ size:297mm 210mm; margin:0 }
+
+:root{
+  --bg:#080a09;
+  --surface:#111613;
+  --text:#f6f7f6;
+  --muted:#b4bdb7;
+  --subtle:#929f96;
+  --accent:#0fa968;
+  --accent-bright:#65dfab;
+  --accent-text:#8de7bb;
+  --warning:#f1ce87;
+  --border-subtle:rgba(255,255,255,.11);
+  --border-default:rgba(255,255,255,.19);
+  --material-hero:linear-gradient(135deg,rgba(255,255,255,.07),rgba(255,255,255,.012) 38%,rgba(184,213,195,.04)),#12221b;
+  --material-panel:linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.01) 60%),#151c18;
+  --material-dense:#111713;
+  --shadow-panel:inset 0 1px 0 rgba(255,255,255,.14),0 18px 45px rgba(0,0,0,.2);
+  --shadow-hero:inset 0 1px 0 rgba(255,255,255,.24),0 25px 60px rgba(0,0,0,.33);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg)}
+body{
+  font-family:'Manrope',Arial,sans-serif;
+  font-weight:450;
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  print-color-adjust:exact;
+  -webkit-print-color-adjust:exact;
+}
+
+.slide{
+  position:relative;
+  width:297mm; height:210mm;
+  padding:17mm 18mm 14mm;
+  background:var(--bg);
+  overflow:hidden;
+  break-after:page; page-break-after:always;
+  display:flex; flex-direction:column;
+}
+.slide:last-child{break-after:auto;page-break-after:auto}
+
+/* ambiente: halo esmeralda discreto, sem blur */
+.slide::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(60% 45% at 88% 4%,rgba(15,169,104,.14),transparent 70%),
+    radial-gradient(45% 40% at 2% 100%,rgba(101,223,171,.06),transparent 70%);
+  pointer-events:none;
+}
+.slide > *{position:relative}
+
+.eyebrow{
+  font-size:8.4pt;font-weight:650;letter-spacing:.075em;text-transform:uppercase;
+  color:var(--accent-text);
+}
+h1{font-size:40pt;font-weight:750;letter-spacing:-.045em;word-spacing:.08em;line-height:1.02}
+h2{font-size:25pt;font-weight:700;letter-spacing:-.035em;word-spacing:.07em;line-height:1.08}
+h3{font-size:12pt;font-weight:650;letter-spacing:-.02em;line-height:1.2}
+.lead{font-size:12.5pt;line-height:1.55;color:var(--muted);font-weight:450}
+p,li{font-size:10pt;line-height:1.55;color:var(--muted)}
+strong{color:var(--text);font-weight:650}
+.accent{color:var(--accent-text)}
+
+.head{margin-bottom:9mm}
+.head .eyebrow{display:block;margin-bottom:3.5mm}
+.head h2 + p{margin-top:4mm;max-width:195mm}
+
+.body{flex:1;display:flex;flex-direction:column;justify-content:center}
+
+.panel{
+  background:var(--material-panel);
+  border:1px solid var(--border-subtle);
+  border-radius:5.5mm;
+  box-shadow:var(--shadow-panel);
+  padding:7mm;
+}
+.panel.hero{background:var(--material-hero);border-color:var(--border-default);box-shadow:var(--shadow-hero)}
+.panel.dense{background:var(--material-dense);box-shadow:none}
+.panel .num{
+  font-size:9pt;font-weight:750;color:var(--accent-text);
+  letter-spacing:.02em;display:block;margin-bottom:3mm;
+}
+.panel h3{margin-bottom:3mm}
+
+.grid{display:grid;gap:5mm}
+.g2{grid-template-columns:1fr 1fr}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+.fill{flex:1}
+
+ul{list-style:none}
+ul li{position:relative;padding-left:5mm;margin-bottom:2.6mm}
+ul li::before{
+  content:'';position:absolute;left:0;top:2.1mm;
+  width:2mm;height:2mm;border-radius:50%;
+  background:var(--accent);
+}
+ul.plain li::before{background:var(--subtle);width:1.4mm;height:1.4mm;top:2.4mm;left:.6mm}
+
+table{width:100%;border-collapse:collapse}
+th{
+  text-align:left;font-size:8.4pt;font-weight:650;letter-spacing:.075em;
+  text-transform:uppercase;color:var(--subtle);
+  padding:0 4mm 2.5mm 0;border-bottom:1px solid var(--border-default);
+}
+td{
+  font-size:9.6pt;line-height:1.45;color:var(--muted);
+  padding:3mm 4mm 3mm 0;border-bottom:1px solid var(--border-subtle);
+  vertical-align:top;
+}
+td:first-child{color:var(--text);font-weight:650;width:38%}
+tr:last-child td{border-bottom:none}
+
+.flow{display:flex;align-items:stretch;gap:0}
+.flow .step{
+  flex:1;background:var(--material-panel);border:1px solid var(--border-subtle);
+  border-radius:4.5mm;padding:5.5mm;box-shadow:var(--shadow-panel);
+}
+.flow .arrow{
+  flex:0 0 9mm;display:flex;align-items:center;justify-content:center;
+  color:var(--accent-bright);font-size:14pt;font-weight:700;
+}
+.flow .step .k{font-size:8.4pt;font-weight:650;letter-spacing:.075em;text-transform:uppercase;color:var(--subtle);display:block;margin-bottom:2.5mm}
+.flow .step .t{font-size:10.5pt;font-weight:700;color:var(--text);letter-spacing:-.02em;display:block;margin-bottom:2mm}
+.flow .step p{font-size:8.8pt;line-height:1.45}
+
+.foot{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-top:8mm;padding-top:4mm;border-top:1px solid var(--border-subtle);
+  align-self:stretch;width:100%;
+}
+.foot span{font-size:8pt;color:var(--subtle);letter-spacing:.04em}
+.foot img{height:4.6mm;opacity:.85}
+
+.chip{
+  display:inline-block;border:1px solid var(--border-default);border-radius:999px;
+  padding:1.6mm 4mm;font-size:8.6pt;font-weight:650;color:var(--accent-text);
+  background:rgba(15,169,104,.08);
+}
+
+/* ---------- capa ---------- */
+.cover{padding:0;display:block}
+.cover .art{
+  position:absolute;inset:0;
+  background:url('assets/empreende-glass-hero.jpg') center/cover no-repeat;
+}
+.cover .scrim{
+  position:absolute;inset:0;
+  background:linear-gradient(100deg,rgba(4,8,6,.94) 0%,rgba(4,8,6,.86) 46%,rgba(4,8,6,.42) 100%);
+}
+.cover .inner{
+  position:absolute;inset:0;padding:22mm 18mm 14mm;
+  display:flex;flex-direction:column;justify-content:space-between;
+}
+.cover img.mark{height:9mm;width:auto;align-self:flex-start}
+.cover h1{font-size:54pt;max-width:195mm}
+.cover .lead{font-size:14pt;max-width:150mm;margin-top:7mm}
+.cover .meta{display:flex;gap:7mm;align-items:center}
+.cover .meta span{font-size:8.6pt;color:var(--subtle);letter-spacing:.06em;text-transform:uppercase;font-weight:650}
+
+/* ---------- fechamento ---------- */
+.end{justify-content:center;align-items:flex-start}
+.end h2{max-width:200mm}
+</style>
+</head>
+<body>
+
+<!-- 01 · CAPA -->
+<section class="slide cover">
+  <div class="art"></div><div class="scrim"></div>
+  <div class="inner">
+    <img class="mark" src="assets/eia-wordmark.svg" alt="Empreende.IA">
+    <div>
+      <span class="eyebrow">Solução Empreende.IA</span>
+      <h1 style="margin-top:5mm">Lara<br>SDR com IA</h1>
+      <p class="lead">Atende, qualifica e agenda no WhatsApp e no Instagram —
+        respondendo só com o que é verdade sobre o seu negócio.</p>
+    </div>
+    <div class="meta">
+      <span>Apresentação comercial</span><span>Outubro de 2026</span>
+    </div>
+  </div>
+</section>
+
+<!-- 02 · O PROBLEMA -->
+<section class="slide">
+  <div class="head">
+    <span class="eyebrow">O ponto de partida</span>
+    <h2>O lead chega. A resposta demora. A conversa morre.</h2>
+    <p class="lead">Não é falta de interesse do time comercial — é a forma como o
+      atendimento por mensagem funciona.</p>
+  </div>
+  <div class="body">
+    <div class="grid g3">
+      <div class="panel"><h3>A fila não respeita horário</h3>
+        <p>Mensagem entra de madrugada, no fim de semana, no meio da reunião. Quem
+          responde primeiro ganha a conversa.</p></div>
+      <div class="panel"><h3>Qualificar é repetitivo</h3>
+        <p>As mesmas cinco perguntas, todos os dias. É o trabalho que mais consome
+          tempo do time e o que menos exige experiência.</p></div>
+      <div class="panel"><h3>O histórico se perde</h3>
+        <p>A conversa fica no celular de quem atendeu. O pipeline fica desatualizado
+          porque alguém precisa parar para atualizar.</p></div>
+    </div>
+    <div class="panel hero" style="margin-top:6mm">
+      <h3>E a saída usual traz um problema novo</h3>
+      <p style="margin-top:2mm">Um robô genérico responde rápido — e inventa. Promete
+        preço que não existe, confirma prazo que ninguém cumpre, manda link errado.
+        O estrago de uma informação inventada é maior que o da demora. É exatamente esse
+        ponto que a Lara foi construída para resolver.</p>
+    </div>
+  </div>
+  <div class="foot"><span>Lara · SDR com IA</span><img src="assets/eia-wordmark.svg" alt=""></div>
+</section>
+
+<!-- 03 · O QUE É -->
+<section class="slide">
+  <div class="head">
+    <span class="eyebrow">A solução</span>
+    <h2>Uma SDR que trabalha dentro das suas regras</h2>
+    <p class="lead">A Lara é uma agente de pré-venda com IA que conversa pelos seus
+      canais, usa o conhecimento do seu negócio e entrega a reunião agendada na agenda
+      de quem vai atender.</p>
+  </div>
+  <div class="body">
+    <div class="grid g4">
+      <div class="panel"><span class="num">01</span><h3>Atende</h3>
+        <p>Responde em minutos, a qualquer hora, no WhatsApp e no Instagram Direct.</p></div>
+      <div class="panel"><span class="num">02</span><h3>Qualifica</h3>
+        <p>Conduz a conversa pelo seu processo comercial e registra o que descobriu.</p></div>
+      <div class="panel"><span class="num">03</span><h3>Agenda</h3>
+        <p>Consulta a agenda real, oferece horário e marca — só com confirmação do lead.</p></div>
+      <div class="panel"><span class="num">04</span><h3>Organiza</h3>
+        <p>Move o deal no pipeline e deixa o histórico completo para o time.</p></div>
+    </div>
+    <div class="grid g2 fill" style="margin-top:6mm">
+      <div class="panel dense">
+        <h3>O que ela não faz</h3>
+        <ul class="plain" style="margin-top:3mm">
+          <li>Não substitui quem fecha. Ela entrega a reunião; a venda é do seu time.</li>
+          <li>Não responde o que não está na base — registra a dúvida e avisa.</li>
+          <li>Não vai ao ar com mudança não testada.</li>
+          <li>Não insiste com quem pediu para parar: opt-out pausa a conversa.</li>
+        </ul>
+      </div>
+      <div class="panel dense">
+        <h3>Quem opera</h3>
+        <ul class="plain" style="margin-top:3mm">
+          <li>Um painel próprio, no navegador, em português.</li>
+          <li>Configuração assistida por perguntas — sem escrever prompt.</li>
+          <li>Qualquer pessoa do comercial acompanha e corrige.</li>
+          <li>Acesso por convite, com papéis e funções por pessoa.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Lara · SDR com IA</span><img src="assets/eia-wordmark.svg" alt=""></div>
+</section>
+
+<!-- 04 · CANAIS -->
+<section class="slide">
+  <div class="head">
+    <span class="eyebrow">Onde ela atende</span>
+    <h2>No número que seus clientes já conhecem</h2>
+  </div>
+  <div class="body">
+    <div class="grid g3">
+      <div class="panel hero"><span class="chip">Recomendado</span>
+        <h3 style="margin-top:4mm">WhatsApp por coexistência</h3>
+        <p>A Lara entra no número que você já usa e <strong>o aplicativo continua
+          funcionando no celular do time</strong>. Ninguém perde o acesso, o histórico
+          fica no mesmo lugar e a pessoa pode assumir a conversa quando quiser.</p></div>
+      <div class="panel"><h3>WhatsApp Cloud API</h3>
+        <p>Integração direta com a API oficial da Meta, para quem já opera nesse modelo
+          ou precisa de um número dedicado à agente.</p></div>
+      <div class="panel"><h3>Instagram Direct</h3>
+        <p>As DMs do perfil entram na mesma caixa, com o mesmo agente, as mesmas regras
+          e o mesmo pipeline.</p></div>
+    </div>
+    <div class="panel" style="margin-top:6mm">
+      <h3>Uma caixa, um histórico</h3>
+      <p style="margin-top:2mm">WhatsApp e Instagram chegam na mesma tela de conversas,
+        com anexo, imagem e áudio transcrito. A agente escolhe por onde responder
+        conforme o canal de origem da conversa — quem está no painel não precisa pensar
+        nisso.</p>
+    </div>
+  </div>
+  <div class="foot"><span>Lara · SDR com IA</span><img src="assets/eia-wordmark.svg" alt=""></div>
+</section>
+
+<!-- 05 · COMO FUNCIONA -->
+<section class="slide">
+  <div class="head">
+    <span class="eyebrow">Como funciona</span>
+    <h2>Da mensagem recebida à resposta certa</h2>
+  </div>
+  <div class="body">
+    <div class="flow">
+      <div class="step"><span class="k">01 · Chega</span><span class="t">Mensagem entra</span>
+        <p>WhatsApp ou Instagram. O recebimento é validado e registrado antes de qualquer coisa.</p></div>
+      <div class="arrow">→</div>
+      <div class="step"><span class="k">02 · Agrupa</span><span class="t">Espera a rajada</span>
+        <p>Três mensagens seguidas viram um contexto só. A Lara responde uma vez, como uma pessoa.</p></div>
+      <div class="arrow">→</div>
+      <div class="step"><span class="k">03 · Decide</span><span class="t">Consulta antes de falar</span>
+        <p>Busca na base de conhecimento, olha a agenda, verifica o estágio do lead e escolhe a ação.</p></div>
+      <div class="arrow">→</div>
+      <div class="step"><span class="k">04 · Responde</span><span class="t">Entrega e registra</span>
+        <p>Envia pelo canal de origem, atualiza o pipeline e guarda o que fez e por quê.</p></div>
+    </div>
+    <div class="grid g3" style="margin-top:7mm">
+      <div class="panel dense"><h3>Nada se perde</h3>
+        <p>Cada etapa tem fila com estado próprio. Se o canal ou a rede falham, a
+          mensagem é reprocessada — não desaparece.</p></div>
+      <div class="panel dense"><h3>Áudio também</h3>
+        <p>Mensagem de voz é transcrita e tratada como texto. O lead fala como quiser.</p></div>
+      <div class="panel dense"><h3>Transferência limpa</h3>
+        <p>Quando o caso é de pessoa, a Lara transfere, registra o motivo e para de
+          responder aquela conversa.</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>Lara · SDR com IA</span><img src="assets/eia-wordmark.svg" alt=""></div>
+</section>
+
+<!-- 06 · O QUE ELA FAZ NA CONVERSA -->
+<section class="slide">
+  <div class="head">
+    <span class="eyebrow">Capacidades</span>
+    <h2>O que a Lara pode fazer sozinha</h2>
+    <p class="lead">Cada ação é registrada com data, resultado e motivo. Nada acontece
+      duas vezes por engano.</p>
+  </div>
+  <div class="body">
+    <table>
+      <tr><th>Ação</th><th>O que acontece na prática</th></tr>
+      <tr><td>Consultar o conhecimento</td><td>Busca a resposta nos seus materiais antes de falar qualquer coisa factual.</td></tr>
+      <tr><td>Registrar uma dúvida</td><td>Não encontrou? Registra a pergunta para o time, avisa o lead que vai confirmar e não inventa.</td></tr>
+      <tr><td>Ver horários livres</td><td>Consulta a agenda conectada de quem vai atender, não uma agenda paralela.</td></tr>
+      <tr><td>Agendar, remarcar e cancelar</td><td>Executa só com confirmação explícita do lead na conversa. Sem o "sim", não marca.</td></tr>
+      <tr><td>Transferir para uma pessoa</td><td>Passa a conversa com o motivo registrado e para de responder.</td></tr>
+      <tr><td>Respeitar o pedido de parada</td><td>Opt-out pausa a conversa e marca o contato. É regra fixa, não configurável.</td></tr>
+      <tr><td>Mover o deal no pipeline</td><td>Avança a etapa conforme o critério que você escreveu para cada uma delas.</td></tr>
+      <tr><td>Atualizar a memória da conversa</td><td>Mantém o resumo do caso para a próxima interação começar de onde parou.</td></tr>
+    </table>
+  </div>
+  <div class="foot"><span>Lara · SDR com IA</span><img src="assets/eia-wordmark.svg" alt=""></div>
+</section>
+
+<!-- 07 · POR QUE NÃO INVENTA -->
+<section class="slide">
+  <div class="head">
+    <span class="eyebrow">O diferencial</span>
+    <h2>Seis camadas para ela não inventar</h2>
+    <p class="lead">Esta é a parte do projeto em que mais se investiu engenharia — e a
+      razão pela qual a Lara pode falar com o seu cliente.</p>
+  </div>
+  <div class="body">
+    <div class="grid g3">
+      <div class="panel"><span class="num">01</span><h3>Fatos canônicos</h3>
+        <p>Preço, link, horário e condição entram palavra por palavra e são injetados em
+          toda conversa. Fato sensível só vale depois de alguém confirmar.</p></div>
+      <div class="panel"><span class="num">02</span><h3>Base de conhecimento</h3>
+        <p>Seus materiais viram uma base pesquisável em português. A agente consulta
+          antes de responder qualquer pergunta factual.</p></div>
+      <div class="panel"><span class="num">03</span><h3>Regra de verdade</h3>
+        <p>Sem informação encontrada, ela não completa a frase: registra a dúvida e diz
+          que vai confirmar. Silêncio honesto em vez de chute.</p></div>
+      <div class="panel"><span class="num">04</span><h3>Comportamento auditável</h3>
+        <p>A configuração vira um documento de comportamento gerado sempre do mesmo
+          jeito, visível e comparável entre versões.</p></div>
+      <div class="panel"><span class="num">05</span><h3>Avaliação obrigatória</h3>
+        <p>Regras críticas, agendamento, transferência e opt-out viram casos de teste
+          automáticos — mais os cenários que você escrever.</p></div>
+      <div class="panel"><span class="num">06</span><h3>Publicação travada</h3>
+        <p>Falha crítica bloqueia a publicação. Alerta exige aceite consciente. Cada
+          versão publicada é imutável e pode ser restaurada.</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>Lara · SDR com IA</span><img src="assets/eia-wordmark.svg" alt=""></div>
+</section>
+
+<!-- 08 · CICLO -->
+<section class="slide">
+  <div class="head">
+    <span class="eyebrow">Governança</span>
+    <h2>Nada muda no ar sem passar pelo teste</h2>
+  </div>
+  <div class="body">
+    <div class="flow">
+      <div class="step"><span class="k">01</span><span class="t">Configurar</span>
+        <p>Você edita um rascunho. A versão que está atendendo continua intacta.</p></div>
+      <div class="arrow">→</div>
+      <div class="step"><span class="k">02</span><span class="t">Testar</span>
+        <p>Converse com o rascunho sem efeito real e rode a bateria de cenários.</p></div>
+      <div class="arrow">→</div>
+      <div class="step"><span class="k">03</span><span class="t">Publicar</span>
+        <p>Só com a bateria concluída na mesma versão do rascunho. Falha crítica barra.</p></div>
+      <div class="arrow">→</div>
+      <div class="step"><span class="k">04</span><span class="t">Observar</span>
+        <p>Adoção, bloqueios, falhas de ação e tempo de resposta no painel.</p></div>
+    </div>
+    <div class="grid g2" style="margin-top:7mm">
+      <div class="panel"><h3>Aprendizado com revisão humana</h3>
+        <p>A Lara analisa as conversas quando você pede e propõe melhorias — novo fato,
+          nova regra, novo cenário de teste. <strong>Toda sugestão nasce pendente</strong>
+          e só entra depois do clique de uma pessoa. Dados pessoais são removidos da
+          evidência antes de a sugestão ser salva.</p></div>
+      <div class="panel"><h3>Volta atrás em um clique</h3>
+        <p>Cada publicação cria uma versão imutável com registro de quem publicou e
+          quando. Restaurar uma versão anterior é copiar ela para um novo rascunho — que
+          passa pelo mesmo teste antes de voltar ao ar.</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>Lara · SDR com IA</span><img src="assets/eia-wordmark.svg" alt=""></div>
+</section>
+
+<!-- 09 · PAINEL -->
+<section class="slide">
+  <div class="head">
+    <span class="eyebrow">O painel</span>
+    <h2>Tudo o que o time precisa, em um lugar</h2>
+  </div>
+  <div class="body">
+    <table>
+      <tr><th>Área</th><th>Para que serve</th></tr>
+      <tr><td>Visão geral</td><td>Indicadores do período: conversas atendidas, qualificação, agendamentos, saúde do sistema e o que falta para ir ao ar.</td></tr>
+      <tr><td>Pipeline</td><td>Kanban de deals. As etapas do meio são movidas pela IA pelo critério que você escreveu; ganho e perdido ficam com a pessoa.</td></tr>
+      <tr><td>Conversas</td><td>WhatsApp e Instagram no mesmo histórico, com anexo, áudio transcrito e o que a agente decidiu em cada passo.</td></tr>
+      <tr><td>Contatos</td><td>Base de leads com tags, histórico e detalhe por pessoa.</td></tr>
+      <tr><td>Agenda</td><td>Os agendamentos criados pela agente, com remarcação e cancelamento.</td></tr>
+      <tr><td>Equipe</td><td>Convite de acesso, papéis e funções de cada pessoa.</td></tr>
+      <tr><td>Configurações → Agente</td><td>Identidade, processo comercial, conhecimento, ações, cenários de teste, publicação e histórico de versões.</td></tr>
+    </table>
+  </div>
+  <div class="foot"><span>Lara · SDR com IA</span><img src="assets/eia-wordmark.svg" alt=""></div>
+</section>
+
+<!-- 10 · AGENDA -->
+<section class="slide">
+  <div class="head">
+    <span class="eyebrow">Agendamento</span>
+    <h2>Reunião marcada na agenda que o time já usa</h2>
+  </div>
+  <div class="body">
+    <div class="grid g3">
+      <div class="panel"><h3>Google, Outlook e iCloud</h3>
+        <p>Um único fluxo de conexão cobre os três. Quem atende continua usando o
+          calendário de sempre, no app de sempre.</p></div>
+      <div class="panel"><h3>Horário real, não prometido</h3>
+        <p>A Lara consulta a disponibilidade antes de oferecer. O horário que ela
+          propõe é um horário que existe.</p></div>
+      <div class="panel"><h3>Ciclo completo</h3>
+        <p>Marcar, remarcar e cancelar. O lead pede pelo WhatsApp e a agenda de quem vai
+          atender é atualizada.</p></div>
+    </div>
+    <div class="panel hero" style="margin-top:6mm">
+      <h3>A regra que evita o agendamento fantasma</h3>
+      <p style="margin-top:2mm">Nenhuma ação de agenda acontece por interpretação. A Lara
+        precisa da <strong>confirmação explícita do lead na própria conversa</strong> —
+        um "pode marcar quinta às 15h" — para criar, mudar ou cancelar. Se a confirmação
+        não está lá, ela pergunta de novo em vez de agir. E toda tentativa fica
+        registrada, com o resultado e o motivo.</p>
+    </div>
+  </div>
+  <div class="foot"><span>Lara · SDR com IA</span><img src="assets/eia-wordmark.svg" alt=""></div>
+</section>
+
+<!-- 11 · SEGURANÇA -->
+<section class="slide">
+  <div class="head">
+    <span class="eyebrow">Segurança e dados</span>
+    <h2>Seus dados ficam no seu ambiente</h2>
+  </div>
+  <div class="body">
+    <div class="grid g2">
+      <div class="panel"><h3>Ambiente dedicado</h3>
+        <p>Cada cliente roda em um projeto próprio de banco e funções. Não há base
+          compartilhada entre clientes.</p></div>
+      <div class="panel"><h3>Isolamento no banco</h3>
+        <p>Acesso controlado linha a linha, resolvido por workspace. Quem entra vê
+          apenas o que o papel dele permite.</p></div>
+      <div class="panel"><h3>Credenciais em cofre</h3>
+        <p>Chaves de canal e de IA ficam em cofre do ambiente ou na configuração
+          protegida — nunca no código, nunca no navegador.</p></div>
+      <div class="panel"><h3>Acesso por convite</h3>
+        <p>O cadastro público fica fechado. Um administrador convida cada pessoa e
+          define o papel antes de a conta existir.</p></div>
+      <div class="panel"><h3>Dados pessoais removidos</h3>
+        <p>Na análise de conversas para melhorias, e-mail, telefone e documento são
+          removidos antes de qualquer sugestão ser salva.</p></div>
+      <div class="panel"><h3>Trilha de auditoria</h3>
+        <p>Publicação, ação executada e evento de runtime ficam em registro que não se
+          apaga. Dá para reconstruir o que aconteceu.</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>Lara · SDR com IA</span><img src="assets/eia-wordmark.svg" alt=""></div>
+</section>
+
+<!-- 12 · IMPLANTAÇÃO -->
+<section class="slide">
+  <div class="head">
+    <span class="eyebrow">Implantação</span>
+    <h2>Como a Lara entra na sua operação</h2>
+  </div>
+  <div class="body">
+    <div class="grid g3" style="gap:4.5mm">
+      <div class="panel"><span class="num">Fase 1</span><h3>Ambiente e canal</h3>
+        <p>Projeto dedicado no ar, número conectado por coexistência (o app do time
+          continua funcionando) e Instagram vinculado.</p></div>
+      <div class="panel"><span class="num">Fase 2</span><h3>Conhecimento</h3>
+        <p>Configuração assistida por perguntas, com seus materiais e páginas. Os fatos
+          sensíveis são confirmados por você, um a um.</p></div>
+      <div class="panel"><span class="num">Fase 3</span><h3>Processo comercial</h3>
+        <p>Etapas do pipeline, critério de cada etapa, regras de agendamento e quando
+          transferir para uma pessoa.</p></div>
+      <div class="panel"><span class="num">Fase 4</span><h3>Teste e ajuste</h3>
+        <p>Conversas de simulação e a bateria de cenários críticos. Ajusta, testa de
+          novo, até o comportamento estar do jeito que você quer.</p></div>
+      <div class="panel"><span class="num">Fase 5</span><h3>Publicação</h3>
+        <p>Versão publicada com a bateria aprovada, checklist de go-live conferido e o
+          time treinado no painel.</p></div>
+      <div class="panel"><span class="num">Fase 6</span><h3>Acompanhamento</h3>
+        <p>Revisão das dúvidas registradas e das sugestões pendentes. A base cresce com
+          o que a operação ensina.</p></div>
+    </div>
+    <div class="panel dense" style="margin-top:4.5mm;padding:5.5mm 7mm">
+      <h3>O que precisamos de você</h3>
+      <p style="margin-top:2mm">Acesso ao número de WhatsApp e ao perfil do Instagram ·
+        materiais que explicam o negócio (preço, condição, objeção, link) · o calendário
+        de quem vai atender · uma pessoa responsável por confirmar fatos e aprovar o
+        comportamento antes da publicação.</p>
+    </div>
+  </div>
+  <div class="foot"><span>Lara · SDR com IA</span><img src="assets/eia-wordmark.svg" alt=""></div>
+</section>
+
+<!-- 13 · FECHAMENTO -->
+<section class="slide end">
+  <div style="max-width:210mm">
+    <span class="eyebrow">Próximo passo</span>
+    <h1 style="margin-top:6mm;font-size:44pt">Vamos configurar a Lara<br>com o seu processo.</h1>
+    <p class="lead" style="margin-top:7mm;max-width:170mm">A conversa de implantação
+      começa pelo que você já tem: o número que atende hoje, os materiais que explicam o
+      negócio e a agenda de quem fecha. O resto é configuração — e teste antes de ir ao ar.</p>
+    <div class="grid g3" style="margin-top:10mm">
+      <div class="panel dense"><h3>1 · Diagnóstico</h3>
+        <p>Entender o processo comercial atual e onde a conversa trava hoje.</p></div>
+      <div class="panel dense"><h3>2 · Configuração</h3>
+        <p>Ambiente, canal, conhecimento e processo, com os fatos confirmados por você.</p></div>
+      <div class="panel dense"><h3>3 · Teste e publicação</h3>
+        <p>Cenários aprovados, time treinado, Lara atendendo com acompanhamento.</p></div>
+    </div>
+  </div>
+  <div class="foot" style="margin-top:12mm">
+    <span>Lara · SDR com IA — Empreende.IA</span>
+    <img src="assets/eia-wordmark.svg" alt="Empreende.IA" style="height:6mm;opacity:1">
+  </div>
+</section>
+
+</body>
+</html>

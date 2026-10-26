@@ -97,16 +97,17 @@ consome. A ordem é:
 9. `20260801220000_agent_product_metrics.sql`
 10. Deploy de `agent-setup-assistant`, `lara-orchestrator`, `lara-simulator`,
    `lara-eval`, `agent-configuration`, `analyze-conversation`, `health-check`,
-   `validate-setup`, `initialize-system`, `prompt-insights` e
-   `trigger-lara-orchestrator`.
+   `validate-setup`, `initialize-system` e `prompt-insights`. A varredura da fila é
+   feita pelos jobs `pg_cron` (`lara-orchestrator-sweep`, `send-queue-sweep`), que leem
+   URL e chave do Vault — não existe function de gatilho separada.
 
 Não aplique uma migration isoladamente antes de o frontend e as Edge Functions desta
 branch estarem prontos para entrar juntos.
 
 ## Verificação
 
-- `npm test -- --run`
-- `npm run build`
+- `bun run test` (Vitest, 22 suítes)
+- `bun run build`
 - `npx tsc --noEmit`
 - `deno check` nas Edge Functions alteradas
 - SQL transacional com rollback em `supabase/tests/`

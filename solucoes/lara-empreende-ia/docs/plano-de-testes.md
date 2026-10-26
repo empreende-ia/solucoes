@@ -5,6 +5,13 @@
 > agrupador → orquestrador → envio → follow-up). Sete frentes de caça em paralelo,
 > cada achado verificado adversarialmente contra o código; 24 bugs confirmados.
 > Os testes R1–R24 da seção 3 correspondem, na ordem, aos bugs do anexo A.
+>
+> **Documento histórico, revisado em 26/10/2026.** É o plano como foi escrito em
+> 19/08/2026; a seção 1 descreve o estado *daquela data*. Hoje o repositório tem
+> **22 arquivos `*.test.ts`** (eram 17) e os mesmos 10 testes SQL em
+> `supabase/tests/`. O script é `bun run test` (`vitest run`); onde o texto diz
+> `npm test`, leia `bun run test`. Continua valendo que os testes SQL não têm
+> runner no `package.json` e que o projeto não tem CI.
 
 
 ## 1. O que já existe

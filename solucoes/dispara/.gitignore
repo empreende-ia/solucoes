@@ -125,8 +125,9 @@ placeholder.txt
 research.md
 PRD-campaigns-new.md
 
-# Docs (dev-only, kept locally) - /docs/ ignora apenas na raiz
-/docs/
+# /docs/ agora é documentação versionada do projeto (ver docs/README.md).
+# Exceção: stories internas de desenvolvimento seguem locais.
+/docs/stories/
 .env*.local
 .env.local
 .env.local.*

@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="pt-BR" data-eia-theme="dark">
+<head>
+<meta charset="utf-8">
+<title>Dispara — Apresentação</title>
+<style>
+@font-face{
+  font-family:'Manrope';
+  src:url('assets/Manrope-Variable.ttf') format('truetype');
+  font-weight:200 800;
+  font-display:block;
+}
+:root{
+  --bg:#080a09;
+  --surface:#111613;
+  --surface-raised:#1b221e;
+  --text:#f6f7f6;
+  --muted:#b4bdb7;
+  --subtle:#929f96;
+  --accent:#0fa968;
+  --accent-bright:#65dfab;
+  --accent-text:#8de7bb;
+  --on-accent:#ffffff;
+  --border-subtle:#ffffff1c;
+  --border-default:#ffffff30;
+  --border-strong:#b4c5ba;
+  --border-accent:#74d8a855;
+  --material-hero:linear-gradient(135deg,#ffffff12,#ffffff03 38%,#b8d5c30a),#12221b;
+  --material-panel:linear-gradient(145deg,#ffffff08,#ffffff02 60%),#151c18;
+  --material-dense:#111713;
+  --material-primary:linear-gradient(130deg,#13794f,#0b6140);
+  --shadow-panel:inset 0 1px 0 #ffffff26, inset 1px 0 0 #ffffff0a, 0 18px 45px #00000033;
+  --shadow-hero:inset 0 1px 0 #ffffff40, inset 1px 0 0 #ffffff0b, 0 25px 60px #00000055;
+  --radius-panel:23px;
+  --radius-hero:30px;
+  --radius-control:13px;
+  --chart-1:#65dfab;
+  --chart-2:#c3dccd;
+  --chart-3:#d8c393;
+  --chart-4:#9ab8ad;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{background:var(--bg);}
+body{
+  font-family:'Manrope',Arial,sans-serif;
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  font-variation-settings:'wght' 400;
+}
+@page{size:1280px 720px;margin:0;}
+
+.slide{
+  width:1280px;height:720px;
+  position:relative;overflow:hidden;
+  background:var(--bg);
+  padding:72px 88px;
+  display:flex;flex-direction:column;justify-content:center;
+  page-break-after:always;break-after:page;
+}
+.slide:last-child{page-break-after:auto;break-after:auto;}
+
+/* camada de profundidade: vidro representado por preenchimento + borda + sombra */
+.slide::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(900px 520px at 88% -8%, #0fa96820, transparent 62%),
+    radial-gradient(760px 480px at -10% 108%, #65dfab14, transparent 64%);
+  pointer-events:none;
+}
+.slide > *{position:relative;z-index:1;}
+
+.eyebrow{
+  font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--accent-text);font-variation-settings:'wght' 600;
+}
+.slide:not(.cover) > .eyebrow{position:absolute;top:70px;left:88px;}
+.slide:not(.cover) > .foot{position:absolute;left:88px;right:88px;bottom:52px;margin-top:0;}
+.rule{width:46px;height:2px;background:var(--accent);margin:22px 0;}
+.foot{
+  display:flex;justify-content:space-between;align-items:flex-end;
+  font-size:10.5px;color:var(--subtle);letter-spacing:.04em;
+}
+.foot .mark{display:flex;align-items:center;gap:8px;}
+.foot .mark img{height:13px;opacity:.72;}
+
+h1{font-size:72px;line-height:1.02;letter-spacing:-.045em;font-variation-settings:'wght' 600;max-width:900px;}
+h2{font-size:46px;line-height:1.08;letter-spacing:-.04em;font-variation-settings:'wght' 600;max-width:860px;}
+h3{font-size:19px;line-height:1.25;letter-spacing:-.02em;font-variation-settings:'wght' 600;}
+p{font-size:15.5px;line-height:1.6;color:var(--muted);max-width:620px;}
+.lead{font-size:19px;line-height:1.55;color:var(--muted);max-width:720px;}
+h1 + .lead,h2 + .lead,h2 + p{margin-top:18px;}
+h2 + .grid,h2 + .split,h2 + table,h2 + .flow,h2 + .steps{margin-top:30px;}
+.lead + .split,.lead + .grid,.lead + table,.lead + .steps,.lead + .flow{margin-top:28px;}
+strong{font-variation-settings:'wght' 650;color:var(--text);}
+
+/* ---------- capa ---------- */
+.cover{padding:0;}
+.cover-art{
+  position:absolute;inset:0;
+  background-image:url('assets/empreende-glass-hero.jpg');
+  background-size:cover;background-position:center;
+  opacity:.5;
+}
+.cover-scrim{
+  position:absolute;inset:0;
+  background:linear-gradient(100deg,#050806f2 0%,#050806d9 42%,#05080666 100%);
+}
+.cover-body{
+  position:relative;z-index:2;height:100%;
+  padding:72px 88px;display:flex;flex-direction:column;
+}
+.cover .foot{margin-top:auto;}
+.cover-logo{height:30px;margin-bottom:auto;align-self:flex-start;}
+.cover h1{margin:16px 0 20px;}
+.cover-tag{
+  display:inline-flex;align-items:center;gap:9px;
+  align-self:flex-start;
+  padding:8px 15px;border-radius:999px;
+  border:1px solid var(--border-accent);
+  background:linear-gradient(145deg,#ffffff10,#ffffff03),#13231b;
+  font-size:12px;letter-spacing:.04em;color:var(--accent-text);
+  font-variation-settings:'wght' 600;
+}
+.cover-tag::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent-bright);}
+
+/* ---------- grades ---------- */
+.grid{display:grid;gap:18px;margin-top:30px;}
+.g2{grid-template-columns:repeat(2,1fr);}
+.g3{grid-template-columns:repeat(3,1fr);}
+.g4{grid-template-columns:repeat(4,1fr);}
+
+.card{
+  background:var(--material-panel);
+  border:1px solid var(--border-subtle);
+  border-radius:var(--radius-panel);
+  box-shadow:var(--shadow-panel);
+  padding:24px 24px 26px;
+  display:flex;flex-direction:column;gap:9px;
+}
+.card.hero{background:var(--material-hero);border-color:var(--border-default);box-shadow:var(--shadow-hero);}
+.card p{font-size:13.5px;line-height:1.55;}
+.card .num{
+  font-size:11px;letter-spacing:.12em;color:var(--accent-text);
+  font-variation-settings:'wght' 600;
+}
+
+/* ---------- número grande ---------- */
+.stat{font-size:132px;line-height:.92;letter-spacing:-.07em;color:var(--accent-text);font-variation-settings:'wght' 500;}
+.stat-row{display:flex;gap:48px;margin-top:26px;}
+.stat-sm{font-size:52px;line-height:1;letter-spacing:-.05em;color:var(--accent-text);font-variation-settings:'wght' 500;}
+.stat-sm + span{display:block;font-size:12.5px;color:var(--subtle);margin-top:8px;max-width:190px;line-height:1.45;}
+
+/* ---------- lista numerada ---------- */
+.steps{list-style:none;display:flex;flex-direction:column;gap:22px;margin-top:26px;max-width:900px;}
+.steps li{display:flex;gap:18px;align-items:flex-start;}
+.steps .idx{
+  flex:0 0 32px;height:32px;border-radius:50%;
+  border:1px solid var(--border-accent);
+  background:linear-gradient(145deg,#ffffff0e,#ffffff03),#13231b;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;color:var(--accent-text);font-variation-settings:'wght' 650;
+}
+.steps h3{margin-bottom:0;font-size:20px;}
+.steps p{font-size:14px;max-width:760px;margin-top:4px;}
+
+/* ---------- fluxo ---------- */
+.flow{display:flex;align-items:stretch;gap:12px;margin-top:34px;}
+.flow-node{
+  flex:1;padding:20px 18px;border-radius:var(--radius-control);
+  background:var(--material-panel);border:1px solid var(--border-subtle);
+  box-shadow:var(--shadow-panel);
+  display:flex;flex-direction:column;gap:7px;
+}
+.flow-node .tag{font-size:10px;letter-spacing:.12em;color:var(--accent-text);font-variation-settings:'wght' 600;}
+.flow-node h3{font-size:15px;}
+.flow-node p{font-size:12px;line-height:1.45;}
+.flow-arrow{align-self:center;color:var(--accent);font-size:18px;}
+
+/* ---------- comparativo ---------- */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:30px;}
+.split .col{padding:26px;border-radius:var(--radius-panel);}
+.col-a{background:var(--material-dense);border:1px solid var(--border-subtle);}
+.col-b{background:var(--material-hero);border:1px solid var(--border-accent);box-shadow:var(--shadow-hero);}
+.col h3{margin-bottom:14px;}
+.col ul{list-style:none;display:flex;flex-direction:column;gap:11px;}
+.col li{font-size:13.5px;line-height:1.5;color:var(--muted);padding-left:20px;position:relative;}
+.col-a li::before{content:'—';position:absolute;left:0;color:#7b8a81;}
+.col-b li::before{content:'✓';position:absolute;left:0;color:var(--accent-bright);font-size:12px;}
+
+/* ---------- tabela ---------- */
+table{width:100%;border-collapse:collapse;margin-top:26px;background:var(--material-dense);border-radius:var(--radius-panel);overflow:hidden;border:1px solid var(--border-subtle);}
+th,td{text-align:left;padding:13px 20px;font-size:13px;border-bottom:1px solid var(--border-subtle);}
+th{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-text);font-variation-settings:'wght' 600;}
+td{color:var(--muted);}
+td:first-child{color:var(--text);font-variation-settings:'wght' 600;}
+tr:last-child td{border-bottom:none;}
+
+/* ---------- divisória de capítulo ---------- */
+.divider{justify-content:center;}
+.divider h2{font-size:58px;max-width:900px;}
+.divider .lead{margin-top:18px;}
+
+/* ---------- fechamento ---------- */
+.closing{justify-content:center;}
+.cta{
+  display:inline-flex;align-self:flex-start;align-items:center;gap:10px;
+  margin-top:28px;padding:14px 26px;border-radius:var(--radius-control);
+  background:var(--material-primary);
+  border:1px solid #74d8a855;
+  box-shadow:inset 0 1px 0 #b0f1d173, inset 0 -1px 1px #004726, 0 6px 25px #0fa96826;
+  color:var(--on-accent);font-size:14.5px;font-variation-settings:'wght' 650;
+  letter-spacing:-.01em;
+}
+.note{font-size:12px;color:var(--subtle);margin-top:26px;max-width:700px;line-height:1.55;}
+</style>
+</head>
+<body>
+
+<!-- 01 · capa -->
+<section class="slide cover">
+  <div class="cover-art"></div>
+  <div class="cover-scrim"></div>
+  <div class="cover-body">
+    <img class="cover-logo" src="assets/wordmark-white.svg" alt="Empreende.IA">
+    <span class="cover-tag">Solução Empreende.IA</span>
+    <h1>Dispara</h1>
+    <p class="lead">Disparos, automação e atendimento com IA no WhatsApp API Oficial. Um deploy por empresa, com a sua marca.</p>
+    <div class="rule"></div>
+    <div class="foot">
+      <span>Apresentação comercial</span>
+      <span>Empreende.IA</span>
+    </div>
+  </div>
+</section>
+
+<!-- 02 · problema -->
+<section class="slide">
+  <span class="eyebrow">O problema · 02</span>
+  <h2>Quem vende no WhatsApp opera em cinco ferramentas que não se falam.</h2>
+  <div class="rule"></div>
+  <div class="grid g3">
+    <div class="card">
+      <span class="num">01</span>
+      <h3>Disparo às cegas</h3>
+      <p>A planilha vai para a ferramenta de envio sem conferir se o template aceita aquelas variáveis. O erro aparece depois, contato por contato.</p>
+    </div>
+    <div class="card">
+      <span class="num">02</span>
+      <h3>A resposta some</h3>
+      <p>Quem responde a campanha cai num aparelho, num grupo ou numa caixa que ninguém acompanha. O lead quente esfria em silêncio.</p>
+    </div>
+    <div class="card">
+      <span class="num">03</span>
+      <h3>O número queima</h3>
+      <p>Insistir em número inválido derruba a qualidade na Meta, trava o tier e, no limite, bloqueia o envio.</p>
+    </div>
+  </div>
+  <div class="foot">
+    <span class="mark"><img src="assets/mono.svg" alt="">Empreende.IA</span>
+    <span>02</span>
+  </div>
+</section>
+
+<!-- 03 · o que é -->
+<section class="slide divider">
+  <span class="eyebrow">A solução · 03</span>
+  <h2>Uma plataforma só: campanha, resposta, automação e CRM no mesmo lugar.</h2>
+  <p class="lead">O Dispara é um SaaS <strong>single-tenant</strong> — um deploy atende uma empresa. O banco é do cliente, os dados são do cliente, a marca é do cliente. Nada é compartilhado com outra conta.</p>
+  <div class="rule"></div>
+  <div class="foot">
+    <span class="mark"><img src="assets/mono.svg" alt="">Empreende.IA</span>
+    <span>03</span>
+  </div>
+</section>
+
+<!-- 04 · o que entrega -->
+<section class="slide">
+  <span class="eyebrow">Capacidades · 04</span>
+  <h2>O que entra no pacote</h2>
+  <div class="grid g4" style="margin-top:26px;">
+    <div class="card hero"><span class="num">CAMPANHAS</span><h3>Disparo com conferência antes</h3><p>Wizard de três passos, validação prévia contato a contato, agendamento, pausa e retomada, teste A/B.</p></div>
+    <div class="card"><span class="num">INBOX</span><h3>Atendimento das respostas</h3><p>Conversas num painel só, passagem de bot para humano, respostas rápidas, etiquetas e notas internas.</p></div>
+    <div class="card"><span class="num">IA</span><h3>Agente que responde</h3><p>Base de conhecimento própria, memória do contato, agendamento no Google Calendar e passagem para humano quando precisa.</p></div>
+    <div class="card"><span class="num">CRM</span><h3>Oportunidade no funil</h3><p>Pipelines, etapas, valor e status. A automação move o card sozinha.</p></div>
+  </div>
+  <div class="grid g4" style="margin-top:0;">
+    <div class="card"><span class="num">AUTOMAÇÃO</span><h3>Fluxos visuais</h3><p>Gatilho, condição, espera de dias e ação — com versão publicada e rollback.</p></div>
+    <div class="card"><span class="num">CONTATOS</span><h3>Base organizada</h3><p>Importação de CSV, campos próprios, tags, listas dinâmicas e bloqueio automático de número ruim.</p></div>
+    <div class="card"><span class="num">TEMPLATES</span><h3>Aprovação sem ida e volta</h3><p>Builder com preview fiel, rascunhos, geração por IA e envio em lote para a Meta.</p></div>
+    <div class="card"><span class="num">FORMULÁRIOS</span><h3>Captação dentro do chat</h3><p>MiniApps nativos do WhatsApp e páginas públicas que já criam o contato.</p></div>
+  </div>
+  <div class="foot">
+    <span class="mark"><img src="assets/mono.svg" alt="">Empreende.IA</span>
+    <span>04</span>
+  </div>
+</section>
+
+<!-- 05 · precheck -->
+<section class="slide">
+  <span class="eyebrow">Diferencial · 05</span>
+  <h2>A campanha é conferida antes de sair.</h2>
+  <p class="lead">Antes do primeiro envio, o Dispara roda uma simulação completa: confere o template, normaliza cada telefone e verifica, contato por contato, se as variáveis obrigatórias têm valor. Nada é enviado nesse passo.</p>
+  <div class="split">
+    <div class="col col-a">
+      <h3>Sem conferência</h3>
+      <ul>
+        <li>O erro aparece depois do envio, um contato por vez</li>
+        <li>Variável vazia vira mensagem truncada no cliente</li>
+        <li>Telefone fora do padrão falha e ninguém percebe</li>
+        <li>O template reprovado só acusa na hora do disparo</li>
+      </ul>
+    </div>
+    <div class="col col-b">
+      <h3>Com o precheck do Dispara</h3>
+      <ul>
+        <li>Relatório do que vai falhar, antes de gastar envio</li>
+        <li>Mensagem de erro em português, com a correção</li>
+        <li>Telefones normalizados para o padrão internacional</li>
+        <li>Contatos pulados podem ser reenviados depois do ajuste</li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot">
+    <span class="mark"><img src="assets/mono.svg" alt="">Empreende.IA</span>
+    <span>05</span>
+  </div>
+</section>
+
+<!-- 06 · proteção do número -->
+<section class="slide">
+  <span class="eyebrow">Proteção do número · 06</span>
+  <h2>O ativo mais caro da operação é a reputação do número.</h2>
+  <p class="lead">A Meta mede a qualidade de cada número e usa isso para liberar — ou travar — o seu volume diário. O Dispara trabalha dentro dessas regras em vez de forçá-las.</p>
+  <table>
+    <tr><th>Faixa da Meta</th><th>Usuários únicos por dia</th><th>O que o Dispara faz</th></tr>
+    <tr><td>Inicial</td><td>250</td><td>Valida o tamanho da campanha contra o limite antes de disparar</td></tr>
+    <tr><td>Intermediária</td><td>1.000 a 2.000</td><td>Controla o ritmo de envio para não estourar o limite por destinatário</td></tr>
+    <tr><td>Escala</td><td>10.000 a 100.000</td><td>Acompanha qualidade e alertas da conta no painel</td></tr>
+  </table>
+  <p class="note">A faixa sobe automaticamente conforme volume e qualidade; não há como forçar. Números que falham de forma recorrente entram em bloqueio temporário automático, com prazo crescente a cada reincidência.</p>
+  <div class="foot">
+    <span class="mark"><img src="assets/mono.svg" alt="">Empreende.IA</span>
+    <span>06</span>
+  </div>
+</section>
+
+<!-- 07 · IA -->
+<section class="slide">
+  <span class="eyebrow">Atendimento com IA · 07</span>
+  <h2>Um agente que conhece o seu negócio — e sabe quando chamar alguém.</h2>
+  <div class="flow">
+    <div class="flow-node"><span class="tag">01 · RECEBE</span><h3>Mensagem chega</h3><p>O sistema agrupa mensagens picadas numa só antes de responder.</p></div>
+    <span class="flow-arrow">›</span>
+    <div class="flow-node"><span class="tag">02 · CONSULTA</span><h3>Base própria</h3><p>Busca nos seus documentos o trecho que responde a pergunta.</p></div>
+    <span class="flow-arrow">›</span>
+    <div class="flow-node"><span class="tag">03 · AGE</span><h3>Responde ou agenda</h3><p>Pode consultar horários livres e marcar no Google Calendar.</p></div>
+    <span class="flow-arrow">›</span>
+    <div class="flow-node"><span class="tag">04 · PASSA</span><h3>Chama o humano</h3><p>Na dúvida ou a pedido, a conversa sobe para o inbox com o histórico.</p></div>
+  </div>
+  <div class="stat-row">
+    <div><span class="stat-sm">3</span><span>Provedores de IA à escolha: Google, OpenAI e Anthropic — com a chave do cliente</span></div>
+    <div><span class="stat-sm">100%</span><span>Das respostas registradas com fonte consultada, tempo e custo</span></div>
+    <div><span class="stat-sm">0</span><span>Contas de usuário a criar: atendente entra por token com permissão própria</span></div>
+  </div>
+  <div class="foot">
+    <span class="mark"><img src="assets/mono.svg" alt="">Empreende.IA</span>
+    <span>07</span>
+  </div>
+</section>
+
+<!-- 08 · workflows -->
+<section class="slide">
+  <span class="eyebrow">Automação · 08</span>
+  <h2>Fluxos que esperam dias sem travar nada.</h2>
+  <p class="lead">O follow-up de três dias não precisa de servidor ligado esperando. O fluxo pausa, fica guardado no banco e retoma na hora certa — mesmo que o sistema seja atualizado no meio.</p>
+  <div class="grid g3">
+    <div class="card hero"><span class="num">GATILHO</span><h3>Começa onde faz sentido</h3><p>Palavra-chave na conversa, resposta a uma campanha específica, formulário enviado ou inscrição manual.</p></div>
+    <div class="card"><span class="num">REGRA</span><h3>Respeita o contexto</h3><p>Se o contato responder, o follow-up agendado é cancelado. Fora do horário comercial, a mensagem espera — a etiqueta e o CRM seguem rodando.</p></div>
+    <div class="card"><span class="num">VERSÃO</span><h3>Mudar não quebra</h3><p>Cada publicação vira uma versão com rollback. Quem já está no meio do fluxo termina na versão em que entrou.</p></div>
+  </div>
+  <div class="foot">
+    <span class="mark"><img src="assets/mono.svg" alt="">Empreende.IA</span>
+    <span>08</span>
+  </div>
+</section>
+
+<!-- 09 · instalação -->
+<section class="slide">
+  <span class="eyebrow">Implantação · 09</span>
+  <h2>Da conta vazia ao primeiro disparo, sem infraestrutura para manter.</h2>
+  <ol class="steps">
+    <li><span class="idx">1</span><div><h3>Marca</h3><p>Nome, logo e cor da empresa. O sistema inteiro passa a exibir a marca do cliente — do login ao painel.</p></div></li>
+    <li><span class="idx">2</span><div><h3>Hospedagem e banco</h3><p>O instalador cria o projeto de banco, aplica a estrutura, gera todas as senhas e chaves e configura o agendador sozinho.</p></div></li>
+    <li><span class="idx">3</span><div><h3>WhatsApp</h3><p>Credenciais da Meta, webhook configurado e uma mensagem de teste. A partir daí a operação começa.</p></div></li>
+  </ol>
+  <p class="note">Requisitos: uma conta de hospedagem, uma conta de banco gerenciado e um número aprovado na Meta. Sem servidor dedicado, fila externa ou serviço de terceiros a contratar.</p>
+  <div class="foot">
+    <span class="mark"><img src="assets/mono.svg" alt="">Empreende.IA</span>
+    <span>09</span>
+  </div>
+</section>
+
+<!-- 10 · arquitetura/propriedade -->
+<section class="slide">
+  <span class="eyebrow">Propriedade e dados · 10</span>
+  <h2>Um deploy por empresa. Sem vizinho no banco.</h2>
+  <div class="split">
+    <div class="col col-a">
+      <h3>Plataforma compartilhada</h3>
+      <ul>
+        <li>Seus contatos no mesmo banco de outros clientes</li>
+        <li>Limite de envio dividido com terceiros</li>
+        <li>Preço por contato ou por mensagem</li>
+        <li>Saída da ferramenta significa exportar e recomeçar</li>
+      </ul>
+    </div>
+    <div class="col col-b">
+      <h3>Dispara</h3>
+      <ul>
+        <li>Banco, número e chaves de IA na conta do próprio cliente</li>
+        <li>Custo de infraestrutura previsível, direto no fornecedor</li>
+        <li>Marca do cliente em todo o sistema</li>
+        <li>API aberta para integrar com o que já existe na casa</li>
+        <li>Toda rota atrás de uma barreira de autenticação única</li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot">
+    <span class="mark"><img src="assets/mono.svg" alt="">Empreende.IA</span>
+    <span>10</span>
+  </div>
+</section>
+
+<!-- 11 · números do produto -->
+<section class="slide">
+  <span class="eyebrow">Maturidade do produto · 11</span>
+  <h2>Não é protótipo.</h2>
+  <div class="grid g4" style="margin-top:34px;">
+    <div class="card hero"><span class="stat-sm">206</span><h3 style="margin-top:10px;">rotas de API</h3><p>Tudo que o painel faz também é chamável por integração.</p></div>
+    <div class="card"><span class="stat-sm">45</span><h3 style="margin-top:10px;">tabelas no banco</h3><p>Campanha, conversa, fluxo, CRM e IA modelados por completo.</p></div>
+    <div class="card"><span class="stat-sm">54</span><h3 style="margin-top:10px;">erros traduzidos</h3><p>Cada código da Meta vira mensagem em português com a ação recomendada.</p></div>
+    <div class="card"><span class="stat-sm">171</span><h3 style="margin-top:10px;">arquivos de teste</h3><p>Rodam a cada alteração, junto com a checagem das migrações do banco.</p></div>
+  </div>
+  <p class="note">Números do próprio código-fonte, em outubro de 2026. Não são indicadores de uso ou de resultado comercial.</p>
+  <div class="foot">
+    <span class="mark"><img src="assets/mono.svg" alt="">Empreende.IA</span>
+    <span>11</span>
+  </div>
+</section>
+
+<!-- 12 · fechamento -->
+<section class="slide closing">
+  <span class="eyebrow">Próximo passo · 12</span>
+  <h2>Vamos ver o Dispara rodando com o seu número.</h2>
+  <p class="lead">A demonstração usa um número de teste e um template real: você acompanha o disparo, a resposta chegando no inbox e o agente respondendo — na mesma sessão.</p>
+  <div class="rule"></div>
+  <span class="cta">Agendar a demonstração</span>
+  <p class="note">Empreende.IA · Para avançar, precisamos saber qual número será usado, se a conta na Meta já está aprovada e quantos contatos entram na primeira campanha.</p>
+  <div class="foot">
+    <span class="mark"><img src="assets/mono.svg" alt="">Empreende.IA</span>
+    <span>12</span>
+  </div>
+</section>
+
+</body>
+</html>
